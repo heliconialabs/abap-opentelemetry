@@ -7,7 +7,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "ts-node test/test.ts",
+    "lint": "abaplint",
+    "unit": "rm -rf output && abap_transpile && echo RUNNING && node output/index.mjs",
+    "test": "npm run lint && npm run downport && npm run unit",
+    "downport": "rm -rf downport && cp -r src downport && abaplint --fix abaplint-downport.jsonc",
     "proto": "pbjs -t static-module -w commonjs -o test/compiled.js proto/common.proto proto/resource.proto proto/trace.proto && pbts -o test/compiled.d.ts test/compiled.js"
   },
   "repository": {
@@ -21,6 +24,10 @@
   },
   "homepage": "https://github.com/heliconialabs/abap-opentelemetry#readme",
   "devDependencies": {
+    "@abaplint/cli": "^2.89.12",
+    "@abaplint/runtime": "^2.0.14",
+    "@abaplint/database-sqlite": "^2.0.11",
+    "@abaplint/transpiler-cli": "^2.0.14",
     "dotenv": "^16.0.0",
     "node-fetch": "^3.2.3",
     "protobufjs": "^6.11.2",

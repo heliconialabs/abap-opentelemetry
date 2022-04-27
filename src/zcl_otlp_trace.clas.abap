@@ -106,13 +106,18 @@ CLASS zcl_otlp_trace DEFINITION
         !it_resource_spans TYPE ty_resource_spans
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
+    CLASS-METHODS encode_scope_spans
+      IMPORTING
+        !is_scope_spans TYPE ty_scope_spans
+      RETURNING
+        VALUE(rv_hex)   TYPE xstring .
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS zcl_otlp_trace IMPLEMENTATION.
+CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
 
 
   METHOD encode.
@@ -138,9 +143,13 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
 
     LOOP AT it_resource_spans INTO DATA(ls_resource_span).
 * todo,     DATA(lv_resource) = encode_resource( ls_resource_span-resource ).
-* todo      LOOP AT ls_resource_span-scope_spans INTO DATA(ls_scope_span).
-* todo,       DATA(lv_scope_span) = encode_scope_span( ls_scope_span ).
-* todo      ENDLOOP.
+
+      LOOP AT ls_resource_span-scope_spans INTO DATA(ls_scope_spans).
+        lo_stream->encode_field_and_type( VALUE #(
+          field_number = 2
+          wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+        lo_stream->encode_delimited( encode_scope_spans( ls_scope_spans ) ).
+      ENDLOOP.
 
       IF ls_resource_span-schema_url IS NOT INITIAL.
         lo_stream->encode_field_and_type( VALUE #(
@@ -149,6 +158,22 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
         lo_stream->encode_delimited( cl_abap_codepage=>convert_to( ls_resource_span-schema_url ) ).
       ENDIF.
     ENDLOOP.
+
+    rv_hex = lo_stream->get( ).
+
+  ENDMETHOD.
+
+
+  METHOD encode_scope_spans.
+
+    DATA(lo_stream) = NEW zcl_protobuf_stream( ).
+
+    IF is_scope_spans-schema_url IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 3
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_scope_spans-schema_url ) ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
 

@@ -2,26 +2,26 @@ import * as proto from "./compiled";
 import 'dotenv/config';
 import * as https from "https";
 import * as crypto from "crypto";
-import Long from "long";
-
 
 const trace = new proto.opentelemetry.proto.trace.v1.TracesData({
   resourceSpans: [
     {
-      resource: { attributes: [{ key: "http.status_code", value: { intValue: 200 } }] },
+//      resource: { attributes: [{ key: "http.status_code", value: { intValue: 200 } }] },
       scopeSpans: [{
         scope: {
-          name: "sopename"
+          name: "scopename"
         },
-        schemaUrl: "url",
         spans: [
           {
             traceId: crypto.randomBytes(16),
             spanId: crypto.randomBytes(8),
+            /*
+            events: [{
+              name: "eventname"
+            }],
             kind: proto.opentelemetry.proto.trace.v1.Span.SpanKind.SPAN_KIND_PRODUCER,
             name: "operation description",
-            attributes: [{ key: "duration_ms", value: { intValue: 20 } }]
-            /*
+            attributes: [{ key: "duration_ms", value: { intValue: 20 } }],
             startTimeUnixNano: new Long(new Date().getTime()).multiply(1000),
             endTimeUnixNano: new Long(new Date().getTime()).multiply(1000).add(10),
             */

@@ -112,16 +112,16 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
+CLASS zcl_otlp_trace IMPLEMENTATION.
 
 
   METHOD encode.
 
     DATA(lo_stream) = NEW zcl_protobuf_stream( ).
 
-* 0A
-    lo_stream->encode_field_and_type(
-      VALUE #( field_number = 1 wire_type = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 1
+      wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
 
     DATA(lv_resource_spans) = encode_resource_spans( it_resource_spans ).
 
@@ -137,14 +137,15 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
     DATA(lo_stream) = NEW zcl_protobuf_stream( ).
 
     LOOP AT it_resource_spans INTO DATA(ls_resource_span).
-*      DATA(lv_resource) = encode_resource( ls_resource_span-resource ).
-      LOOP AT ls_resource_span-scope_spans INTO DATA(ls_scope_span).
-*        DATA(lv_scope_span) = encode_scope_span( ls_scope_span ).
-      ENDLOOP.
+* todo,     DATA(lv_resource) = encode_resource( ls_resource_span-resource ).
+* todo      LOOP AT ls_resource_span-scope_spans INTO DATA(ls_scope_span).
+* todo,       DATA(lv_scope_span) = encode_scope_span( ls_scope_span ).
+* todo      ENDLOOP.
 
       IF ls_resource_span-schema_url IS NOT INITIAL.
-* 1A036D6F6F
-        lo_stream->encode_field_and_type( VALUE #( field_number = 3 wire_type = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+        lo_stream->encode_field_and_type( VALUE #(
+          field_number = 3
+          wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
         lo_stream->encode_delimited( cl_abap_codepage=>convert_to( ls_resource_span-schema_url ) ).
       ENDIF.
     ENDLOOP.

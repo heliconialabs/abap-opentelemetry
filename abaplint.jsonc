@@ -323,13 +323,8 @@
     },
     "no_aliases": true,
     "no_chained_assignment": true,
-    "no_inline_in_optional_branches": true,
-    "no_public_attributes": {
-      "exclude": [],
-      "severity": "Error",
-      "allowReadOnly": false,
-      "ignoreTestClasses": false
-    },
+    "no_inline_in_optional_branches": false,
+    "no_public_attributes": true,
     "no_yoda_conditions": {
       "exclude": [],
       "severity": "Error",

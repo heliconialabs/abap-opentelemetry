@@ -73,10 +73,8 @@ CLASS zcl_otlp_trace DEFINITION
     TYPES:
 * message InstrumentationScope {
       BEGIN OF ty_instrumentation_scope,
-        name       TYPE string,
-        version    TYPE string,
-        spans      TYPE STANDARD TABLE OF ty_span WITH EMPTY KEY,
-        schema_url TYPE string,
+        name    TYPE string,
+        version TYPE string,
       END OF ty_instrumentation_scope .
     TYPES:
 * message ScopeSpans {
@@ -92,6 +90,8 @@ CLASS zcl_otlp_trace DEFINITION
         scope_spans TYPE STANDARD TABLE OF ty_scope_spans WITH EMPTY KEY,
         schema_url  TYPE string,
       END OF ty_resource_span .
+
+* special, top level
     TYPES:
       ty_resource_spans TYPE STANDARD TABLE OF ty_resource_span WITH EMPTY KEY .
 
@@ -103,7 +103,7 @@ CLASS zcl_otlp_trace DEFINITION
 
     CLASS-METHODS encode_resource_spans
       IMPORTING
-        !it_resource_spans TYPE ty_resource_spans
+        !is_resource_spans TYPE ty_resource_span
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
     CLASS-METHODS encode_scope_spans
@@ -111,6 +111,21 @@ CLASS zcl_otlp_trace DEFINITION
         !is_scope_spans TYPE ty_scope_spans
       RETURNING
         VALUE(rv_hex)   TYPE xstring .
+    CLASS-METHODS encode_instrumentation_scope
+      IMPORTING
+        is_instrumentation_scope TYPE ty_instrumentation_scope
+      RETURNING
+        VALUE(rv_hex)            TYPE xstring .
+    CLASS-METHODS encode_span
+      IMPORTING
+        is_span       TYPE ty_span
+      RETURNING
+        VALUE(rv_hex) TYPE xstring .
+    CLASS-METHODS encode_resource
+      IMPORTING
+        is_resource   TYPE ty_resource
+      RETURNING
+        VALUE(rv_hex) TYPE xstring .
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -124,16 +139,44 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
 
     DATA(lo_stream) = NEW zcl_protobuf_stream( ).
 
-    lo_stream->encode_field_and_type( VALUE #(
-      field_number = 1
-      wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-
-    DATA(lv_resource_spans) = encode_resource_spans( it_resource_spans ).
-
-    lo_stream->encode_delimited( lv_resource_spans ).
+* top level, message TracesData
+    LOOP AT it_resource_spans INTO DATA(ls_resource_span).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_resource_spans( ls_resource_span ) ).
+    ENDLOOP.
 
     rv_hex = lo_stream->get( ).
 
+  ENDMETHOD.
+
+
+  METHOD encode_instrumentation_scope.
+
+    DATA(lo_stream) = NEW zcl_protobuf_stream( ).
+
+    IF is_instrumentation_scope-name IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_instrumentation_scope-name ) ).
+    ENDIF.
+
+    IF is_instrumentation_scope-version IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_instrumentation_scope-version ) ).
+    ENDIF.
+
+    rv_hex = lo_stream->get( ).
+
+  ENDMETHOD.
+
+
+  METHOD encode_resource.
+    BREAK-POINT.
   ENDMETHOD.
 
 
@@ -141,23 +184,26 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
 
     DATA(lo_stream) = NEW zcl_protobuf_stream( ).
 
-    LOOP AT it_resource_spans INTO DATA(ls_resource_span).
-* todo,     DATA(lv_resource) = encode_resource( ls_resource_span-resource ).
+    IF is_resource_spans-resource IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_resource( is_resource_spans-resource ) ).
+    ENDIF.
 
-      LOOP AT ls_resource_span-scope_spans INTO DATA(ls_scope_spans).
-        lo_stream->encode_field_and_type( VALUE #(
-          field_number = 2
-          wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-        lo_stream->encode_delimited( encode_scope_spans( ls_scope_spans ) ).
-      ENDLOOP.
-
-      IF ls_resource_span-schema_url IS NOT INITIAL.
-        lo_stream->encode_field_and_type( VALUE #(
-          field_number = 3
-          wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-        lo_stream->encode_delimited( cl_abap_codepage=>convert_to( ls_resource_span-schema_url ) ).
-      ENDIF.
+    LOOP AT is_resource_spans-scope_spans INTO DATA(ls_scope_spans).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_scope_spans( ls_scope_spans ) ).
     ENDLOOP.
+
+    IF is_resource_spans-schema_url IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 3
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_resource_spans-schema_url ) ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
 
@@ -168,6 +214,20 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
 
     DATA(lo_stream) = NEW zcl_protobuf_stream( ).
 
+    IF is_scope_spans-scope IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_instrumentation_scope( is_scope_spans-scope ) ).
+    ENDIF.
+
+    LOOP AT is_scope_spans-spans INTO DATA(ls_span).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_span( ls_span ) ).
+    ENDLOOP.
+
     IF is_scope_spans-schema_url IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 3
@@ -177,5 +237,10 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
 
     rv_hex = lo_stream->get( ).
 
+  ENDMETHOD.
+
+
+  METHOD encode_span.
+    BREAK-POINT.
   ENDMETHOD.
 ENDCLASS.

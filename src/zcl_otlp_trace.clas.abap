@@ -222,12 +222,19 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
 
     DATA(lo_stream) = NEW zcl_protobuf_stream( ).
 
+    IF is_event-time_unix_nano IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-bit64 ) ).
 * todo, field time_unix_nano    fixed64
+    ENDIF.
 
-    lo_stream->encode_field_and_type( VALUE #(
-      field_number = 2
-      wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-    lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_event-name ) ).
+    IF is_event-name IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_event-name ) ).
+    ENDIF.
 
     LOOP AT is_event-attributes INTO DATA(ls_attribute).
       lo_stream->encode_field_and_type( VALUE #(
@@ -456,9 +463,19 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
 
 * todo, "kind" field, enum
 
+    IF is_span-start_time_unix_nano IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 7
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-bit64 ) ).
 * todo, "start_time_unix_nano" field, fixed64
+    ENDIF.
 
+    IF is_span-end_time_unix_nano IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 8
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-bit64 ) ).
 * todo, "end_time_unix_nano" field, fixed64
+    ENDIF.
 
     LOOP AT is_span-attributes INTO DATA(ls_attribute).
       lo_stream->encode_field_and_type( VALUE #(

@@ -56,7 +56,7 @@ CLASS zcl_otlp_trace DEFINITION
       BEGIN OF ty_span,
         trace_id                 TYPE xstring,
         span_id                  TYPE xstring,
-        trace_state              TYPE xstring,
+        trace_state              TYPE string,
         parent_span_id           TYPE xstring,
         name                     TYPE string,
         kind                     TYPE i, " todo, enum?
@@ -141,6 +141,24 @@ CLASS zcl_otlp_trace DEFINITION
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
+    CLASS-METHODS encode_status
+      IMPORTING
+        is_status     TYPE ty_status
+      RETURNING
+        VALUE(rv_hex) TYPE xstring .
+
+    CLASS-METHODS encode_link
+      IMPORTING
+        is_link       TYPE ty_link
+      RETURNING
+        VALUE(rv_hex) TYPE xstring .
+
+    CLASS-METHODS encode_event
+      IMPORTING
+        is_event      TYPE ty_event
+      RETURNING
+        VALUE(rv_hex) TYPE xstring .
+
   PRIVATE SECTION.
 ENDCLASS.
 
@@ -200,6 +218,36 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD encode_event.
+
+    DATA(lo_stream) = NEW zcl_protobuf_stream( ).
+
+* todo, field time_unix_nano    fixed64
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 2
+      wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+    lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_event-name ) ).
+
+    LOOP AT is_event-attributes INTO DATA(ls_attribute).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 3
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_key_value( ls_attribute ) ).
+    ENDLOOP.
+
+    IF is_event-dropped_attributes_count IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 4
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_event-dropped_attributes_count ).
+    ENDIF.
+
+    rv_hex = lo_stream->get( ).
+
+  ENDMETHOD.
+
+
   METHOD encode_instrumentation_scope.
 
     DATA(lo_stream) = NEW zcl_protobuf_stream( ).
@@ -236,6 +284,48 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       field_number = 2
       wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
     lo_stream->encode_delimited( encode_any_value( is_key_value-value ) ).
+
+    rv_hex = lo_stream->get( ).
+
+  ENDMETHOD.
+
+
+  METHOD encode_link.
+
+    DATA(lo_stream) = NEW zcl_protobuf_stream( ).
+
+    IF is_link-trace_id IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( is_link-trace_id ).
+    ENDIF.
+
+    IF is_link-span_id IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( is_link-span_id ).
+    ENDIF.
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 3
+      wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+    lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_link-trace_state ) ).
+
+    LOOP AT is_link-attributes INTO DATA(ls_attribute).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 4
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_key_value( ls_attribute ) ).
+    ENDLOOP.
+
+    IF is_link-dropped_attributes_count IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 5
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_link-dropped_attributes_count ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
 
@@ -326,6 +416,118 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
 
 
   METHOD encode_span.
-    BREAK-POINT.
+
+    DATA(lo_stream) = NEW zcl_protobuf_stream( ).
+
+* field "trace_id" is required
+    ASSERT is_span-trace_id IS NOT INITIAL.
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 1
+      wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+    lo_stream->encode_delimited( is_span-trace_id ).
+
+* field "span_id" is required
+    ASSERT is_span-span_id IS NOT INITIAL.
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 2
+      wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+    lo_stream->encode_delimited( is_span-span_id ).
+
+    IF is_span-trace_state IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 3
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_span-trace_state ) ).
+    ENDIF.
+
+    IF is_span-parent_span_id IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 4
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( is_span-parent_span_id ).
+    ENDIF.
+
+    IF is_span-name IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 5
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_span-name ) ).
+    ENDIF.
+
+* todo, "kind" field, enum
+
+* todo, "start_time_unix_nano" field, fixed64
+
+* todo, "end_time_unix_nano" field, fixed64
+
+    LOOP AT is_span-attributes INTO DATA(ls_attribute).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 9
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_key_value( ls_attribute ) ).
+    ENDLOOP.
+
+    IF is_span-dropped_attributes_count IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 10
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_span-dropped_attributes_count ).
+    ENDIF.
+
+    LOOP AT is_span-events INTO DATA(ls_event).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 11
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_event( ls_event ) ).
+    ENDLOOP.
+
+    IF is_span-dropped_events_count IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 12
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_span-dropped_events_count  ).
+    ENDIF.
+
+    LOOP AT is_span-links INTO DATA(ls_link).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 13
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_link( ls_link ) ).
+    ENDLOOP.
+
+    IF is_span-dropped_links_count IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 14
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_span-dropped_links_count  ).
+    ENDIF.
+
+    IF is_span-status IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 14
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( encode_status( is_span-status ) ).
+    ENDIF.
+
+    rv_hex = lo_stream->get( ).
+
+  ENDMETHOD.
+
+
+  METHOD encode_status.
+
+    DATA(lo_stream) = NEW zcl_protobuf_stream( ).
+
+    IF is_status-message IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_status-message ) ).
+    ENDIF.
+
+* todo, enum code
+
+    rv_hex = lo_stream->get( ).
+
   ENDMETHOD.
 ENDCLASS.

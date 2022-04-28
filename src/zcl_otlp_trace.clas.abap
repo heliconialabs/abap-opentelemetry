@@ -226,7 +226,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_protobuf_stream=>gc_wire_type-bit64 ) ).
-* todo, field time_unix_nano    fixed64
+      lo_stream->encode_fixed64( is_event-time_unix_nano ).
     ENDIF.
 
     IF is_event-name IS NOT INITIAL.
@@ -467,14 +467,14 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 7
         wire_type    = zcl_protobuf_stream=>gc_wire_type-bit64 ) ).
-* todo, "start_time_unix_nano" field, fixed64
+      lo_stream->encode_fixed64( is_span-start_time_unix_nano ).
     ENDIF.
 
     IF is_span-end_time_unix_nano IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 8
         wire_type    = zcl_protobuf_stream=>gc_wire_type-bit64 ) ).
-* todo, "end_time_unix_nano" field, fixed64
+      lo_stream->encode_fixed64( is_span-end_time_unix_nano ).
     ENDIF.
 
     LOOP AT is_span-attributes INTO DATA(ls_attribute).

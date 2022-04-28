@@ -164,7 +164,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
+CLASS zcl_otlp_trace IMPLEMENTATION.
 
 
   METHOD encode.
@@ -199,7 +199,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 3
         wire_type    = zcl_protobuf_stream=>gc_wire_type-varint ) ).
-      lo_stream->encode_varint( is_any_value-int_value  ).
+      lo_stream->encode_varint( is_any_value-int_value ).
     ELSEIF is_any_value-double_value  IS NOT INITIAL.
       ASSERT 1 = 'todo'.
     ELSEIF is_any_value-array_value   IS NOT INITIAL.
@@ -502,7 +502,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 12
         wire_type    = zcl_protobuf_stream=>gc_wire_type-varint ) ).
-      lo_stream->encode_varint( is_span-dropped_events_count  ).
+      lo_stream->encode_varint( is_span-dropped_events_count ).
     ENDIF.
 
     LOOP AT is_span-links INTO DATA(ls_link).
@@ -516,7 +516,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 14
         wire_type    = zcl_protobuf_stream=>gc_wire_type-varint ) ).
-      lo_stream->encode_varint( is_span-dropped_links_count  ).
+      lo_stream->encode_varint( is_span-dropped_links_count ).
     ENDIF.
 
     IF is_span-status IS NOT INITIAL.

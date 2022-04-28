@@ -37,9 +37,9 @@ CLASS ltcl_test IMPLEMENTATION.
     DATA(lv_hex) = mo_cut->encode( VALUE #( (
       resource = VALUE #(
       attributes = VALUE #( (
-        VALUE #( key = 'http.status_code'
-        value = VALUE #( int_value = 200 ) ) ) )
-    ) ) ) ).
+        VALUE #( key   = 'http.status_code'
+                 value = VALUE #( int_value = 200 ) ) ) )
+      ) ) ) ).
     cl_abap_unit_assert=>assert_equals(
       act = lv_hex
       exp = '0A1B0A190A170A10687474702E7374617475735F636F6465120318C801' ).

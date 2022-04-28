@@ -101,6 +101,8 @@ CLASS zcl_otlp_trace DEFINITION
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
 
+  PROTECTED SECTION.
+
     CLASS-METHODS encode_resource_spans
       IMPORTING
         !is_resource_spans TYPE ty_resource_span
@@ -138,7 +140,7 @@ CLASS zcl_otlp_trace DEFINITION
         is_any_value  TYPE ty_any_value
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-  PROTECTED SECTION.
+
   PRIVATE SECTION.
 ENDCLASS.
 

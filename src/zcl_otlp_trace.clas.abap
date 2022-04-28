@@ -426,19 +426,19 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
 
     DATA(lo_stream) = NEW zcl_protobuf_stream( ).
 
-* field "trace_id" is required
-    ASSERT is_span-trace_id IS NOT INITIAL.
-    lo_stream->encode_field_and_type( VALUE #(
-      field_number = 1
-      wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-    lo_stream->encode_delimited( is_span-trace_id ).
+    IF is_span-trace_id IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( is_span-trace_id ).
+    ENDIF.
 
-* field "span_id" is required
-    ASSERT is_span-span_id IS NOT INITIAL.
-    lo_stream->encode_field_and_type( VALUE #(
-      field_number = 2
-      wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-    lo_stream->encode_delimited( is_span-span_id ).
+    IF is_span-span_id IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( is_span-span_id ).
+    ENDIF.
 
     IF is_span-trace_state IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(

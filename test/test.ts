@@ -26,7 +26,6 @@ const trace = new proto.opentelemetry.proto.trace.v1.TracesData({
             endTimeUnixNano: new Long(new Date().getTime()).multiply(1000).add(10),
             */
           }
-        ]
       }]
     }
   ]

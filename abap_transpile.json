@@ -6,9 +6,6 @@
   "libs": [
     {
       "url": "https://github.com/open-abap/open-abap"
-    },
-    {
-      "url": "https://github.com/heliconialabs/abap-protobuf"
     }
   ],
   "write_unit_tests": true,

@@ -6,10 +6,6 @@
     {
       "url": "https://github.com/open-abap/open-abap",
       "files": "/src/**/*.*"
-    },
-    {
-      "url": "https://github.com/heliconialabs/abap-protobuf",
-      "files": "/src/**/*.*"
     }
   ],
   "syntax": {

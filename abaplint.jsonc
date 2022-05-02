@@ -11,10 +11,6 @@
     {
       "url": "https://github.com/open-abap/open-abap",
       "files": "/src/**/*.*"
-    },
-    {
-      "url": "https://github.com/heliconialabs/abap-protobuf",
-      "files": "/src/**/*.*"
     }
   ],
   "syntax": {
@@ -356,65 +352,21 @@
       "ssst": "^Z",
       "shlp": "^Z"
     },
-    "obsolete_statement": {
-      "exclude": [],
-      "severity": "Error",
-      "refresh": true,
-      "compute": true,
-      "add": true,
-      "subtract": true,
-      "multiply": true,
-      "divide": true,
-      "move": true,
-      "requested": true,
-      "occurs": true,
-      "setExtended": true,
-      "withHeaderLine": true,
-      "fieldSymbolStructure": true,
-      "typePools": true,
-      "load": true,
-      "parameter": true,
-      "ranges": true,
-      "communication": true,
-      "pack": true,
-      "selectWithoutInto": true,
-      "freeMemory": true,
-      "exitFromSQL": true,
-      "sortByFS": true,
-      "callTransformation": true,
-      "regex": true,
-      "occurences": true
-    },
+    "obsolete_statement": true,
     "omit_parameter_name": true,
     "omit_preceding_zeros": true,
     "omit_receiving": true,
     "parser_702_chaining": true,
     "parser_error": true,
     "parser_missing_space": true,
-    "pragma_style": {
-      "exclude": [],
-      "severity": "Error",
-      "style": "upper"
-    },
+    "pragma_style": true,
     "prefer_corresponding": true,
-    "prefer_inline": true,
+    "prefer_inline": false,
     "prefer_is_not": true,
     "prefer_raise_exception_new": true,
     "prefer_returning_to_exporting": true,
     "prefer_xsdbool": true,
-    "preferred_compare_operator": {
-      "exclude": [],
-      "severity": "Error",
-      "badOperators": [
-        "EQ",
-        "><",
-        "NE",
-        "GE",
-        "GT",
-        "LT",
-        "LE"
-      ]
-    },
+    "preferred_compare_operator": true,
     "prefix_is_current_class": {
       "exclude": [],
       "severity": "Error",

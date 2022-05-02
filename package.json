@@ -1,0 +1,38 @@
+{
+  "name": "abap-opentelemetry",
+  "version": "1.0.0",
+  "private": true,
+  "description": "wip",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "ts": "ts-node test/test.ts",
+    "lint": "abaplint",
+    "unit": "rm -rf output && abap_transpile && echo RUNNING && node output/index.mjs",
+    "test": "npm run lint && npm run downport && npm run unit",
+    "downport": "rm -rf downport && cp -r src downport && abaplint --fix abaplint-downport.jsonc",
+    "proto": "pbjs -t static-module -w commonjs -o test/compiled.js proto/common.proto proto/resource.proto proto/trace.proto && pbts -o test/compiled.d.ts test/compiled.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heliconialabs/abap-opentelemetry.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/heliconialabs/abap-opentelemetry/issues"
+  },
+  "homepage": "https://github.com/heliconialabs/abap-opentelemetry#readme",
+  "devDependencies": {
+    "@abaplint/cli": "^2.89.14",
+    "@abaplint/runtime": "^2.0.19",
+    "@abaplint/database-sqlite": "^2.0.11",
+    "@abaplint/transpiler-cli": "^2.0.19",
+    "dotenv": "^16.0.0",
+    "node-fetch": "^3.2.4",
+    "protobufjs": "^6.11.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  }
+}

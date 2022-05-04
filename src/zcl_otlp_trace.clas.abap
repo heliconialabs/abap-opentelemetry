@@ -51,9 +51,9 @@ CLASS zcl_otlp_trace DEFINITION
     TYPES ty_status_code TYPE i.
     CONSTANTS:
       BEGIN OF gc_status_code,
-        status_code_unset TYPE ty_status_code VALUE 0,
-        status_code_ok    TYPE ty_status_code VALUE 1,
-        status_code_error TYPE ty_status_code VALUE 2,
+        unset TYPE ty_status_code VALUE 0,
+        ok    TYPE ty_status_code VALUE 1,
+        error TYPE ty_status_code VALUE 2,
       END OF gc_status_code.
     TYPES:
 * message Status {
@@ -64,12 +64,12 @@ CLASS zcl_otlp_trace DEFINITION
 *  enum SpanKind {
     TYPES ty_span_kind TYPE i.
     CONSTANTS: BEGIN OF gc_span_kind,
-                 span_kind_unspecified TYPE ty_span_kind VALUE 0,
-                 span_kind_internal    TYPE ty_span_kind VALUE 1,
-                 span_kind_server      TYPE ty_span_kind VALUE 2,
-                 span_kind_client      TYPE ty_span_kind VALUE 3,
-                 span_kind_producer    TYPE ty_span_kind VALUE 4,
-                 span_kind_consumer    TYPE ty_span_kind VALUE 5,
+                 unspecified TYPE ty_span_kind VALUE 0,
+                 internal    TYPE ty_span_kind VALUE 1,
+                 server      TYPE ty_span_kind VALUE 2,
+                 client      TYPE ty_span_kind VALUE 3,
+                 producer    TYPE ty_span_kind VALUE 4,
+                 consumer    TYPE ty_span_kind VALUE 5,
                END OF gc_span_kind.
     TYPES:
 * message Span {

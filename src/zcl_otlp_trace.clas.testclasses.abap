@@ -8,6 +8,7 @@ CLASS ltcl_test DEFINITION FOR TESTING DURATION SHORT RISK LEVEL HARMLESS.
     METHODS encode03 FOR TESTING RAISING cx_static_check.
     METHODS encode04 FOR TESTING RAISING cx_static_check.
     METHODS encode05 FOR TESTING RAISING cx_static_check.
+    METHODS encode06 FOR TESTING RAISING cx_static_check.
     METHODS ad_hoc FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
@@ -65,6 +66,16 @@ CLASS ltcl_test IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
       act = lv_hex
       exp = '0A0D120B120939008E259C30A0EB16' ).
+  ENDMETHOD.
+
+  METHOD encode06.
+    DATA(lv_hex) = mo_cut->encode( VALUE #( (
+       scope_spans = VALUE #( (
+       spans = VALUE #( ( VALUE #(
+         status = VALUE #( code = zcl_otlp_trace=>gc_status_code-ok ) ) ) ) ) ) ) ) ).
+    cl_abap_unit_assert=>assert_equals(
+      act = lv_hex
+      exp = '0A081206120472021801' ).
   ENDMETHOD.
 
   METHOD ad_hoc.

@@ -17,10 +17,9 @@ CLASS zcl_otlp_encode_trace DEFINITION
 
     CLASS-METHODS to_xstring
       IMPORTING
-        !string        TYPE string
+        !iv_string        TYPE string
       RETURNING
-        VALUE(xstring) TYPE xstring .
-
+        VALUE(rv_xstring) TYPE xstring .
     CLASS-METHODS encode_resource_spans
       IMPORTING
         !is_resource_spans TYPE zif_otlp_model_trace=>ty_resource_span
@@ -33,47 +32,42 @@ CLASS zcl_otlp_encode_trace DEFINITION
         VALUE(rv_hex)   TYPE xstring .
     CLASS-METHODS encode_instrumentation_scope
       IMPORTING
-        is_instrumentation_scope TYPE zif_otlp_model_common=>ty_instrumentation_scope
+        !is_instrumentation_scope TYPE zif_otlp_model_common=>ty_instrumentation_scope
       RETURNING
-        VALUE(rv_hex)            TYPE xstring .
+        VALUE(rv_hex)             TYPE xstring .
     CLASS-METHODS encode_span
       IMPORTING
-        is_span       TYPE zif_otlp_model_trace=>ty_span
+        !is_span      TYPE zif_otlp_model_trace=>ty_span
       RETURNING
         VALUE(rv_hex) TYPE xstring .
     CLASS-METHODS encode_resource
       IMPORTING
-        is_resource   TYPE zif_otlp_model_resource=>ty_resource
+        !is_resource  TYPE zif_otlp_model_resource=>ty_resource
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
     CLASS-METHODS encode_key_value
       IMPORTING
-        is_key_value  TYPE zif_otlp_model_common=>ty_key_value
+        !is_key_value TYPE zif_otlp_model_common=>ty_key_value
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
     CLASS-METHODS encode_any_value
       IMPORTING
-        is_any_value  TYPE zif_otlp_model_common=>ty_any_value
+        !is_any_value TYPE zif_otlp_model_common=>ty_any_value
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
     CLASS-METHODS encode_status
       IMPORTING
-        is_status     TYPE zif_otlp_model_trace=>ty_status
+        !is_status    TYPE zif_otlp_model_trace=>ty_status
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
     CLASS-METHODS encode_link
       IMPORTING
-        is_link       TYPE zif_otlp_model_trace=>ty_link
+        !is_link      TYPE zif_otlp_model_trace=>ty_link
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
     CLASS-METHODS encode_event
       IMPORTING
-        is_event      TYPE zif_otlp_model_trace=>ty_event
+        !is_event     TYPE zif_otlp_model_trace=>ty_event
       RETURNING
         VALUE(rv_hex) TYPE xstring .
   PRIVATE SECTION.
@@ -480,31 +474,32 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
 
 * argh, steampunk compatibility
 
-    DATA conv TYPE REF TO object.
+    DATA lo_conv TYPE REF TO object.
 
     TRY.
         CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_out
           RECEIVING
-            instance = conv.
+            instance = lo_conv.
 
-        CALL METHOD conv->('IF_ABAP_CONV_OUT~CONVERT')
+        CALL METHOD lo_conv->('IF_ABAP_CONV_OUT~CONVERT')
           EXPORTING
-            source = string
+            source = iv_string
           RECEIVING
-            result = xstring.
+            result = rv_xstring.
       CATCH cx_sy_dyn_call_illegal_class.
-        DATA(conv_out_class) = 'CL_ABAP_CONV_OUT_CE'.
-        CALL METHOD (conv_out_class)=>create
+        DATA(lv_conv_out_class) = 'CL_ABAP_CONV_OUT_CE'.
+* workaround for not triggering static analysis error in Steampunk
+        CALL METHOD (lv_conv_out_class)=>create
           EXPORTING
             encoding = 'UTF-8'
           RECEIVING
-            conv     = conv.
+            conv     = lo_conv.
 
-        CALL METHOD conv->('CONVERT')
+        CALL METHOD lo_conv->('CONVERT')
           EXPORTING
-            data   = string
+            data   = iv_string
           IMPORTING
-            buffer = xstring.
+            buffer = rv_xstring.
     ENDTRY.
 
   ENDMETHOD.

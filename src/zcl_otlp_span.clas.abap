@@ -45,7 +45,8 @@ CLASS ZCL_OTLP_SPAN IMPLEMENTATION.
 
 
   METHOD constructor.
-
+* todo, add method "record_exception", https://opentelemetry.io/docs/reference/specification/trace/api/#record-exception
+* todo, set span_id & trace_id ?
     ms_data = VALUE #(
       name = iv_name
       kind = iv_kind ).

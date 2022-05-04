@@ -6,7 +6,6 @@ INTERFACE zif_otlp_model_trace
 * https://github.com/heliconialabs/abap-opentelemetry
 * this file corresponds to
 * https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/trace/v1/trace.proto
-* message Resource {
 
   TYPES:
 *   message Event {

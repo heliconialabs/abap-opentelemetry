@@ -19,7 +19,9 @@ CLASS zcl_otlp_span DEFINITION
     METHODS add_link
       IMPORTING
         !is_link TYPE zif_otlp_model_trace=>ty_link .
-    METHODS set_status .
+    METHODS set_status
+      IMPORTING
+        !is_status TYPE zif_otlp_model_trace=>ty_status.
     METHODS end
       IMPORTING
         !iv_end_time TYPE zif_otlp_model_trace=>ty_span-end_time_unix_nano OPTIONAL .
@@ -33,21 +35,43 @@ CLASS ZCL_OTLP_SPAN IMPLEMENTATION.
 
 
   METHOD add_event.
+    APPEND is_event TO ms_data-events.
   ENDMETHOD.
 
 
   METHOD add_link.
+    APPEND is_link TO ms_data-links.
   ENDMETHOD.
 
 
   METHOD constructor.
+
+    ms_data-name = iv_name.
+    ms_data-kind = iv_kind.
+
+    IF iv_start_time IS INITIAL.
+      ms_data-start_time_unix_nano = zcl_otlp_util=>get_unix_time_nano( ).
+    ELSE.
+      ms_data-start_time_unix_nano = iv_start_time.
+    ENDIF.
+
   ENDMETHOD.
 
 
   METHOD end.
+
+    IF iv_end_time IS INITIAL.
+      ms_data-end_time_unix_nano = zcl_otlp_util=>get_unix_time_nano( ).
+    ELSE.
+      ms_data-end_time_unix_nano = iv_end_time.
+    ENDIF.
+
+* todo, call processors from provider
+
   ENDMETHOD.
 
 
   METHOD set_status.
+    ms_data-status = is_status.
   ENDMETHOD.
 ENDCLASS.

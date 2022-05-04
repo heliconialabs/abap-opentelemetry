@@ -4,6 +4,8 @@ CLASS zcl_otlp_trace DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+* MIT License, Copyright (c) 2022 Heliconia Labs
+* https://github.com/heliconialabs/abap-opentelemetry
 
     TYPES:
 * message AnyValue {

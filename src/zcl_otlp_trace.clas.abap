@@ -13,9 +13,9 @@ CLASS zcl_otlp_trace DEFINITION
         string_value TYPE string,
         bool_value   TYPE abap_bool,
         int_value    TYPE i,
-        double_value TYPE string, " todo
-        array_value  TYPE string, " todo
-        kvlist_value TYPE string, " todo
+        double_value TYPE string, " out of scope
+        array_value  TYPE string, " out of scope
+        kvlist_value TYPE string, " out of scope
         bytes_value  TYPE xstring,
       END OF ty_any_value .
     TYPES:
@@ -47,12 +47,30 @@ CLASS zcl_otlp_trace DEFINITION
         attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
         dropped_attributes_count TYPE i,
       END OF ty_link .
+*  enum StatusCode {
+    TYPES ty_status_code TYPE i.
+    CONSTANTS:
+      BEGIN OF gc_status_code,
+        status_code_unset TYPE ty_status_code VALUE 0,
+        status_code_ok    TYPE ty_status_code VALUE 1,
+        status_code_error TYPE ty_status_code VALUE 2,
+      END OF gc_status_code.
     TYPES:
 * message Status {
       BEGIN OF ty_status,
         message TYPE string,
-        code    TYPE i, " todo, enum?
+        code    TYPE ty_status_code,
       END OF ty_status .
+*  enum SpanKind {
+    TYPES ty_span_kind TYPE i.
+    CONSTANTS: BEGIN OF gc_span_kind,
+                 span_kind_unspecified TYPE ty_span_kind VALUE 0,
+                 span_kind_internal    TYPE ty_span_kind VALUE 1,
+                 span_kind_server      TYPE ty_span_kind VALUE 2,
+                 span_kind_client      TYPE ty_span_kind VALUE 3,
+                 span_kind_producer    TYPE ty_span_kind VALUE 4,
+                 span_kind_consumer    TYPE ty_span_kind VALUE 5,
+               END OF gc_span_kind.
     TYPES:
 * message Span {
       BEGIN OF ty_span,
@@ -61,7 +79,7 @@ CLASS zcl_otlp_trace DEFINITION
         trace_state              TYPE string,
         parent_span_id           TYPE xstring,
         name                     TYPE string,
-        kind                     TYPE i, " todo, enum?
+        kind                     TYPE ty_span_kind,
         start_time_unix_nano     TYPE int8,
         end_time_unix_nano       TYPE int8,
         attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
@@ -203,11 +221,11 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
         wire_type    = lcl_protobuf_stream=>gc_wire_type-varint ) ).
       lo_stream->encode_varint( is_any_value-int_value ).
     ELSEIF is_any_value-double_value  IS NOT INITIAL.
-      ASSERT 1 = 'todo'.
+      ASSERT 1 = 'out of scope'.
     ELSEIF is_any_value-array_value   IS NOT INITIAL.
-      ASSERT 1 = 'todo'.
+      ASSERT 1 = 'out of scope'.
     ELSEIF is_any_value-kvlist_value  IS NOT INITIAL.
-      ASSERT 1 = 'todo'.
+      ASSERT 1 = 'out of scope'.
     ELSEIF is_any_value-bytes_value IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 7
@@ -463,7 +481,12 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_span-name ) ).
     ENDIF.
 
-* todo, "kind" field, enum
+    IF is_span-kind IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 6
+        wire_type    = lcl_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_span-kind ).
+    ENDIF.
 
     IF is_span-start_time_unix_nano IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(
@@ -544,7 +567,12 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_status-message ) ).
     ENDIF.
 
-* todo, enum code
+    IF is_status-code IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 3
+        wire_type    = lcl_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_status-code ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
 

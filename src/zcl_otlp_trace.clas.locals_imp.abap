@@ -183,7 +183,7 @@ CLASS lcl_protobuf_stream IMPLEMENTATION.
     DATA lv_lower TYPE x LENGTH 1.
     DATA lv_encoded TYPE xstring.
 
-    ASSERT iv_int >= 0. " todo
+    ASSERT iv_int >= 0.
 
     DATA(lv_int) = iv_int.
     WHILE lv_int > 0.

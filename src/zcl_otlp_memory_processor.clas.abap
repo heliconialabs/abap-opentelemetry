@@ -1,0 +1,23 @@
+CLASS zcl_otlp_memory_processor DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES zif_otlp_span_processor .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS ZCL_OTLP_MEMORY_PROCESSOR IMPLEMENTATION.
+
+
+  METHOD zif_otlp_span_processor~on_end.
+
+    ASSERT 1 = 'todo'.
+
+  ENDMETHOD.
+ENDCLASS.

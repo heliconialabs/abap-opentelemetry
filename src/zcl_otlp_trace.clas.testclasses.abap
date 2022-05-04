@@ -68,18 +68,20 @@ CLASS ltcl_test IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD ad_hoc.
-* https://www.epochconverter.com
-    DATA lv_start TYPE tzntstmpl.
-    DATA lv_unix_start TYPE int8.
-    DATA lv_unix_end TYPE int8.
-    DATA lv_epoch TYPE tzntstmpl.
 
+    DATA lv_start      TYPE tzntstmpl.
+    DATA lv_unix_start TYPE int8.
+    DATA lv_unix_end   TYPE int8.
+    DATA lv_epoch      TYPE tzntstmpl.
+    DATA lv_result     TYPE tzntstmpl.
+
+* https://www.epochconverter.com
     GET TIME STAMP FIELD lv_start.
     lv_epoch = '19700101000000'.
-    DATA(result) = cl_abap_tstmp=>subtract(
+    lv_result = cl_abap_tstmp=>subtract(
       tstmp1 = lv_start
       tstmp2 = lv_epoch ).
-    lv_unix_start = result * 1000000000.
+    lv_unix_start = lv_result * 1000000000.
     lv_unix_end = lv_unix_start + 123000000. " 123ms
 
     DATA(lv_hex) = mo_cut->encode( VALUE #( (

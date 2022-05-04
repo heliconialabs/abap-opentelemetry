@@ -85,19 +85,19 @@ CLASS ltcl_test IMPLEMENTATION.
     lv_unix_end = lv_unix_start + 123000000. " 123ms
 
     DATA(lv_hex) = mo_cut->encode( VALUE #( (
-      resource = VALUE #( attributes = VALUE #(
+      resource    = VALUE #( attributes = VALUE #(
         ( VALUE #( key   = 'service.name'
                    value = VALUE #( string_value = 'FooTestName4' ) ) )
         ( VALUE #( key   = 'deployment.environment'
                    value = VALUE #( string_value = 'FooEnv' ) ) )
       ) )
       scope_spans = VALUE #( (
-      spans = VALUE #( ( VALUE #(
-        trace_id             = '3A0BFA1BD9115897351A72440FB1F7BB'
-        span_id              = '3AE688807A3538EE'
-        name                 = 'spanName1'
-        start_time_unix_nano = lv_unix_start
-        end_time_unix_nano   = lv_unix_end ) ) ) ) ) ) ) ).
+        spans = VALUE #( ( VALUE #(
+          trace_id             = '3A0BFA1BD9115897351A72440FB1F7BB'
+          span_id              = '3AE688807A3538EE'
+          name                 = 'spanName1'
+          start_time_unix_nano = lv_unix_start
+          end_time_unix_nano   = lv_unix_end ) ) ) ) ) ) ) ).
 
     cl_abap_unit_assert=>assert_not_initial( lv_hex ).
   ENDMETHOD.

@@ -180,7 +180,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( to_xstring(  is_instrumentation_scope-name ) ).
+      lo_stream->encode_delimited( to_xstring( is_instrumentation_scope-name ) ).
     ENDIF.
 
     IF is_instrumentation_scope-version IS NOT INITIAL.

@@ -4,18 +4,23 @@ CLASS zcl_otlp_span DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-  PROTECTED SECTION.
-  PRIVATE SECTION.
-
-    METHODS set_attributes
+    METHODS constructor
       IMPORTING
-        attributes TYPE zif_otlp_model_trace=>ty_span-attributes.
-    METHODS add_event .
+        !iv_name    TYPE string
+        !kind       TYPE zif_otlp_model_trace=>ty_span-kind
+        !attributes TYPE zif_otlp_model_trace=>ty_span-attributes
+        !links      TYPE zif_otlp_model_trace=>ty_span-links
+        !start_time TYPE zif_otlp_model_trace=>ty_span-start_time_unix_nano.
+
+    METHODS add_event IMPORTING is_event TYPE zif_otlp_model_trace=>ty_event.
+    METHODS add_link IMPORTING is_link TYPE zif_otlp_model_trace=>ty_link.
     METHODS set_status .
-    METHODS update_name .
     METHODS end
       IMPORTING
         !iv_end_time TYPE zif_otlp_model_trace=>ty_span-end_time_unix_nano OPTIONAL .
+
+  PROTECTED SECTION.
+    DATA ms_data TYPE zif_otlp_model_trace=>ty_span.
 ENDCLASS.
 
 
@@ -27,18 +32,18 @@ CLASS ZCL_OTLP_SPAN IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD add_link.
+  ENDMETHOD.
+
+
+  METHOD constructor.
+  ENDMETHOD.
+
+
   METHOD end.
   ENDMETHOD.
 
 
-  METHOD set_attributes.
-  ENDMETHOD.
-
-
   METHOD set_status.
-  ENDMETHOD.
-
-
-  METHOD update_name.
   ENDMETHOD.
 ENDCLASS.

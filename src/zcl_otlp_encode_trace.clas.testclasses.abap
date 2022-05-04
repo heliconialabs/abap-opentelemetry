@@ -83,17 +83,8 @@ CLASS ltcl_test IMPLEMENTATION.
 
     DATA lv_unix_start TYPE int8.
     DATA lv_unix_end   TYPE int8.
-    DATA lv_start      TYPE timestampl.
-    DATA lv_epoch      TYPE timestampl.
-    DATA lv_result     TYPE timestampl.
 
-* https://www.epochconverter.com
-    GET TIME STAMP FIELD lv_start.
-    lv_epoch = '19700101000000'.
-    lv_result = cl_abap_tstmp=>subtract(
-      tstmp1 = lv_start
-      tstmp2 = lv_epoch ).
-    lv_unix_start = lv_result * 1000000000.
+    lv_unix_start = zcl_otlp_util=>get_unix_time_nano( ).
     lv_unix_end = lv_unix_start + 123000000. " 123ms
 
     DATA(lv_hex) = mo_cut->encode( VALUE #( (

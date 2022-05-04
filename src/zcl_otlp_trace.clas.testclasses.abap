@@ -52,10 +52,11 @@ CLASS ltcl_test IMPLEMENTATION.
        scope_spans = VALUE #( (
        spans = VALUE #( ( VALUE #(
          trace_id = '8A0BFA1BD9115897351A72440FB1F7BB'
-         span_id  = 'FAE688807A3538EE' ) ) ) ) ) ) ) ).
+         span_id  = 'FAE688807A3538EE'
+         kind     = zcl_otlp_trace=>gc_span_kind-server ) ) ) ) ) ) ) ).
     cl_abap_unit_assert=>assert_equals(
       act = lv_hex
-      exp = '0A20121E121C0A108A0BFA1BD9115897351A72440FB1F7BB1208FAE688807A3538EE' ).
+      exp = '0A221220121E0A108A0BFA1BD9115897351A72440FB1F7BB1208FAE688807A3538EE3002' ).
   ENDMETHOD.
 
   METHOD encode05.

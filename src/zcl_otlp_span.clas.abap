@@ -46,8 +46,9 @@ CLASS ZCL_OTLP_SPAN IMPLEMENTATION.
 
   METHOD constructor.
 
-    ms_data-name = iv_name.
-    ms_data-kind = iv_kind.
+    ms_data = VALUE #(
+      name = iv_name
+      kind = iv_kind ).
 
     IF iv_start_time IS INITIAL.
       ms_data-start_time_unix_nano = zcl_otlp_util=>get_unix_time_nano( ).

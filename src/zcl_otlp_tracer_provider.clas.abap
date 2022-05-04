@@ -34,6 +34,9 @@ CLASS ZCL_OTLP_TRACER_PROVIDER IMPLEMENTATION.
 
 
   METHOD get_tracer.
-    CREATE OBJECT ro_tracer.
+    ro_tracer = NEW #(
+      iv_name       = iv_name
+      iv_version    = iv_version
+      iv_schema_url = iv_schema_url ).
   ENDMETHOD.
 ENDCLASS.

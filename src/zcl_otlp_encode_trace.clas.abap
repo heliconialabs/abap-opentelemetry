@@ -10,67 +10,66 @@ CLASS zcl_otlp_encode_trace DEFINITION
 
     CLASS-METHODS encode
       IMPORTING
-        !it_resource_spans TYPE zif_otlp_trace_model=>ty_resource_spans
+        !it_resource_spans TYPE zif_otlp_model_trace=>ty_resource_spans
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
   PROTECTED SECTION.
 
     CLASS-METHODS encode_resource_spans
       IMPORTING
-        !is_resource_spans TYPE zif_otlp_trace_model=>ty_resource_span
+        !is_resource_spans TYPE zif_otlp_model_trace=>ty_resource_span
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
     CLASS-METHODS encode_scope_spans
       IMPORTING
-        !is_scope_spans TYPE zif_otlp_trace_model=>ty_scope_spans
+        !is_scope_spans TYPE zif_otlp_model_trace=>ty_scope_spans
       RETURNING
         VALUE(rv_hex)   TYPE xstring .
     CLASS-METHODS encode_instrumentation_scope
       IMPORTING
-        is_instrumentation_scope TYPE zif_otlp_trace_model=>ty_instrumentation_scope
+        is_instrumentation_scope TYPE zif_otlp_model_common=>ty_instrumentation_scope
       RETURNING
         VALUE(rv_hex)            TYPE xstring .
     CLASS-METHODS encode_span
       IMPORTING
-        is_span       TYPE zif_otlp_trace_model=>ty_span
+        is_span       TYPE zif_otlp_model_trace=>ty_span
       RETURNING
         VALUE(rv_hex) TYPE xstring .
     CLASS-METHODS encode_resource
       IMPORTING
-        is_resource   TYPE zif_otlp_trace_model=>ty_resource
+        is_resource   TYPE zif_otlp_model_trace=>ty_resource
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
     CLASS-METHODS encode_key_value
       IMPORTING
-        is_key_value  TYPE zif_otlp_trace_model=>ty_key_value
+        is_key_value  TYPE zif_otlp_model_common=>ty_key_value
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
     CLASS-METHODS encode_any_value
       IMPORTING
-        is_any_value  TYPE zif_otlp_trace_model=>ty_any_value
+        is_any_value  TYPE zif_otlp_model_common=>ty_any_value
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
     CLASS-METHODS encode_status
       IMPORTING
-        is_status     TYPE zif_otlp_trace_model=>ty_status
+        is_status     TYPE zif_otlp_model_trace=>ty_status
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
     CLASS-METHODS encode_link
       IMPORTING
-        is_link       TYPE zif_otlp_trace_model=>ty_link
+        is_link       TYPE zif_otlp_model_trace=>ty_link
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
     CLASS-METHODS encode_event
       IMPORTING
-        is_event      TYPE zif_otlp_trace_model=>ty_event
+        is_event      TYPE zif_otlp_model_trace=>ty_event
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
   PRIVATE SECTION.
 ENDCLASS.
 

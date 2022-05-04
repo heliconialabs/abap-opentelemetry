@@ -53,7 +53,7 @@ CLASS ltcl_test IMPLEMENTATION.
        spans = VALUE #( ( VALUE #(
          trace_id = '8A0BFA1BD9115897351A72440FB1F7BB'
          span_id  = 'FAE688807A3538EE'
-         kind     = zif_otlp_trace_model=>gc_span_kind-server ) ) ) ) ) ) ) ).
+         kind     = zif_otlp_model_trace=>gc_span_kind-server ) ) ) ) ) ) ) ).
     cl_abap_unit_assert=>assert_equals(
       act = lv_hex
       exp = '0A221220121E0A108A0BFA1BD9115897351A72440FB1F7BB1208FAE688807A3538EE3002' ).
@@ -73,7 +73,7 @@ CLASS ltcl_test IMPLEMENTATION.
     DATA(lv_hex) = mo_cut->encode( VALUE #( (
        scope_spans = VALUE #( (
        spans = VALUE #( ( VALUE #(
-         status = VALUE #( code = zif_otlp_trace_model=>gc_status_code-ok ) ) ) ) ) ) ) ) ).
+         status = VALUE #( code = zif_otlp_model_trace=>gc_status_code-ok ) ) ) ) ) ) ) ) ).
     cl_abap_unit_assert=>assert_equals(
       act = lv_hex
       exp = '0A081206120472021801' ).

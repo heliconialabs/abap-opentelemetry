@@ -1,30 +1,15 @@
-INTERFACE zif_otlp_trace_model
+INTERFACE zif_otlp_model_trace
   PUBLIC .
 
-* MIT License, Copyright (c) 2022 Heliconia Labs
-* https://github.com/heliconialabs/abap-opentelemetry
 
   TYPES:
-* message AnyValue {
-    BEGIN OF ty_any_value,
-      string_value TYPE string,
-      bool_value   TYPE abap_bool,
-      int_value    TYPE i,
-      double_value TYPE string, " out of scope
-      array_value  TYPE string, " out of scope
-      kvlist_value TYPE string, " out of scope
-      bytes_value  TYPE xstring,
-    END OF ty_any_value .
-  TYPES:
-* message KeyValue {
-    BEGIN OF ty_key_value,
-      key   TYPE string,
-      value TYPE ty_any_value,
-    END OF ty_key_value .
-  TYPES:
+* MIT License, Copyright (c) 2022 Heliconia Labs
+* https://github.com/heliconialabs/abap-opentelemetry
+* this file corresponds to
+* https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/trace/v1/trace.proto
 * message Resource {
     BEGIN OF ty_resource,
-      attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
+      attributes               TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
       dropped_attributes_count TYPE i,
     END OF ty_resource .
   TYPES:
@@ -32,7 +17,7 @@ INTERFACE zif_otlp_trace_model
     BEGIN OF ty_event,
       time_unix_nano           TYPE int8,
       name                     TYPE string,
-      attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
+      attributes               TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
       dropped_attributes_count TYPE i,
     END OF ty_event .
   TYPES:
@@ -41,7 +26,7 @@ INTERFACE zif_otlp_trace_model
       trace_id                 TYPE xstring,
       span_id                  TYPE xstring,
       trace_state              TYPE string,
-      attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
+      attributes               TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
       dropped_attributes_count TYPE i,
     END OF ty_link .
 *  enum StatusCode {
@@ -65,7 +50,7 @@ INTERFACE zif_otlp_trace_model
       kind                     TYPE ty_span_kind,
       start_time_unix_nano     TYPE int8,
       end_time_unix_nano       TYPE int8,
-      attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
+      attributes               TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
       dropped_attributes_count TYPE i,
       events                   TYPE STANDARD TABLE OF ty_event WITH EMPTY KEY,
       dropped_events_count     TYPE i,
@@ -74,15 +59,9 @@ INTERFACE zif_otlp_trace_model
       status                   TYPE ty_status,
     END OF ty_span .
   TYPES:
-* message InstrumentationScope {
-    BEGIN OF ty_instrumentation_scope,
-      name    TYPE string,
-      version TYPE string,
-    END OF ty_instrumentation_scope .
-  TYPES:
 * message ScopeSpans {
     BEGIN OF ty_scope_spans,
-      scope      TYPE ty_instrumentation_scope,
+      scope      TYPE zif_otlp_model_common=>ty_instrumentation_scope,
       spans      TYPE STANDARD TABLE OF ty_span WITH EMPTY KEY,
       schema_url TYPE string,
     END OF ty_scope_spans .

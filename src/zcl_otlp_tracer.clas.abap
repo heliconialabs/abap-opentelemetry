@@ -29,14 +29,14 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_TRACER IMPLEMENTATION.
+CLASS zcl_otlp_tracer IMPLEMENTATION.
 
 
   METHOD constructor.
     ms_data = VALUE #(
       scope      = VALUE #(
-        name       = iv_name
-        version    = iv_version )
+        name    = iv_name
+        version = iv_version )
       schema_url = iv_schema_url ).
   ENDMETHOD.
 

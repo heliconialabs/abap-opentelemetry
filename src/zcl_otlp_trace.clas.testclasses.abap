@@ -69,11 +69,11 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD ad_hoc.
 
-    DATA lv_start      TYPE tzntstmpl.
     DATA lv_unix_start TYPE int8.
     DATA lv_unix_end   TYPE int8.
-    DATA lv_epoch      TYPE tzntstmpl.
-    DATA lv_result     TYPE tzntstmpl.
+    DATA lv_start      TYPE timestampl.
+    DATA lv_epoch      TYPE timestampl.
+    DATA lv_result     TYPE timestampl.
 
 * https://www.epochconverter.com
     GET TIME STAMP FIELD lv_start.

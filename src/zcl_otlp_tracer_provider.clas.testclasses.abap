@@ -10,6 +10,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD zif_otlp_span_processor~on_end.
 * todo
+    RETURN.
   ENDMETHOD.
 
   METHOD trace.

@@ -1,181 +1,73 @@
-CLASS zcl_otlp_trace DEFINITION
+CLASS zcl_otlp_encode_trace DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+
 * MIT License, Copyright (c) 2022 Heliconia Labs
 * https://github.com/heliconialabs/abap-opentelemetry
 
-    TYPES:
-* message AnyValue {
-      BEGIN OF ty_any_value,
-        string_value TYPE string,
-        bool_value   TYPE abap_bool,
-        int_value    TYPE i,
-        double_value TYPE string, " out of scope
-        array_value  TYPE string, " out of scope
-        kvlist_value TYPE string, " out of scope
-        bytes_value  TYPE xstring,
-      END OF ty_any_value .
-    TYPES:
-* message KeyValue {
-      BEGIN OF ty_key_value,
-        key   TYPE string,
-        value TYPE ty_any_value,
-      END OF ty_key_value .
-    TYPES:
-* message Resource {
-      BEGIN OF ty_resource,
-        attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
-        dropped_attributes_count TYPE i,
-      END OF ty_resource .
-    TYPES:
-*   message Event {
-      BEGIN OF ty_event,
-        time_unix_nano           TYPE int8,
-        name                     TYPE string,
-        attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
-        dropped_attributes_count TYPE i,
-      END OF ty_event .
-    TYPES:
-*   message Link {
-      BEGIN OF ty_link,
-        trace_id                 TYPE xstring,
-        span_id                  TYPE xstring,
-        trace_state              TYPE string,
-        attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
-        dropped_attributes_count TYPE i,
-      END OF ty_link .
-*  enum StatusCode {
-    TYPES ty_status_code TYPE i.
-    CONSTANTS:
-      BEGIN OF gc_status_code,
-        unset TYPE ty_status_code VALUE 0,
-        ok    TYPE ty_status_code VALUE 1,
-        error TYPE ty_status_code VALUE 2,
-      END OF gc_status_code.
-    TYPES:
-* message Status {
-      BEGIN OF ty_status,
-        message TYPE string,
-        code    TYPE ty_status_code,
-      END OF ty_status .
-*  enum SpanKind {
-    TYPES ty_span_kind TYPE i.
-    CONSTANTS: BEGIN OF gc_span_kind,
-                 unspecified TYPE ty_span_kind VALUE 0,
-                 internal    TYPE ty_span_kind VALUE 1,
-                 server      TYPE ty_span_kind VALUE 2,
-                 client      TYPE ty_span_kind VALUE 3,
-                 producer    TYPE ty_span_kind VALUE 4,
-                 consumer    TYPE ty_span_kind VALUE 5,
-               END OF gc_span_kind.
-    TYPES:
-* message Span {
-      BEGIN OF ty_span,
-        trace_id                 TYPE xstring,
-        span_id                  TYPE xstring,
-        trace_state              TYPE string,
-        parent_span_id           TYPE xstring,
-        name                     TYPE string,
-        kind                     TYPE ty_span_kind,
-        start_time_unix_nano     TYPE int8,
-        end_time_unix_nano       TYPE int8,
-        attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
-        dropped_attributes_count TYPE i,
-        events                   TYPE STANDARD TABLE OF ty_event WITH EMPTY KEY,
-        dropped_events_count     TYPE i,
-        links                    TYPE STANDARD TABLE OF ty_link WITH EMPTY KEY,
-        dropped_links_count      TYPE i,
-        status                   TYPE ty_status,
-      END OF ty_span .
-    TYPES:
-* message InstrumentationScope {
-      BEGIN OF ty_instrumentation_scope,
-        name    TYPE string,
-        version TYPE string,
-      END OF ty_instrumentation_scope .
-    TYPES:
-* message ScopeSpans {
-      BEGIN OF ty_scope_spans,
-        scope      TYPE ty_instrumentation_scope,
-        spans      TYPE STANDARD TABLE OF ty_span WITH EMPTY KEY,
-        schema_url TYPE string,
-      END OF ty_scope_spans .
-    TYPES:
-* message ResourceSpans {
-      BEGIN OF ty_resource_span,
-        resource    TYPE ty_resource,
-        scope_spans TYPE STANDARD TABLE OF ty_scope_spans WITH EMPTY KEY,
-        schema_url  TYPE string,
-      END OF ty_resource_span .
-
-* special, top level
-    TYPES:
-      ty_resource_spans TYPE STANDARD TABLE OF ty_resource_span WITH EMPTY KEY .
-
     CLASS-METHODS encode
       IMPORTING
-        !it_resource_spans TYPE ty_resource_spans
+        !it_resource_spans TYPE zif_otlp_trace_model=>ty_resource_spans
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
-
   PROTECTED SECTION.
 
     CLASS-METHODS encode_resource_spans
       IMPORTING
-        !is_resource_spans TYPE ty_resource_span
+        !is_resource_spans TYPE zif_otlp_trace_model=>ty_resource_span
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
     CLASS-METHODS encode_scope_spans
       IMPORTING
-        !is_scope_spans TYPE ty_scope_spans
+        !is_scope_spans TYPE zif_otlp_trace_model=>ty_scope_spans
       RETURNING
         VALUE(rv_hex)   TYPE xstring .
     CLASS-METHODS encode_instrumentation_scope
       IMPORTING
-        is_instrumentation_scope TYPE ty_instrumentation_scope
+        is_instrumentation_scope TYPE zif_otlp_trace_model=>ty_instrumentation_scope
       RETURNING
         VALUE(rv_hex)            TYPE xstring .
     CLASS-METHODS encode_span
       IMPORTING
-        is_span       TYPE ty_span
+        is_span       TYPE zif_otlp_trace_model=>ty_span
       RETURNING
         VALUE(rv_hex) TYPE xstring .
     CLASS-METHODS encode_resource
       IMPORTING
-        is_resource   TYPE ty_resource
+        is_resource   TYPE zif_otlp_trace_model=>ty_resource
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
     CLASS-METHODS encode_key_value
       IMPORTING
-        is_key_value  TYPE ty_key_value
+        is_key_value  TYPE zif_otlp_trace_model=>ty_key_value
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
     CLASS-METHODS encode_any_value
       IMPORTING
-        is_any_value  TYPE ty_any_value
+        is_any_value  TYPE zif_otlp_trace_model=>ty_any_value
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
     CLASS-METHODS encode_status
       IMPORTING
-        is_status     TYPE ty_status
+        is_status     TYPE zif_otlp_trace_model=>ty_status
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
     CLASS-METHODS encode_link
       IMPORTING
-        is_link       TYPE ty_link
+        is_link       TYPE zif_otlp_trace_model=>ty_link
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
     CLASS-METHODS encode_event
       IMPORTING
-        is_event      TYPE ty_event
+        is_event      TYPE zif_otlp_trace_model=>ty_event
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 
@@ -184,7 +76,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
+CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
 
 
   METHOD encode.

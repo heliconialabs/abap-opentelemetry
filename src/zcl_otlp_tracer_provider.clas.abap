@@ -4,6 +4,10 @@ CLASS zcl_otlp_tracer_provider DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+
+* MIT License, Copyright (c) 2022 Heliconia Labs
+* https://github.com/heliconialabs/abap-opentelemetry
+
     METHODS get_tracer
       IMPORTING
         !iv_name         TYPE string

@@ -4,7 +4,8 @@ CLASS zcl_otlp_util DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-
+* MIT License, Copyright (c) 2022 Heliconia Labs
+* https://github.com/heliconialabs/abap-opentelemetry
     CLASS-METHODS get_unix_time_nano
       RETURNING
         VALUE(rv_nano) TYPE int8 .

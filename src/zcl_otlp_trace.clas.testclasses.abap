@@ -61,25 +61,41 @@ CLASS ltcl_test IMPLEMENTATION.
     DATA(lv_hex) = mo_cut->encode( VALUE #( (
        scope_spans = VALUE #( (
        spans = VALUE #( ( VALUE #(
-         start_time_unix_nano = 1651130626313000 ) ) ) ) ) ) ) ).
+         start_time_unix_nano = 1651589819000000000 ) ) ) ) ) ) ) ).
     cl_abap_unit_assert=>assert_equals(
       act = lv_hex
-      exp = '0A0D120B120939288B75CEB1DD0500' ).
+      exp = '0A0D120B120939008E259C30A0EB16' ).
   ENDMETHOD.
 
   METHOD ad_hoc.
+* https://www.epochconverter.com
+    DATA lv_start TYPE tzntstmpl.
+    DATA lv_unix_start TYPE int8.
+    DATA lv_unix_end TYPE int8.
+    DATA lv_epoch TYPE tzntstmpl.
+
+    GET TIME STAMP FIELD lv_start.
+    lv_epoch = '19700101000000'.
+    DATA(result) = cl_abap_tstmp=>subtract(
+      tstmp1 = lv_start
+      tstmp2 = lv_epoch ).
+    lv_unix_start = result * 1000000000.
+    lv_unix_end = lv_unix_start + 123000000. " 123ms
+
     DATA(lv_hex) = mo_cut->encode( VALUE #( (
       resource = VALUE #( attributes = VALUE #(
-        ( VALUE #( key = 'service.name'           value = VALUE #( string_value = 'FooTestName4' ) ) )
-        ( VALUE #( key = 'deployment.environment' value = VALUE #( string_value = 'FooEnv' ) ) )
+        ( VALUE #( key   = 'service.name'
+                   value = VALUE #( string_value = 'FooTestName4' ) ) )
+        ( VALUE #( key   = 'deployment.environment'
+                   value = VALUE #( string_value = 'FooEnv' ) ) )
       ) )
       scope_spans = VALUE #( (
       spans = VALUE #( ( VALUE #(
-        trace_id = '1A0BFA1BD9115897351A72440FB1F7BB'
-        span_id  = '1AE688807A3538EE'
-        name     = 'spanName1'
-        start_time_unix_nano = 1651589819690000
-        end_time_unix_nano   = 1651589919690000 ) ) ) ) ) ) ) ).
+        trace_id             = '3A0BFA1BD9115897351A72440FB1F7BB'
+        span_id              = '3AE688807A3538EE'
+        name                 = 'spanName1'
+        start_time_unix_nano = lv_unix_start
+        end_time_unix_nano   = lv_unix_end ) ) ) ) ) ) ) ).
 
     cl_abap_unit_assert=>assert_not_initial( lv_hex ).
   ENDMETHOD.

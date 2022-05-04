@@ -2,16 +2,12 @@ INTERFACE zif_otlp_model_trace
   PUBLIC .
 
 
-  TYPES:
 * MIT License, Copyright (c) 2022 Heliconia Labs
 * https://github.com/heliconialabs/abap-opentelemetry
 * this file corresponds to
 * https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/trace/v1/trace.proto
 * message Resource {
-    BEGIN OF ty_resource,
-      attributes               TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
-      dropped_attributes_count TYPE i,
-    END OF ty_resource .
+
   TYPES:
 *   message Event {
     BEGIN OF ty_event,
@@ -68,7 +64,7 @@ INTERFACE zif_otlp_model_trace
   TYPES:
 * message ResourceSpans {
     BEGIN OF ty_resource_span,
-      resource    TYPE ty_resource,
+      resource    TYPE zif_otlp_model_resource=>ty_resource,
       scope_spans TYPE STANDARD TABLE OF ty_scope_spans WITH EMPTY KEY,
       schema_url  TYPE string,
     END OF ty_resource_span .

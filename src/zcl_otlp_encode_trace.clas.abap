@@ -37,7 +37,7 @@ CLASS zcl_otlp_encode_trace DEFINITION
         VALUE(rv_hex) TYPE xstring .
     CLASS-METHODS encode_resource
       IMPORTING
-        is_resource   TYPE zif_otlp_model_trace=>ty_resource
+        is_resource   TYPE zif_otlp_model_resource=>ty_resource
       RETURNING
         VALUE(rv_hex) TYPE xstring .
 

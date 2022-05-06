@@ -1,170 +1,81 @@
-CLASS zcl_otlp_trace DEFINITION
+CLASS zcl_otlp_encode_trace DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
 
   PUBLIC SECTION.
 
-    TYPES:
-* message AnyValue {
-      BEGIN OF ty_any_value,
-        string_value TYPE string,
-        bool_value   TYPE abap_bool,
-        int_value    TYPE i,
-        double_value TYPE string, " todo
-        array_value  TYPE string, " todo
-        kvlist_value TYPE string, " todo
-        bytes_value  TYPE xstring,
-      END OF ty_any_value .
-    TYPES:
-* message KeyValue {
-      BEGIN OF ty_key_value,
-        key   TYPE string,
-        value TYPE ty_any_value,
-      END OF ty_key_value .
-    TYPES:
-* message Resource {
-      BEGIN OF ty_resource,
-        attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
-        dropped_attributes_count TYPE i,
-      END OF ty_resource .
-    TYPES:
-*   message Event {
-      BEGIN OF ty_event,
-        time_unix_nano           TYPE int8,
-        name                     TYPE string,
-        attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
-        dropped_attributes_count TYPE i,
-      END OF ty_event .
-    TYPES:
-*   message Link {
-      BEGIN OF ty_link,
-        trace_id                 TYPE xstring,
-        span_id                  TYPE xstring,
-        trace_state              TYPE string,
-        attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
-        dropped_attributes_count TYPE i,
-      END OF ty_link .
-    TYPES:
-* message Status {
-      BEGIN OF ty_status,
-        message TYPE string,
-        code    TYPE i, " todo, enum?
-      END OF ty_status .
-    TYPES:
-* message Span {
-      BEGIN OF ty_span,
-        trace_id                 TYPE xstring,
-        span_id                  TYPE xstring,
-        trace_state              TYPE string,
-        parent_span_id           TYPE xstring,
-        name                     TYPE string,
-        kind                     TYPE i, " todo, enum?
-        start_time_unix_nano     TYPE int8,
-        end_time_unix_nano       TYPE int8,
-        attributes               TYPE STANDARD TABLE OF ty_key_value WITH EMPTY KEY,
-        dropped_attributes_count TYPE i,
-        events                   TYPE STANDARD TABLE OF ty_event WITH EMPTY KEY,
-        dropped_events_count     TYPE i,
-        links                    TYPE STANDARD TABLE OF ty_link WITH EMPTY KEY,
-        dropped_links_count      TYPE i,
-        status                   TYPE ty_status,
-      END OF ty_span .
-    TYPES:
-* message InstrumentationScope {
-      BEGIN OF ty_instrumentation_scope,
-        name    TYPE string,
-        version TYPE string,
-      END OF ty_instrumentation_scope .
-    TYPES:
-* message ScopeSpans {
-      BEGIN OF ty_scope_spans,
-        scope      TYPE ty_instrumentation_scope,
-        spans      TYPE STANDARD TABLE OF ty_span WITH EMPTY KEY,
-        schema_url TYPE string,
-      END OF ty_scope_spans .
-    TYPES:
-* message ResourceSpans {
-      BEGIN OF ty_resource_span,
-        resource    TYPE ty_resource,
-        scope_spans TYPE STANDARD TABLE OF ty_scope_spans WITH EMPTY KEY,
-        schema_url  TYPE string,
-      END OF ty_resource_span .
-
-* special, top level
-    TYPES:
-      ty_resource_spans TYPE STANDARD TABLE OF ty_resource_span WITH EMPTY KEY .
+* MIT License, Copyright (c) 2022 Heliconia Labs
+* https://github.com/heliconialabs/abap-opentelemetry
 
     CLASS-METHODS encode
       IMPORTING
-        !it_resource_spans TYPE ty_resource_spans
+        !it_resource_spans TYPE zif_otlp_model_trace=>ty_resource_spans
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
-
   PROTECTED SECTION.
 
+    CLASS-METHODS to_xstring
+      IMPORTING
+        !iv_string        TYPE string
+      RETURNING
+        VALUE(rv_xstring) TYPE xstring .
     CLASS-METHODS encode_resource_spans
       IMPORTING
-        !is_resource_spans TYPE ty_resource_span
+        !is_resource_spans TYPE zif_otlp_model_trace=>ty_resource_span
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
     CLASS-METHODS encode_scope_spans
       IMPORTING
-        !is_scope_spans TYPE ty_scope_spans
+        !is_scope_spans TYPE zif_otlp_model_trace=>ty_scope_spans
       RETURNING
         VALUE(rv_hex)   TYPE xstring .
     CLASS-METHODS encode_instrumentation_scope
       IMPORTING
-        is_instrumentation_scope TYPE ty_instrumentation_scope
+        !is_instrumentation_scope TYPE zif_otlp_model_common=>ty_instrumentation_scope
       RETURNING
-        VALUE(rv_hex)            TYPE xstring .
+        VALUE(rv_hex)             TYPE xstring .
     CLASS-METHODS encode_span
       IMPORTING
-        is_span       TYPE ty_span
+        !is_span      TYPE zif_otlp_model_trace=>ty_span
       RETURNING
         VALUE(rv_hex) TYPE xstring .
     CLASS-METHODS encode_resource
       IMPORTING
-        is_resource   TYPE ty_resource
+        !is_resource  TYPE zif_otlp_model_resource=>ty_resource
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
     CLASS-METHODS encode_key_value
       IMPORTING
-        is_key_value  TYPE ty_key_value
+        !is_key_value TYPE zif_otlp_model_common=>ty_key_value
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
     CLASS-METHODS encode_any_value
       IMPORTING
-        is_any_value  TYPE ty_any_value
+        !is_any_value TYPE zif_otlp_model_common=>ty_any_value
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
     CLASS-METHODS encode_status
       IMPORTING
-        is_status     TYPE ty_status
+        !is_status    TYPE zif_otlp_model_trace=>ty_status
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
     CLASS-METHODS encode_link
       IMPORTING
-        is_link       TYPE ty_link
+        !is_link      TYPE zif_otlp_model_trace=>ty_link
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
     CLASS-METHODS encode_event
       IMPORTING
-        is_event      TYPE ty_event
+        !is_event     TYPE zif_otlp_model_trace=>ty_event
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
+CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
 
 
   METHOD encode.
@@ -192,7 +103,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_any_value-string_value ) ).
+      lo_stream->encode_delimited( to_xstring( is_any_value-string_value ) ).
     ELSEIF is_any_value-bool_value IS NOT INITIAL.
       ASSERT 1 = 'todo'.
     ELSEIF is_any_value-int_value IS NOT INITIAL.
@@ -201,11 +112,11 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
         wire_type    = lcl_protobuf_stream=>gc_wire_type-varint ) ).
       lo_stream->encode_varint( is_any_value-int_value ).
     ELSEIF is_any_value-double_value  IS NOT INITIAL.
-      ASSERT 1 = 'todo'.
+      ASSERT 1 = 'out of scope'.
     ELSEIF is_any_value-array_value   IS NOT INITIAL.
-      ASSERT 1 = 'todo'.
+      ASSERT 1 = 'out of scope'.
     ELSEIF is_any_value-kvlist_value  IS NOT INITIAL.
-      ASSERT 1 = 'todo'.
+      ASSERT 1 = 'out of scope'.
     ELSEIF is_any_value-bytes_value IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 7
@@ -233,7 +144,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 2
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_event-name ) ).
+      lo_stream->encode_delimited( to_xstring( is_event-name ) ).
     ENDIF.
 
     LOOP AT is_event-attributes INTO DATA(ls_attribute).
@@ -263,14 +174,14 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_instrumentation_scope-name ) ).
+      lo_stream->encode_delimited( to_xstring( is_instrumentation_scope-name ) ).
     ENDIF.
 
     IF is_instrumentation_scope-version IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 2
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_instrumentation_scope-version ) ).
+      lo_stream->encode_delimited( to_xstring( is_instrumentation_scope-version ) ).
     ENDIF.
 
     rv_hex = lo_stream->get( ).
@@ -285,7 +196,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
     lo_stream->encode_field_and_type( VALUE #(
       field_number = 1
       wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-    lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_key_value-key ) ).
+    lo_stream->encode_delimited( to_xstring( is_key_value-key ) ).
 
     lo_stream->encode_field_and_type( VALUE #(
       field_number = 2
@@ -318,7 +229,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
     lo_stream->encode_field_and_type( VALUE #(
       field_number = 3
       wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-    lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_link-trace_state ) ).
+    lo_stream->encode_delimited( to_xstring( is_link-trace_state ) ).
 
     LOOP AT is_link-attributes INTO DATA(ls_attribute).
       lo_stream->encode_field_and_type( VALUE #(
@@ -384,7 +295,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 3
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_resource_spans-schema_url ) ).
+      lo_stream->encode_delimited( to_xstring( is_resource_spans-schema_url ) ).
     ENDIF.
 
     rv_hex = lo_stream->get( ).
@@ -414,7 +325,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 3
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_scope_spans-schema_url ) ).
+      lo_stream->encode_delimited( to_xstring( is_scope_spans-schema_url ) ).
     ENDIF.
 
     rv_hex = lo_stream->get( ).
@@ -444,7 +355,7 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 3
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_span-trace_state ) ).
+      lo_stream->encode_delimited( to_xstring( is_span-trace_state ) ).
     ENDIF.
 
     IF is_span-parent_span_id IS NOT INITIAL.
@@ -458,10 +369,15 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 5
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_span-name ) ).
+      lo_stream->encode_delimited( to_xstring( is_span-name ) ).
     ENDIF.
 
-* todo, "kind" field, enum
+    IF is_span-kind IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 6
+        wire_type    = lcl_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_span-kind ).
+    ENDIF.
 
     IF is_span-start_time_unix_nano IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(
@@ -539,12 +455,52 @@ CLASS ZCL_OTLP_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 2
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( cl_abap_codepage=>convert_to( is_status-message ) ).
+      lo_stream->encode_delimited( to_xstring( is_status-message ) ).
     ENDIF.
 
-* todo, enum code
+    IF is_status-code IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 3
+        wire_type    = lcl_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_status-code ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
+
+  ENDMETHOD.
+
+
+  METHOD to_xstring.
+
+* argh, steampunk compatibility
+
+    DATA lo_conv TYPE REF TO object.
+
+    TRY.
+        CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_out
+          RECEIVING
+            instance = lo_conv.
+
+        CALL METHOD lo_conv->('IF_ABAP_CONV_OUT~CONVERT')
+          EXPORTING
+            source = iv_string
+          RECEIVING
+            result = rv_xstring.
+      CATCH cx_sy_dyn_call_illegal_class.
+        DATA(lv_conv_out_class) = 'CL_ABAP_CONV_OUT_CE'.
+* workaround for not triggering static analysis error in Steampunk
+        CALL METHOD (lv_conv_out_class)=>create
+          EXPORTING
+            encoding = 'UTF-8'
+          RECEIVING
+            conv     = lo_conv.
+
+        CALL METHOD lo_conv->('CONVERT')
+          EXPORTING
+            data   = iv_string
+          IMPORTING
+            buffer = rv_xstring.
+    ENDTRY.
 
   ENDMETHOD.
 ENDCLASS.

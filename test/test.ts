@@ -26,12 +26,14 @@ const trace = new proto.opentelemetry.proto.trace.v1.TracesData({
             endTimeUnixNano: new Long(new Date().getTime()).multiply(1000).add(10),
             */
           }
+        ]
       }]
     }
   ]
 });
 
-const buffer = Buffer.from(proto.opentelemetry.proto.trace.v1.TracesData.encode(trace).finish());
+//const buffer = Buffer.from(proto.opentelemetry.proto.trace.v1.TracesData.encode(trace).finish());
+const buffer = Buffer.from("0A83010A440A1E0A0C736572766963652E6E616D65120E0A0C466F6F546573744E616D65340A220A166465706C6F796D656E742E656E7669726F6E6D656E7412080A06466F6F456E76123B12390A103A0BFA1BD9115897351A72440FB1F7BB12083AE688807A3538EE2A097370616E4E616D65313960C4A49679CEEB16412099F99D79CEEB16", "hex");
 
 console.log("Message:");
 console.dir(buffer.toString("hex"));

@@ -1,0 +1,10 @@
+{
+  "configurations": {
+    "default": {
+      "filename": "./abaplint.jsonc"
+    },
+    "steampunk": {
+      "filename": "./abaplint-steampunk.jsonc"
+    }
+  }
+}

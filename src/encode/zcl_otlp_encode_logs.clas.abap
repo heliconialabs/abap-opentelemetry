@@ -27,8 +27,8 @@ CLASS ZCL_OTLP_ENCODE_LOGS IMPLEMENTATION.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
 * todo
-    DATA(sdf) = is_logs_data.
-    CLEAR sdf.
+    DATA(ls_sdf) = is_logs_data.
+    CLEAR ls_sdf.
 
     rv_hex = lo_stream->get( ).
 

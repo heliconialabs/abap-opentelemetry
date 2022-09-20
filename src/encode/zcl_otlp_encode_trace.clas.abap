@@ -15,6 +15,16 @@ CLASS zcl_otlp_encode_trace DEFINITION
         VALUE(rv_hex)      TYPE xstring .
   PROTECTED SECTION.
 
+    CLASS-METHODS encode_event
+      IMPORTING
+        !is_event     TYPE zif_otlp_model_trace=>ty_event
+      RETURNING
+        VALUE(rv_hex) TYPE xstring .
+    CLASS-METHODS encode_link
+      IMPORTING
+        !is_link      TYPE zif_otlp_model_trace=>ty_link
+      RETURNING
+        VALUE(rv_hex) TYPE xstring .
     CLASS-METHODS encode_resource_spans
       IMPORTING
         !is_resource_spans TYPE zif_otlp_model_trace=>ty_resource_span
@@ -30,24 +40,9 @@ CLASS zcl_otlp_encode_trace DEFINITION
         !is_span      TYPE zif_otlp_model_trace=>ty_span
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-    CLASS-METHODS encode_resource
-      IMPORTING
-        !is_resource  TYPE zif_otlp_model_resource=>ty_resource
-      RETURNING
-        VALUE(rv_hex) TYPE xstring .
     CLASS-METHODS encode_status
       IMPORTING
         !is_status    TYPE zif_otlp_model_trace=>ty_status
-      RETURNING
-        VALUE(rv_hex) TYPE xstring .
-    CLASS-METHODS encode_link
-      IMPORTING
-        !is_link      TYPE zif_otlp_model_trace=>ty_link
-      RETURNING
-        VALUE(rv_hex) TYPE xstring .
-    CLASS-METHODS encode_event
-      IMPORTING
-        !is_event     TYPE zif_otlp_model_trace=>ty_event
       RETURNING
         VALUE(rv_hex) TYPE xstring .
   PRIVATE SECTION.
@@ -154,29 +149,6 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD encode_resource.
-
-    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
-
-    LOOP AT is_resource-attributes INTO DATA(ls_attribute).
-      lo_stream->encode_field_and_type( VALUE #(
-        field_number = 1
-        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
-    ENDLOOP.
-
-    IF is_resource-dropped_attributes_count IS NOT INITIAL.
-      lo_stream->encode_field_and_type( VALUE #(
-        field_number = 2
-        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
-      lo_stream->encode_varint( is_resource-dropped_attributes_count ).
-    ENDIF.
-
-    rv_hex = lo_stream->get( ).
-
-  ENDMETHOD.
-
-
   METHOD encode_resource_spans.
 
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
@@ -185,7 +157,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( encode_resource( is_resource_spans-resource ) ).
+      lo_stream->encode_delimited( zcl_otlp_encode_resource=>encode_resource( is_resource_spans-resource ) ).
     ENDIF.
 
     LOOP AT is_resource_spans-scope_spans INTO DATA(ls_scope_spans).

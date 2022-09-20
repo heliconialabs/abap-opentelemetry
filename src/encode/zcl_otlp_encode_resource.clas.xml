@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>ZCL_OTLP_ENCODE_RESOURCE</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>abap-opentelemetry - Encode Logs</DESCRIPT>
+    <DESCRIPT>abap-opentelemetry - Encode Resource</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

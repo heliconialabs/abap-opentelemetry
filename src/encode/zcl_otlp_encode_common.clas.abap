@@ -21,7 +21,7 @@ CLASS zcl_otlp_encode_common DEFINITION
       IMPORTING
         !is_instrumentation_scope TYPE zif_otlp_model_common=>ty_instrumentation_scope
       RETURNING
-        VALUE(rv_hex) TYPE xstring .
+        VALUE(rv_hex)             TYPE xstring .
   PROTECTED SECTION.
 
   PRIVATE SECTION.

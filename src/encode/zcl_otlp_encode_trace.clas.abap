@@ -15,11 +15,6 @@ CLASS zcl_otlp_encode_trace DEFINITION
         VALUE(rv_hex)      TYPE xstring .
   PROTECTED SECTION.
 
-    CLASS-METHODS to_xstring
-      IMPORTING
-        !iv_string        TYPE string
-      RETURNING
-        VALUE(rv_xstring) TYPE xstring .
     CLASS-METHODS encode_resource_spans
       IMPORTING
         !is_resource_spans TYPE zif_otlp_model_trace=>ty_resource_span
@@ -103,7 +98,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( to_xstring( is_any_value-string_value ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_any_value-string_value ) ).
     ELSEIF is_any_value-bool_value IS NOT INITIAL.
       ASSERT 1 = 'todo'.
     ELSEIF is_any_value-int_value IS NOT INITIAL.
@@ -144,7 +139,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 2
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( to_xstring( is_event-name ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_event-name ) ).
     ENDIF.
 
     LOOP AT is_event-attributes INTO DATA(ls_attribute).
@@ -174,14 +169,14 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( to_xstring( is_instrumentation_scope-name ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_instrumentation_scope-name ) ).
     ENDIF.
 
     IF is_instrumentation_scope-version IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 2
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( to_xstring( is_instrumentation_scope-version ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_instrumentation_scope-version ) ).
     ENDIF.
 
     rv_hex = lo_stream->get( ).
@@ -196,7 +191,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
     lo_stream->encode_field_and_type( VALUE #(
       field_number = 1
       wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-    lo_stream->encode_delimited( to_xstring( is_key_value-key ) ).
+    lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_key_value-key ) ).
 
     lo_stream->encode_field_and_type( VALUE #(
       field_number = 2
@@ -229,7 +224,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
     lo_stream->encode_field_and_type( VALUE #(
       field_number = 3
       wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-    lo_stream->encode_delimited( to_xstring( is_link-trace_state ) ).
+    lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_link-trace_state ) ).
 
     LOOP AT is_link-attributes INTO DATA(ls_attribute).
       lo_stream->encode_field_and_type( VALUE #(
@@ -295,7 +290,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 3
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( to_xstring( is_resource_spans-schema_url ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_resource_spans-schema_url ) ).
     ENDIF.
 
     rv_hex = lo_stream->get( ).
@@ -325,7 +320,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 3
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( to_xstring( is_scope_spans-schema_url ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_scope_spans-schema_url ) ).
     ENDIF.
 
     rv_hex = lo_stream->get( ).
@@ -355,7 +350,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 3
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( to_xstring( is_span-trace_state ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_span-trace_state ) ).
     ENDIF.
 
     IF is_span-parent_span_id IS NOT INITIAL.
@@ -369,7 +364,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 5
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( to_xstring( is_span-name ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_span-name ) ).
     ENDIF.
 
     IF is_span-kind IS NOT INITIAL.
@@ -455,7 +450,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 2
         wire_type    = lcl_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( to_xstring( is_status-message ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_status-message ) ).
     ENDIF.
 
     IF is_status-code IS NOT INITIAL.
@@ -466,41 +461,6 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
     ENDIF.
 
     rv_hex = lo_stream->get( ).
-
-  ENDMETHOD.
-
-
-  METHOD to_xstring.
-
-* argh, steampunk compatibility
-
-    DATA lo_conv TYPE REF TO object.
-
-    TRY.
-        CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_out
-          RECEIVING
-            instance = lo_conv.
-
-        CALL METHOD lo_conv->('IF_ABAP_CONV_OUT~CONVERT')
-          EXPORTING
-            source = iv_string
-          RECEIVING
-            result = rv_xstring.
-      CATCH cx_sy_dyn_call_illegal_class.
-        DATA(lv_conv_out_class) = 'CL_ABAP_CONV_OUT_CE'.
-* workaround for not triggering static analysis error in Steampunk
-        CALL METHOD (lv_conv_out_class)=>create
-          EXPORTING
-            encoding = 'UTF-8'
-          RECEIVING
-            conv     = lo_conv.
-
-        CALL METHOD lo_conv->('CONVERT')
-          EXPORTING
-            data   = iv_string
-          IMPORTING
-            buffer = rv_xstring.
-    ENDTRY.
 
   ENDMETHOD.
 ENDCLASS.

@@ -11,6 +11,7 @@ INTERFACE zif_otlp_model_logs
            resource TYPE zif_otlp_model_resource=>ty_resource,
          END OF ty_resource_logs.
 
+* enum SeverityNumber {
   TYPES ty_severity_number TYPE i.
   CONSTANTS: BEGIN OF gc_severity_number,
                severity_number_unspecified TYPE ty_severity_number VALUE 0,

@@ -1,0 +1,15 @@
+CLASS ltcl_test DEFINITION FOR TESTING DURATION SHORT RISK LEVEL HARMLESS.
+
+  PRIVATE SECTION.
+    DATA mo_cut TYPE REF TO zcl_otlp_encode_logs.
+    METHODS setup.
+ENDCLASS.
+
+
+CLASS ltcl_test IMPLEMENTATION.
+
+  METHOD setup.
+    mo_cut = NEW #( ).
+  ENDMETHOD.
+
+ENDCLASS.

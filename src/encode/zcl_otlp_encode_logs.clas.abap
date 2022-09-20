@@ -24,7 +24,9 @@ CLASS ZCL_OTLP_ENCODE_LOGS IMPLEMENTATION.
 
   METHOD encode.
 
-    DATA(lo_stream) = NEW lcl_protobuf_stream( ).
+    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
+
+* todo
 
     rv_hex = lo_stream->get( ).
 

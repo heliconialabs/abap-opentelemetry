@@ -1,8 +1,4 @@
-*"* use this source file for the definition and implementation of
-*"* local helper classes, interface definitions and type
-*"* declarations
-
-CLASS lcl_protobuf_stream DEFINITION.
+CLASS zcl_otlp_protobuf_stream DEFINITION PUBLIC.
 
   PUBLIC SECTION.
 
@@ -42,22 +38,22 @@ CLASS lcl_protobuf_stream DEFINITION.
       IMPORTING
         !iv_hex       TYPE xstring
       RETURNING
-        VALUE(ro_ref) TYPE REF TO lcl_protobuf_stream .
+        VALUE(ro_ref) TYPE REF TO zcl_otlp_protobuf_stream .
     METHODS encode_field_and_type
       IMPORTING
         !is_field_and_type TYPE ty_field_and_type
       RETURNING
-        VALUE(ro_ref)      TYPE REF TO lcl_protobuf_stream .
+        VALUE(ro_ref)      TYPE REF TO zcl_otlp_protobuf_stream .
     METHODS encode_fixed64
       IMPORTING
         !iv_int       TYPE int8
       RETURNING
-        VALUE(ro_ref) TYPE REF TO lcl_protobuf_stream .
+        VALUE(ro_ref) TYPE REF TO zcl_otlp_protobuf_stream .
     METHODS encode_varint
       IMPORTING
         !iv_int       TYPE i
       RETURNING
-        VALUE(ro_ref) TYPE REF TO lcl_protobuf_stream .
+        VALUE(ro_ref) TYPE REF TO zcl_otlp_protobuf_stream .
     METHODS get
       RETURNING
         VALUE(rv_hex) TYPE xstring .
@@ -78,7 +74,7 @@ ENDCLASS.
 
 
 
-CLASS lcl_protobuf_stream IMPLEMENTATION.
+CLASS ZCL_OTLP_PROTOBUF_STREAM IMPLEMENTATION.
 
 
   METHOD append.
@@ -97,6 +93,7 @@ CLASS lcl_protobuf_stream IMPLEMENTATION.
     eat( lv_length ).
   ENDMETHOD.
 
+
   METHOD decode_field_and_type.
     DATA lv_hex TYPE x LENGTH 1.
     lv_hex = eat( 1 ).
@@ -104,6 +101,7 @@ CLASS lcl_protobuf_stream IMPLEMENTATION.
     rs_field_and_type-field_number = lv_hex DIV 8.
     rs_field_and_type-wire_type = lv_hex MOD 8.
   ENDMETHOD.
+
 
   METHOD decode_fixed64.
 * always 8 bytes
@@ -122,6 +120,7 @@ CLASS lcl_protobuf_stream IMPLEMENTATION.
     ENDDO.
 
   ENDMETHOD.
+
 
   METHOD decode_varint.
 
@@ -143,11 +142,13 @@ CLASS lcl_protobuf_stream IMPLEMENTATION.
 
   ENDMETHOD.
 
+
   METHOD eat.
     ASSERT xstrlen( mv_hex ) >= iv_length.
     rv_hex = mv_hex(iv_length).
     mv_hex = mv_hex+iv_length.
   ENDMETHOD.
+
 
   METHOD encode_delimited.
     ASSERT xstrlen( iv_hex ) > 0.
@@ -156,12 +157,14 @@ CLASS lcl_protobuf_stream IMPLEMENTATION.
     ro_ref = me.
   ENDMETHOD.
 
+
   METHOD encode_field_and_type.
     DATA lv_hex TYPE x LENGTH 1.
     lv_hex = is_field_and_type-field_number * 8 + is_field_and_type-wire_type.
     append( lv_hex ).
     ro_ref = me.
   ENDMETHOD.
+
 
   METHOD encode_fixed64.
 * always 8 bytes, little-endian
@@ -177,6 +180,7 @@ CLASS lcl_protobuf_stream IMPLEMENTATION.
     ro_ref = me.
 
   ENDMETHOD.
+
 
   METHOD encode_varint.
 * https://en.wikipedia.org/wiki/Variable-length_quantity
@@ -197,6 +201,7 @@ CLASS lcl_protobuf_stream IMPLEMENTATION.
     append( lv_encoded ).
     ro_ref = me.
   ENDMETHOD.
+
 
   METHOD get.
     rv_hex = mv_hex.

@@ -6,11 +6,6 @@ INTERFACE zif_otlp_model_logs
 * this file corresponds to
 * https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/logs/v1/logs.proto
 
-* message ResourceLogs {
-  TYPES: BEGIN OF ty_resource_logs,
-           resource TYPE zif_otlp_model_resource=>ty_resource,
-         END OF ty_resource_logs.
-
 * enum SeverityNumber {
   TYPES ty_severity_number TYPE i.
   CONSTANTS: BEGIN OF gc_severity_number,
@@ -62,11 +57,16 @@ INTERFACE zif_otlp_model_logs
            schema_url  TYPE string,
          END OF ty_scope_logs.
 
+* message ResourceLogs {
+  TYPES: BEGIN OF ty_resource_logs,
+           resource   TYPE zif_otlp_model_resource=>ty_resource,
+           scope_logs TYPE STANDARD TABLE OF ty_scope_logs WITH EMPTY KEY,
+           schema_url TYPE string,
+         END OF ty_resource_logs.
+
 * message LogsData {
   TYPES: BEGIN OF ty_logs_data,
            resource_logs TYPE STANDARD TABLE OF ty_resource_logs WITH EMPTY KEY,
-           scope_logs    TYPE STANDARD TABLE OF ty_scope_logs WITH EMPTY KEY,
-           schema_url    TYPE string,
          END OF ty_logs_data.
 
 ENDINTERFACE.

@@ -217,27 +217,34 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                message.stringValue = reader.string();
-                                break;
-                            case 2:
-                                message.boolValue = reader.bool();
-                                break;
-                            case 3:
-                                message.intValue = reader.int64();
-                                break;
-                            case 4:
-                                message.doubleValue = reader.double();
-                                break;
-                            case 5:
-                                message.arrayValue = $root.opentelemetry.proto.common.v1.ArrayValue.decode(reader, reader.uint32());
-                                break;
-                            case 6:
-                                message.kvlistValue = $root.opentelemetry.proto.common.v1.KeyValueList.decode(reader, reader.uint32());
-                                break;
-                            case 7:
-                                message.bytesValue = reader.bytes();
-                                break;
+                            case 1: {
+                                    message.stringValue = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.boolValue = reader.bool();
+                                    break;
+                                }
+                            case 3: {
+                                    message.intValue = reader.int64();
+                                    break;
+                                }
+                            case 4: {
+                                    message.doubleValue = reader.double();
+                                    break;
+                                }
+                            case 5: {
+                                    message.arrayValue = $root.opentelemetry.proto.common.v1.ArrayValue.decode(reader, reader.uint32());
+                                    break;
+                                }
+                            case 6: {
+                                    message.kvlistValue = $root.opentelemetry.proto.common.v1.KeyValueList.decode(reader, reader.uint32());
+                                    break;
+                                }
+                            case 7: {
+                                    message.bytesValue = reader.bytes();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -370,7 +377,7 @@ $root.opentelemetry = (function() {
                         if (object.bytesValue != null)
                             if (typeof object.bytesValue === "string")
                                 $util.base64.decode(object.bytesValue, message.bytesValue = $util.newBuffer($util.base64.length(object.bytesValue)), 0);
-                            else if (object.bytesValue.length)
+                            else if (object.bytesValue.length >= 0)
                                 message.bytesValue = object.bytesValue;
                         return message;
                     };
@@ -438,6 +445,21 @@ $root.opentelemetry = (function() {
                      */
                     AnyValue.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for AnyValue
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.common.v1.AnyValue
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    AnyValue.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.common.v1.AnyValue";
                     };
 
                     return AnyValue;
@@ -537,11 +559,12 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                if (!(message.values && message.values.length))
-                                    message.values = [];
-                                message.values.push($root.opentelemetry.proto.common.v1.AnyValue.decode(reader, reader.uint32()));
-                                break;
+                            case 1: {
+                                    if (!(message.values && message.values.length))
+                                        message.values = [];
+                                    message.values.push($root.opentelemetry.proto.common.v1.AnyValue.decode(reader, reader.uint32()));
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -648,6 +671,21 @@ $root.opentelemetry = (function() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                     };
 
+                    /**
+                     * Gets the default type url for ArrayValue
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.common.v1.ArrayValue
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    ArrayValue.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.common.v1.ArrayValue";
+                    };
+
                     return ArrayValue;
                 })();
 
@@ -745,11 +783,12 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                if (!(message.values && message.values.length))
-                                    message.values = [];
-                                message.values.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
-                                break;
+                            case 1: {
+                                    if (!(message.values && message.values.length))
+                                        message.values = [];
+                                    message.values.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -854,6 +893,21 @@ $root.opentelemetry = (function() {
                      */
                     KeyValueList.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for KeyValueList
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.common.v1.KeyValueList
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    KeyValueList.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.common.v1.KeyValueList";
                     };
 
                     return KeyValueList;
@@ -962,12 +1016,14 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                message.key = reader.string();
-                                break;
-                            case 2:
-                                message.value = $root.opentelemetry.proto.common.v1.AnyValue.decode(reader, reader.uint32());
-                                break;
+                            case 1: {
+                                    message.key = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.value = $root.opentelemetry.proto.common.v1.AnyValue.decode(reader, reader.uint32());
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -1069,6 +1125,21 @@ $root.opentelemetry = (function() {
                      */
                     KeyValue.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for KeyValue
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.common.v1.KeyValue
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    KeyValue.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.common.v1.KeyValue";
                     };
 
                     return KeyValue;
@@ -1177,12 +1248,14 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                message.name = reader.string();
-                                break;
-                            case 2:
-                                message.version = reader.string();
-                                break;
+                            case 1: {
+                                    message.name = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.version = reader.string();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -1279,6 +1352,21 @@ $root.opentelemetry = (function() {
                      */
                     InstrumentationLibrary.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for InstrumentationLibrary
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.common.v1.InstrumentationLibrary
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    InstrumentationLibrary.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.common.v1.InstrumentationLibrary";
                     };
 
                     return InstrumentationLibrary;
@@ -1387,12 +1475,14 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                message.name = reader.string();
-                                break;
-                            case 2:
-                                message.version = reader.string();
-                                break;
+                            case 1: {
+                                    message.name = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.version = reader.string();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -1489,6 +1579,21 @@ $root.opentelemetry = (function() {
                      */
                     InstrumentationScope.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for InstrumentationScope
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.common.v1.InstrumentationScope
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    InstrumentationScope.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.common.v1.InstrumentationScope";
                     };
 
                     return InstrumentationScope;
@@ -1623,14 +1728,16 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                if (!(message.attributes && message.attributes.length))
-                                    message.attributes = [];
-                                message.attributes.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
-                                break;
-                            case 2:
-                                message.droppedAttributesCount = reader.uint32();
-                                break;
+                            case 1: {
+                                    if (!(message.attributes && message.attributes.length))
+                                        message.attributes = [];
+                                    message.attributes.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 2: {
+                                    message.droppedAttributesCount = reader.uint32();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -1744,6 +1851,21 @@ $root.opentelemetry = (function() {
                      */
                     Resource.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for Resource
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.resource.v1.Resource
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    Resource.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.resource.v1.Resource";
                     };
 
                     return Resource;
@@ -1867,11 +1989,12 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                if (!(message.resourceSpans && message.resourceSpans.length))
-                                    message.resourceSpans = [];
-                                message.resourceSpans.push($root.opentelemetry.proto.trace.v1.ResourceSpans.decode(reader, reader.uint32()));
-                                break;
+                            case 1: {
+                                    if (!(message.resourceSpans && message.resourceSpans.length))
+                                        message.resourceSpans = [];
+                                    message.resourceSpans.push($root.opentelemetry.proto.trace.v1.ResourceSpans.decode(reader, reader.uint32()));
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -1976,6 +2099,21 @@ $root.opentelemetry = (function() {
                      */
                     TracesData.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for TracesData
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.trace.v1.TracesData
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    TracesData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.trace.v1.TracesData";
                     };
 
                     return TracesData;
@@ -2110,22 +2248,26 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                message.resource = $root.opentelemetry.proto.resource.v1.Resource.decode(reader, reader.uint32());
-                                break;
-                            case 2:
-                                if (!(message.scopeSpans && message.scopeSpans.length))
-                                    message.scopeSpans = [];
-                                message.scopeSpans.push($root.opentelemetry.proto.trace.v1.ScopeSpans.decode(reader, reader.uint32()));
-                                break;
-                            case 1000:
-                                if (!(message.instrumentationLibrarySpans && message.instrumentationLibrarySpans.length))
-                                    message.instrumentationLibrarySpans = [];
-                                message.instrumentationLibrarySpans.push($root.opentelemetry.proto.trace.v1.InstrumentationLibrarySpans.decode(reader, reader.uint32()));
-                                break;
-                            case 3:
-                                message.schemaUrl = reader.string();
-                                break;
+                            case 1: {
+                                    message.resource = $root.opentelemetry.proto.resource.v1.Resource.decode(reader, reader.uint32());
+                                    break;
+                                }
+                            case 2: {
+                                    if (!(message.scopeSpans && message.scopeSpans.length))
+                                        message.scopeSpans = [];
+                                    message.scopeSpans.push($root.opentelemetry.proto.trace.v1.ScopeSpans.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 1000: {
+                                    if (!(message.instrumentationLibrarySpans && message.instrumentationLibrarySpans.length))
+                                        message.instrumentationLibrarySpans = [];
+                                    message.instrumentationLibrarySpans.push($root.opentelemetry.proto.trace.v1.InstrumentationLibrarySpans.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 3: {
+                                    message.schemaUrl = reader.string();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -2281,6 +2423,21 @@ $root.opentelemetry = (function() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                     };
 
+                    /**
+                     * Gets the default type url for ResourceSpans
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.trace.v1.ResourceSpans
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    ResourceSpans.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.trace.v1.ResourceSpans";
+                    };
+
                     return ResourceSpans;
                 })();
 
@@ -2400,17 +2557,20 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                message.scope = $root.opentelemetry.proto.common.v1.InstrumentationScope.decode(reader, reader.uint32());
-                                break;
-                            case 2:
-                                if (!(message.spans && message.spans.length))
-                                    message.spans = [];
-                                message.spans.push($root.opentelemetry.proto.trace.v1.Span.decode(reader, reader.uint32()));
-                                break;
-                            case 3:
-                                message.schemaUrl = reader.string();
-                                break;
+                            case 1: {
+                                    message.scope = $root.opentelemetry.proto.common.v1.InstrumentationScope.decode(reader, reader.uint32());
+                                    break;
+                                }
+                            case 2: {
+                                    if (!(message.spans && message.spans.length))
+                                        message.spans = [];
+                                    message.spans.push($root.opentelemetry.proto.trace.v1.Span.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 3: {
+                                    message.schemaUrl = reader.string();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -2540,6 +2700,21 @@ $root.opentelemetry = (function() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                     };
 
+                    /**
+                     * Gets the default type url for ScopeSpans
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.trace.v1.ScopeSpans
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    ScopeSpans.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.trace.v1.ScopeSpans";
+                    };
+
                     return ScopeSpans;
                 })();
 
@@ -2659,17 +2834,20 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                message.instrumentationLibrary = $root.opentelemetry.proto.common.v1.InstrumentationLibrary.decode(reader, reader.uint32());
-                                break;
-                            case 2:
-                                if (!(message.spans && message.spans.length))
-                                    message.spans = [];
-                                message.spans.push($root.opentelemetry.proto.trace.v1.Span.decode(reader, reader.uint32()));
-                                break;
-                            case 3:
-                                message.schemaUrl = reader.string();
-                                break;
+                            case 1: {
+                                    message.instrumentationLibrary = $root.opentelemetry.proto.common.v1.InstrumentationLibrary.decode(reader, reader.uint32());
+                                    break;
+                                }
+                            case 2: {
+                                    if (!(message.spans && message.spans.length))
+                                        message.spans = [];
+                                    message.spans.push($root.opentelemetry.proto.trace.v1.Span.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 3: {
+                                    message.schemaUrl = reader.string();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -2797,6 +2975,21 @@ $root.opentelemetry = (function() {
                      */
                     InstrumentationLibrarySpans.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for InstrumentationLibrarySpans
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.trace.v1.InstrumentationLibrarySpans
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    InstrumentationLibrarySpans.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.trace.v1.InstrumentationLibrarySpans";
                     };
 
                     return InstrumentationLibrarySpans;
@@ -3054,57 +3247,72 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                message.traceId = reader.bytes();
-                                break;
-                            case 2:
-                                message.spanId = reader.bytes();
-                                break;
-                            case 3:
-                                message.traceState = reader.string();
-                                break;
-                            case 4:
-                                message.parentSpanId = reader.bytes();
-                                break;
-                            case 5:
-                                message.name = reader.string();
-                                break;
-                            case 6:
-                                message.kind = reader.int32();
-                                break;
-                            case 7:
-                                message.startTimeUnixNano = reader.fixed64();
-                                break;
-                            case 8:
-                                message.endTimeUnixNano = reader.fixed64();
-                                break;
-                            case 9:
-                                if (!(message.attributes && message.attributes.length))
-                                    message.attributes = [];
-                                message.attributes.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
-                                break;
-                            case 10:
-                                message.droppedAttributesCount = reader.uint32();
-                                break;
-                            case 11:
-                                if (!(message.events && message.events.length))
-                                    message.events = [];
-                                message.events.push($root.opentelemetry.proto.trace.v1.Span.Event.decode(reader, reader.uint32()));
-                                break;
-                            case 12:
-                                message.droppedEventsCount = reader.uint32();
-                                break;
-                            case 13:
-                                if (!(message.links && message.links.length))
-                                    message.links = [];
-                                message.links.push($root.opentelemetry.proto.trace.v1.Span.Link.decode(reader, reader.uint32()));
-                                break;
-                            case 14:
-                                message.droppedLinksCount = reader.uint32();
-                                break;
-                            case 15:
-                                message.status = $root.opentelemetry.proto.trace.v1.Status.decode(reader, reader.uint32());
-                                break;
+                            case 1: {
+                                    message.traceId = reader.bytes();
+                                    break;
+                                }
+                            case 2: {
+                                    message.spanId = reader.bytes();
+                                    break;
+                                }
+                            case 3: {
+                                    message.traceState = reader.string();
+                                    break;
+                                }
+                            case 4: {
+                                    message.parentSpanId = reader.bytes();
+                                    break;
+                                }
+                            case 5: {
+                                    message.name = reader.string();
+                                    break;
+                                }
+                            case 6: {
+                                    message.kind = reader.int32();
+                                    break;
+                                }
+                            case 7: {
+                                    message.startTimeUnixNano = reader.fixed64();
+                                    break;
+                                }
+                            case 8: {
+                                    message.endTimeUnixNano = reader.fixed64();
+                                    break;
+                                }
+                            case 9: {
+                                    if (!(message.attributes && message.attributes.length))
+                                        message.attributes = [];
+                                    message.attributes.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 10: {
+                                    message.droppedAttributesCount = reader.uint32();
+                                    break;
+                                }
+                            case 11: {
+                                    if (!(message.events && message.events.length))
+                                        message.events = [];
+                                    message.events.push($root.opentelemetry.proto.trace.v1.Span.Event.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 12: {
+                                    message.droppedEventsCount = reader.uint32();
+                                    break;
+                                }
+                            case 13: {
+                                    if (!(message.links && message.links.length))
+                                        message.links = [];
+                                    message.links.push($root.opentelemetry.proto.trace.v1.Span.Link.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 14: {
+                                    message.droppedLinksCount = reader.uint32();
+                                    break;
+                                }
+                            case 15: {
+                                    message.status = $root.opentelemetry.proto.trace.v1.Status.decode(reader, reader.uint32());
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -3232,23 +3440,29 @@ $root.opentelemetry = (function() {
                         if (object.traceId != null)
                             if (typeof object.traceId === "string")
                                 $util.base64.decode(object.traceId, message.traceId = $util.newBuffer($util.base64.length(object.traceId)), 0);
-                            else if (object.traceId.length)
+                            else if (object.traceId.length >= 0)
                                 message.traceId = object.traceId;
                         if (object.spanId != null)
                             if (typeof object.spanId === "string")
                                 $util.base64.decode(object.spanId, message.spanId = $util.newBuffer($util.base64.length(object.spanId)), 0);
-                            else if (object.spanId.length)
+                            else if (object.spanId.length >= 0)
                                 message.spanId = object.spanId;
                         if (object.traceState != null)
                             message.traceState = String(object.traceState);
                         if (object.parentSpanId != null)
                             if (typeof object.parentSpanId === "string")
                                 $util.base64.decode(object.parentSpanId, message.parentSpanId = $util.newBuffer($util.base64.length(object.parentSpanId)), 0);
-                            else if (object.parentSpanId.length)
+                            else if (object.parentSpanId.length >= 0)
                                 message.parentSpanId = object.parentSpanId;
                         if (object.name != null)
                             message.name = String(object.name);
                         switch (object.kind) {
+                        default:
+                            if (typeof object.kind === "number") {
+                                message.kind = object.kind;
+                                break;
+                            }
+                            break;
                         case "SPAN_KIND_UNSPECIFIED":
                         case 0:
                             message.kind = 0;
@@ -3405,7 +3619,7 @@ $root.opentelemetry = (function() {
                         if (message.name != null && message.hasOwnProperty("name"))
                             object.name = message.name;
                         if (message.kind != null && message.hasOwnProperty("kind"))
-                            object.kind = options.enums === String ? $root.opentelemetry.proto.trace.v1.Span.SpanKind[message.kind] : message.kind;
+                            object.kind = options.enums === String ? $root.opentelemetry.proto.trace.v1.Span.SpanKind[message.kind] === undefined ? message.kind : $root.opentelemetry.proto.trace.v1.Span.SpanKind[message.kind] : message.kind;
                         if (message.startTimeUnixNano != null && message.hasOwnProperty("startTimeUnixNano"))
                             if (typeof message.startTimeUnixNano === "number")
                                 object.startTimeUnixNano = options.longs === String ? String(message.startTimeUnixNano) : message.startTimeUnixNano;
@@ -3451,6 +3665,21 @@ $root.opentelemetry = (function() {
                      */
                     Span.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for Span
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.trace.v1.Span
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    Span.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.trace.v1.Span";
                     };
 
                     /**
@@ -3602,20 +3831,24 @@ $root.opentelemetry = (function() {
                             while (reader.pos < end) {
                                 var tag = reader.uint32();
                                 switch (tag >>> 3) {
-                                case 1:
-                                    message.timeUnixNano = reader.fixed64();
-                                    break;
-                                case 2:
-                                    message.name = reader.string();
-                                    break;
-                                case 3:
-                                    if (!(message.attributes && message.attributes.length))
-                                        message.attributes = [];
-                                    message.attributes.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
-                                    break;
-                                case 4:
-                                    message.droppedAttributesCount = reader.uint32();
-                                    break;
+                                case 1: {
+                                        message.timeUnixNano = reader.fixed64();
+                                        break;
+                                    }
+                                case 2: {
+                                        message.name = reader.string();
+                                        break;
+                                    }
+                                case 3: {
+                                        if (!(message.attributes && message.attributes.length))
+                                            message.attributes = [];
+                                        message.attributes.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
+                                        break;
+                                    }
+                                case 4: {
+                                        message.droppedAttributesCount = reader.uint32();
+                                        break;
+                                    }
                                 default:
                                     reader.skipType(tag & 7);
                                     break;
@@ -3762,6 +3995,21 @@ $root.opentelemetry = (function() {
                             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                         };
 
+                        /**
+                         * Gets the default type url for Event
+                         * @function getTypeUrl
+                         * @memberof opentelemetry.proto.trace.v1.Span.Event
+                         * @static
+                         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                         * @returns {string} The default type url
+                         */
+                        Event.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                            if (typeUrlPrefix === undefined) {
+                                typeUrlPrefix = "type.googleapis.com";
+                            }
+                            return typeUrlPrefix + "/opentelemetry.proto.trace.v1.Span.Event";
+                        };
+
                         return Event;
                     })();
 
@@ -3903,23 +4151,28 @@ $root.opentelemetry = (function() {
                             while (reader.pos < end) {
                                 var tag = reader.uint32();
                                 switch (tag >>> 3) {
-                                case 1:
-                                    message.traceId = reader.bytes();
-                                    break;
-                                case 2:
-                                    message.spanId = reader.bytes();
-                                    break;
-                                case 3:
-                                    message.traceState = reader.string();
-                                    break;
-                                case 4:
-                                    if (!(message.attributes && message.attributes.length))
-                                        message.attributes = [];
-                                    message.attributes.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
-                                    break;
-                                case 5:
-                                    message.droppedAttributesCount = reader.uint32();
-                                    break;
+                                case 1: {
+                                        message.traceId = reader.bytes();
+                                        break;
+                                    }
+                                case 2: {
+                                        message.spanId = reader.bytes();
+                                        break;
+                                    }
+                                case 3: {
+                                        message.traceState = reader.string();
+                                        break;
+                                    }
+                                case 4: {
+                                        if (!(message.attributes && message.attributes.length))
+                                            message.attributes = [];
+                                        message.attributes.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
+                                        break;
+                                    }
+                                case 5: {
+                                        message.droppedAttributesCount = reader.uint32();
+                                        break;
+                                    }
                                 default:
                                     reader.skipType(tag & 7);
                                     break;
@@ -3994,12 +4247,12 @@ $root.opentelemetry = (function() {
                             if (object.traceId != null)
                                 if (typeof object.traceId === "string")
                                     $util.base64.decode(object.traceId, message.traceId = $util.newBuffer($util.base64.length(object.traceId)), 0);
-                                else if (object.traceId.length)
+                                else if (object.traceId.length >= 0)
                                     message.traceId = object.traceId;
                             if (object.spanId != null)
                                 if (typeof object.spanId === "string")
                                     $util.base64.decode(object.spanId, message.spanId = $util.newBuffer($util.base64.length(object.spanId)), 0);
-                                else if (object.spanId.length)
+                                else if (object.spanId.length >= 0)
                                     message.spanId = object.spanId;
                             if (object.traceState != null)
                                 message.traceState = String(object.traceState);
@@ -4076,6 +4329,21 @@ $root.opentelemetry = (function() {
                          */
                         Link.prototype.toJSON = function toJSON() {
                             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                        };
+
+                        /**
+                         * Gets the default type url for Link
+                         * @function getTypeUrl
+                         * @memberof opentelemetry.proto.trace.v1.Span.Link
+                         * @static
+                         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                         * @returns {string} The default type url
+                         */
+                        Link.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                            if (typeUrlPrefix === undefined) {
+                                typeUrlPrefix = "type.googleapis.com";
+                            }
+                            return typeUrlPrefix + "/opentelemetry.proto.trace.v1.Span.Link";
                         };
 
                         return Link;
@@ -4187,12 +4455,14 @@ $root.opentelemetry = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 2:
-                                message.message = reader.string();
-                                break;
-                            case 3:
-                                message.code = reader.int32();
-                                break;
+                            case 2: {
+                                    message.message = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    message.code = reader.int32();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -4258,6 +4528,12 @@ $root.opentelemetry = (function() {
                         if (object.message != null)
                             message.message = String(object.message);
                         switch (object.code) {
+                        default:
+                            if (typeof object.code === "number") {
+                                message.code = object.code;
+                                break;
+                            }
+                            break;
                         case "STATUS_CODE_UNSET":
                         case 0:
                             message.code = 0;
@@ -4294,7 +4570,7 @@ $root.opentelemetry = (function() {
                         if (message.message != null && message.hasOwnProperty("message"))
                             object.message = message.message;
                         if (message.code != null && message.hasOwnProperty("code"))
-                            object.code = options.enums === String ? $root.opentelemetry.proto.trace.v1.Status.StatusCode[message.code] : message.code;
+                            object.code = options.enums === String ? $root.opentelemetry.proto.trace.v1.Status.StatusCode[message.code] === undefined ? message.code : $root.opentelemetry.proto.trace.v1.Status.StatusCode[message.code] : message.code;
                         return object;
                     };
 
@@ -4307,6 +4583,21 @@ $root.opentelemetry = (function() {
                      */
                     Status.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for Status
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.trace.v1.Status
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    Status.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.trace.v1.Status";
                     };
 
                     /**
@@ -4332,6 +4623,1500 @@ $root.opentelemetry = (function() {
             })();
 
             return trace;
+        })();
+
+        proto.logs = (function() {
+
+            /**
+             * Namespace logs.
+             * @memberof opentelemetry.proto
+             * @namespace
+             */
+            var logs = {};
+
+            logs.v1 = (function() {
+
+                /**
+                 * Namespace v1.
+                 * @memberof opentelemetry.proto.logs
+                 * @namespace
+                 */
+                var v1 = {};
+
+                v1.LogsData = (function() {
+
+                    /**
+                     * Properties of a LogsData.
+                     * @memberof opentelemetry.proto.logs.v1
+                     * @interface ILogsData
+                     * @property {Array.<opentelemetry.proto.logs.v1.IResourceLogs>|null} [resourceLogs] LogsData resourceLogs
+                     */
+
+                    /**
+                     * Constructs a new LogsData.
+                     * @memberof opentelemetry.proto.logs.v1
+                     * @classdesc Represents a LogsData.
+                     * @implements ILogsData
+                     * @constructor
+                     * @param {opentelemetry.proto.logs.v1.ILogsData=} [properties] Properties to set
+                     */
+                    function LogsData(properties) {
+                        this.resourceLogs = [];
+                        if (properties)
+                            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null)
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * LogsData resourceLogs.
+                     * @member {Array.<opentelemetry.proto.logs.v1.IResourceLogs>} resourceLogs
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @instance
+                     */
+                    LogsData.prototype.resourceLogs = $util.emptyArray;
+
+                    /**
+                     * Creates a new LogsData instance using the specified properties.
+                     * @function create
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.ILogsData=} [properties] Properties to set
+                     * @returns {opentelemetry.proto.logs.v1.LogsData} LogsData instance
+                     */
+                    LogsData.create = function create(properties) {
+                        return new LogsData(properties);
+                    };
+
+                    /**
+                     * Encodes the specified LogsData message. Does not implicitly {@link opentelemetry.proto.logs.v1.LogsData.verify|verify} messages.
+                     * @function encode
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.ILogsData} message LogsData message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    LogsData.encode = function encode(message, writer) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (message.resourceLogs != null && message.resourceLogs.length)
+                            for (var i = 0; i < message.resourceLogs.length; ++i)
+                                $root.opentelemetry.proto.logs.v1.ResourceLogs.encode(message.resourceLogs[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified LogsData message, length delimited. Does not implicitly {@link opentelemetry.proto.logs.v1.LogsData.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.ILogsData} message LogsData message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    LogsData.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a LogsData message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {opentelemetry.proto.logs.v1.LogsData} LogsData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    LogsData.decode = function decode(reader, length) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.opentelemetry.proto.logs.v1.LogsData();
+                        while (reader.pos < end) {
+                            var tag = reader.uint32();
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    if (!(message.resourceLogs && message.resourceLogs.length))
+                                        message.resourceLogs = [];
+                                    message.resourceLogs.push($root.opentelemetry.proto.logs.v1.ResourceLogs.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a LogsData message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {opentelemetry.proto.logs.v1.LogsData} LogsData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    LogsData.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a LogsData message.
+                     * @function verify
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    LogsData.verify = function verify(message) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (message.resourceLogs != null && message.hasOwnProperty("resourceLogs")) {
+                            if (!Array.isArray(message.resourceLogs))
+                                return "resourceLogs: array expected";
+                            for (var i = 0; i < message.resourceLogs.length; ++i) {
+                                var error = $root.opentelemetry.proto.logs.v1.ResourceLogs.verify(message.resourceLogs[i]);
+                                if (error)
+                                    return "resourceLogs." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a LogsData message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {opentelemetry.proto.logs.v1.LogsData} LogsData
+                     */
+                    LogsData.fromObject = function fromObject(object) {
+                        if (object instanceof $root.opentelemetry.proto.logs.v1.LogsData)
+                            return object;
+                        var message = new $root.opentelemetry.proto.logs.v1.LogsData();
+                        if (object.resourceLogs) {
+                            if (!Array.isArray(object.resourceLogs))
+                                throw TypeError(".opentelemetry.proto.logs.v1.LogsData.resourceLogs: array expected");
+                            message.resourceLogs = [];
+                            for (var i = 0; i < object.resourceLogs.length; ++i) {
+                                if (typeof object.resourceLogs[i] !== "object")
+                                    throw TypeError(".opentelemetry.proto.logs.v1.LogsData.resourceLogs: object expected");
+                                message.resourceLogs[i] = $root.opentelemetry.proto.logs.v1.ResourceLogs.fromObject(object.resourceLogs[i]);
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a LogsData message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.LogsData} message LogsData
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    LogsData.toObject = function toObject(message, options) {
+                        if (!options)
+                            options = {};
+                        var object = {};
+                        if (options.arrays || options.defaults)
+                            object.resourceLogs = [];
+                        if (message.resourceLogs && message.resourceLogs.length) {
+                            object.resourceLogs = [];
+                            for (var j = 0; j < message.resourceLogs.length; ++j)
+                                object.resourceLogs[j] = $root.opentelemetry.proto.logs.v1.ResourceLogs.toObject(message.resourceLogs[j], options);
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this LogsData to JSON.
+                     * @function toJSON
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    LogsData.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for LogsData
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.logs.v1.LogsData
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    LogsData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.logs.v1.LogsData";
+                    };
+
+                    return LogsData;
+                })();
+
+                v1.ResourceLogs = (function() {
+
+                    /**
+                     * Properties of a ResourceLogs.
+                     * @memberof opentelemetry.proto.logs.v1
+                     * @interface IResourceLogs
+                     * @property {opentelemetry.proto.resource.v1.IResource|null} [resource] ResourceLogs resource
+                     * @property {Array.<opentelemetry.proto.logs.v1.IScopeLogs>|null} [scopeLogs] ResourceLogs scopeLogs
+                     * @property {string|null} [schemaUrl] ResourceLogs schemaUrl
+                     */
+
+                    /**
+                     * Constructs a new ResourceLogs.
+                     * @memberof opentelemetry.proto.logs.v1
+                     * @classdesc Represents a ResourceLogs.
+                     * @implements IResourceLogs
+                     * @constructor
+                     * @param {opentelemetry.proto.logs.v1.IResourceLogs=} [properties] Properties to set
+                     */
+                    function ResourceLogs(properties) {
+                        this.scopeLogs = [];
+                        if (properties)
+                            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null)
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * ResourceLogs resource.
+                     * @member {opentelemetry.proto.resource.v1.IResource|null|undefined} resource
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @instance
+                     */
+                    ResourceLogs.prototype.resource = null;
+
+                    /**
+                     * ResourceLogs scopeLogs.
+                     * @member {Array.<opentelemetry.proto.logs.v1.IScopeLogs>} scopeLogs
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @instance
+                     */
+                    ResourceLogs.prototype.scopeLogs = $util.emptyArray;
+
+                    /**
+                     * ResourceLogs schemaUrl.
+                     * @member {string} schemaUrl
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @instance
+                     */
+                    ResourceLogs.prototype.schemaUrl = "";
+
+                    /**
+                     * Creates a new ResourceLogs instance using the specified properties.
+                     * @function create
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.IResourceLogs=} [properties] Properties to set
+                     * @returns {opentelemetry.proto.logs.v1.ResourceLogs} ResourceLogs instance
+                     */
+                    ResourceLogs.create = function create(properties) {
+                        return new ResourceLogs(properties);
+                    };
+
+                    /**
+                     * Encodes the specified ResourceLogs message. Does not implicitly {@link opentelemetry.proto.logs.v1.ResourceLogs.verify|verify} messages.
+                     * @function encode
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.IResourceLogs} message ResourceLogs message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ResourceLogs.encode = function encode(message, writer) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (message.resource != null && Object.hasOwnProperty.call(message, "resource"))
+                            $root.opentelemetry.proto.resource.v1.Resource.encode(message.resource, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                        if (message.scopeLogs != null && message.scopeLogs.length)
+                            for (var i = 0; i < message.scopeLogs.length; ++i)
+                                $root.opentelemetry.proto.logs.v1.ScopeLogs.encode(message.scopeLogs[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                        if (message.schemaUrl != null && Object.hasOwnProperty.call(message, "schemaUrl"))
+                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.schemaUrl);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified ResourceLogs message, length delimited. Does not implicitly {@link opentelemetry.proto.logs.v1.ResourceLogs.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.IResourceLogs} message ResourceLogs message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ResourceLogs.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a ResourceLogs message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {opentelemetry.proto.logs.v1.ResourceLogs} ResourceLogs
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ResourceLogs.decode = function decode(reader, length) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.opentelemetry.proto.logs.v1.ResourceLogs();
+                        while (reader.pos < end) {
+                            var tag = reader.uint32();
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.resource = $root.opentelemetry.proto.resource.v1.Resource.decode(reader, reader.uint32());
+                                    break;
+                                }
+                            case 2: {
+                                    if (!(message.scopeLogs && message.scopeLogs.length))
+                                        message.scopeLogs = [];
+                                    message.scopeLogs.push($root.opentelemetry.proto.logs.v1.ScopeLogs.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 3: {
+                                    message.schemaUrl = reader.string();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a ResourceLogs message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {opentelemetry.proto.logs.v1.ResourceLogs} ResourceLogs
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ResourceLogs.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a ResourceLogs message.
+                     * @function verify
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    ResourceLogs.verify = function verify(message) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (message.resource != null && message.hasOwnProperty("resource")) {
+                            var error = $root.opentelemetry.proto.resource.v1.Resource.verify(message.resource);
+                            if (error)
+                                return "resource." + error;
+                        }
+                        if (message.scopeLogs != null && message.hasOwnProperty("scopeLogs")) {
+                            if (!Array.isArray(message.scopeLogs))
+                                return "scopeLogs: array expected";
+                            for (var i = 0; i < message.scopeLogs.length; ++i) {
+                                var error = $root.opentelemetry.proto.logs.v1.ScopeLogs.verify(message.scopeLogs[i]);
+                                if (error)
+                                    return "scopeLogs." + error;
+                            }
+                        }
+                        if (message.schemaUrl != null && message.hasOwnProperty("schemaUrl"))
+                            if (!$util.isString(message.schemaUrl))
+                                return "schemaUrl: string expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a ResourceLogs message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {opentelemetry.proto.logs.v1.ResourceLogs} ResourceLogs
+                     */
+                    ResourceLogs.fromObject = function fromObject(object) {
+                        if (object instanceof $root.opentelemetry.proto.logs.v1.ResourceLogs)
+                            return object;
+                        var message = new $root.opentelemetry.proto.logs.v1.ResourceLogs();
+                        if (object.resource != null) {
+                            if (typeof object.resource !== "object")
+                                throw TypeError(".opentelemetry.proto.logs.v1.ResourceLogs.resource: object expected");
+                            message.resource = $root.opentelemetry.proto.resource.v1.Resource.fromObject(object.resource);
+                        }
+                        if (object.scopeLogs) {
+                            if (!Array.isArray(object.scopeLogs))
+                                throw TypeError(".opentelemetry.proto.logs.v1.ResourceLogs.scopeLogs: array expected");
+                            message.scopeLogs = [];
+                            for (var i = 0; i < object.scopeLogs.length; ++i) {
+                                if (typeof object.scopeLogs[i] !== "object")
+                                    throw TypeError(".opentelemetry.proto.logs.v1.ResourceLogs.scopeLogs: object expected");
+                                message.scopeLogs[i] = $root.opentelemetry.proto.logs.v1.ScopeLogs.fromObject(object.scopeLogs[i]);
+                            }
+                        }
+                        if (object.schemaUrl != null)
+                            message.schemaUrl = String(object.schemaUrl);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a ResourceLogs message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.ResourceLogs} message ResourceLogs
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    ResourceLogs.toObject = function toObject(message, options) {
+                        if (!options)
+                            options = {};
+                        var object = {};
+                        if (options.arrays || options.defaults)
+                            object.scopeLogs = [];
+                        if (options.defaults) {
+                            object.resource = null;
+                            object.schemaUrl = "";
+                        }
+                        if (message.resource != null && message.hasOwnProperty("resource"))
+                            object.resource = $root.opentelemetry.proto.resource.v1.Resource.toObject(message.resource, options);
+                        if (message.scopeLogs && message.scopeLogs.length) {
+                            object.scopeLogs = [];
+                            for (var j = 0; j < message.scopeLogs.length; ++j)
+                                object.scopeLogs[j] = $root.opentelemetry.proto.logs.v1.ScopeLogs.toObject(message.scopeLogs[j], options);
+                        }
+                        if (message.schemaUrl != null && message.hasOwnProperty("schemaUrl"))
+                            object.schemaUrl = message.schemaUrl;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this ResourceLogs to JSON.
+                     * @function toJSON
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    ResourceLogs.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for ResourceLogs
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.logs.v1.ResourceLogs
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    ResourceLogs.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.logs.v1.ResourceLogs";
+                    };
+
+                    return ResourceLogs;
+                })();
+
+                v1.ScopeLogs = (function() {
+
+                    /**
+                     * Properties of a ScopeLogs.
+                     * @memberof opentelemetry.proto.logs.v1
+                     * @interface IScopeLogs
+                     * @property {opentelemetry.proto.common.v1.IInstrumentationScope|null} [scope] ScopeLogs scope
+                     * @property {Array.<opentelemetry.proto.logs.v1.ILogRecord>|null} [logRecords] ScopeLogs logRecords
+                     * @property {string|null} [schemaUrl] ScopeLogs schemaUrl
+                     */
+
+                    /**
+                     * Constructs a new ScopeLogs.
+                     * @memberof opentelemetry.proto.logs.v1
+                     * @classdesc Represents a ScopeLogs.
+                     * @implements IScopeLogs
+                     * @constructor
+                     * @param {opentelemetry.proto.logs.v1.IScopeLogs=} [properties] Properties to set
+                     */
+                    function ScopeLogs(properties) {
+                        this.logRecords = [];
+                        if (properties)
+                            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null)
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * ScopeLogs scope.
+                     * @member {opentelemetry.proto.common.v1.IInstrumentationScope|null|undefined} scope
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @instance
+                     */
+                    ScopeLogs.prototype.scope = null;
+
+                    /**
+                     * ScopeLogs logRecords.
+                     * @member {Array.<opentelemetry.proto.logs.v1.ILogRecord>} logRecords
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @instance
+                     */
+                    ScopeLogs.prototype.logRecords = $util.emptyArray;
+
+                    /**
+                     * ScopeLogs schemaUrl.
+                     * @member {string} schemaUrl
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @instance
+                     */
+                    ScopeLogs.prototype.schemaUrl = "";
+
+                    /**
+                     * Creates a new ScopeLogs instance using the specified properties.
+                     * @function create
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.IScopeLogs=} [properties] Properties to set
+                     * @returns {opentelemetry.proto.logs.v1.ScopeLogs} ScopeLogs instance
+                     */
+                    ScopeLogs.create = function create(properties) {
+                        return new ScopeLogs(properties);
+                    };
+
+                    /**
+                     * Encodes the specified ScopeLogs message. Does not implicitly {@link opentelemetry.proto.logs.v1.ScopeLogs.verify|verify} messages.
+                     * @function encode
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.IScopeLogs} message ScopeLogs message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ScopeLogs.encode = function encode(message, writer) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (message.scope != null && Object.hasOwnProperty.call(message, "scope"))
+                            $root.opentelemetry.proto.common.v1.InstrumentationScope.encode(message.scope, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                        if (message.logRecords != null && message.logRecords.length)
+                            for (var i = 0; i < message.logRecords.length; ++i)
+                                $root.opentelemetry.proto.logs.v1.LogRecord.encode(message.logRecords[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                        if (message.schemaUrl != null && Object.hasOwnProperty.call(message, "schemaUrl"))
+                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.schemaUrl);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified ScopeLogs message, length delimited. Does not implicitly {@link opentelemetry.proto.logs.v1.ScopeLogs.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.IScopeLogs} message ScopeLogs message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ScopeLogs.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a ScopeLogs message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {opentelemetry.proto.logs.v1.ScopeLogs} ScopeLogs
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ScopeLogs.decode = function decode(reader, length) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.opentelemetry.proto.logs.v1.ScopeLogs();
+                        while (reader.pos < end) {
+                            var tag = reader.uint32();
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.scope = $root.opentelemetry.proto.common.v1.InstrumentationScope.decode(reader, reader.uint32());
+                                    break;
+                                }
+                            case 2: {
+                                    if (!(message.logRecords && message.logRecords.length))
+                                        message.logRecords = [];
+                                    message.logRecords.push($root.opentelemetry.proto.logs.v1.LogRecord.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 3: {
+                                    message.schemaUrl = reader.string();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a ScopeLogs message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {opentelemetry.proto.logs.v1.ScopeLogs} ScopeLogs
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ScopeLogs.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a ScopeLogs message.
+                     * @function verify
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    ScopeLogs.verify = function verify(message) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (message.scope != null && message.hasOwnProperty("scope")) {
+                            var error = $root.opentelemetry.proto.common.v1.InstrumentationScope.verify(message.scope);
+                            if (error)
+                                return "scope." + error;
+                        }
+                        if (message.logRecords != null && message.hasOwnProperty("logRecords")) {
+                            if (!Array.isArray(message.logRecords))
+                                return "logRecords: array expected";
+                            for (var i = 0; i < message.logRecords.length; ++i) {
+                                var error = $root.opentelemetry.proto.logs.v1.LogRecord.verify(message.logRecords[i]);
+                                if (error)
+                                    return "logRecords." + error;
+                            }
+                        }
+                        if (message.schemaUrl != null && message.hasOwnProperty("schemaUrl"))
+                            if (!$util.isString(message.schemaUrl))
+                                return "schemaUrl: string expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a ScopeLogs message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {opentelemetry.proto.logs.v1.ScopeLogs} ScopeLogs
+                     */
+                    ScopeLogs.fromObject = function fromObject(object) {
+                        if (object instanceof $root.opentelemetry.proto.logs.v1.ScopeLogs)
+                            return object;
+                        var message = new $root.opentelemetry.proto.logs.v1.ScopeLogs();
+                        if (object.scope != null) {
+                            if (typeof object.scope !== "object")
+                                throw TypeError(".opentelemetry.proto.logs.v1.ScopeLogs.scope: object expected");
+                            message.scope = $root.opentelemetry.proto.common.v1.InstrumentationScope.fromObject(object.scope);
+                        }
+                        if (object.logRecords) {
+                            if (!Array.isArray(object.logRecords))
+                                throw TypeError(".opentelemetry.proto.logs.v1.ScopeLogs.logRecords: array expected");
+                            message.logRecords = [];
+                            for (var i = 0; i < object.logRecords.length; ++i) {
+                                if (typeof object.logRecords[i] !== "object")
+                                    throw TypeError(".opentelemetry.proto.logs.v1.ScopeLogs.logRecords: object expected");
+                                message.logRecords[i] = $root.opentelemetry.proto.logs.v1.LogRecord.fromObject(object.logRecords[i]);
+                            }
+                        }
+                        if (object.schemaUrl != null)
+                            message.schemaUrl = String(object.schemaUrl);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a ScopeLogs message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.ScopeLogs} message ScopeLogs
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    ScopeLogs.toObject = function toObject(message, options) {
+                        if (!options)
+                            options = {};
+                        var object = {};
+                        if (options.arrays || options.defaults)
+                            object.logRecords = [];
+                        if (options.defaults) {
+                            object.scope = null;
+                            object.schemaUrl = "";
+                        }
+                        if (message.scope != null && message.hasOwnProperty("scope"))
+                            object.scope = $root.opentelemetry.proto.common.v1.InstrumentationScope.toObject(message.scope, options);
+                        if (message.logRecords && message.logRecords.length) {
+                            object.logRecords = [];
+                            for (var j = 0; j < message.logRecords.length; ++j)
+                                object.logRecords[j] = $root.opentelemetry.proto.logs.v1.LogRecord.toObject(message.logRecords[j], options);
+                        }
+                        if (message.schemaUrl != null && message.hasOwnProperty("schemaUrl"))
+                            object.schemaUrl = message.schemaUrl;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this ScopeLogs to JSON.
+                     * @function toJSON
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    ScopeLogs.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for ScopeLogs
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.logs.v1.ScopeLogs
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    ScopeLogs.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.logs.v1.ScopeLogs";
+                    };
+
+                    return ScopeLogs;
+                })();
+
+                /**
+                 * SeverityNumber enum.
+                 * @name opentelemetry.proto.logs.v1.SeverityNumber
+                 * @enum {number}
+                 * @property {number} SEVERITY_NUMBER_UNSPECIFIED=0 SEVERITY_NUMBER_UNSPECIFIED value
+                 * @property {number} SEVERITY_NUMBER_TRACE=1 SEVERITY_NUMBER_TRACE value
+                 * @property {number} SEVERITY_NUMBER_TRACE2=2 SEVERITY_NUMBER_TRACE2 value
+                 * @property {number} SEVERITY_NUMBER_TRACE3=3 SEVERITY_NUMBER_TRACE3 value
+                 * @property {number} SEVERITY_NUMBER_TRACE4=4 SEVERITY_NUMBER_TRACE4 value
+                 * @property {number} SEVERITY_NUMBER_DEBUG=5 SEVERITY_NUMBER_DEBUG value
+                 * @property {number} SEVERITY_NUMBER_DEBUG2=6 SEVERITY_NUMBER_DEBUG2 value
+                 * @property {number} SEVERITY_NUMBER_DEBUG3=7 SEVERITY_NUMBER_DEBUG3 value
+                 * @property {number} SEVERITY_NUMBER_DEBUG4=8 SEVERITY_NUMBER_DEBUG4 value
+                 * @property {number} SEVERITY_NUMBER_INFO=9 SEVERITY_NUMBER_INFO value
+                 * @property {number} SEVERITY_NUMBER_INFO2=10 SEVERITY_NUMBER_INFO2 value
+                 * @property {number} SEVERITY_NUMBER_INFO3=11 SEVERITY_NUMBER_INFO3 value
+                 * @property {number} SEVERITY_NUMBER_INFO4=12 SEVERITY_NUMBER_INFO4 value
+                 * @property {number} SEVERITY_NUMBER_WARN=13 SEVERITY_NUMBER_WARN value
+                 * @property {number} SEVERITY_NUMBER_WARN2=14 SEVERITY_NUMBER_WARN2 value
+                 * @property {number} SEVERITY_NUMBER_WARN3=15 SEVERITY_NUMBER_WARN3 value
+                 * @property {number} SEVERITY_NUMBER_WARN4=16 SEVERITY_NUMBER_WARN4 value
+                 * @property {number} SEVERITY_NUMBER_ERROR=17 SEVERITY_NUMBER_ERROR value
+                 * @property {number} SEVERITY_NUMBER_ERROR2=18 SEVERITY_NUMBER_ERROR2 value
+                 * @property {number} SEVERITY_NUMBER_ERROR3=19 SEVERITY_NUMBER_ERROR3 value
+                 * @property {number} SEVERITY_NUMBER_ERROR4=20 SEVERITY_NUMBER_ERROR4 value
+                 * @property {number} SEVERITY_NUMBER_FATAL=21 SEVERITY_NUMBER_FATAL value
+                 * @property {number} SEVERITY_NUMBER_FATAL2=22 SEVERITY_NUMBER_FATAL2 value
+                 * @property {number} SEVERITY_NUMBER_FATAL3=23 SEVERITY_NUMBER_FATAL3 value
+                 * @property {number} SEVERITY_NUMBER_FATAL4=24 SEVERITY_NUMBER_FATAL4 value
+                 */
+                v1.SeverityNumber = (function() {
+                    var valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "SEVERITY_NUMBER_UNSPECIFIED"] = 0;
+                    values[valuesById[1] = "SEVERITY_NUMBER_TRACE"] = 1;
+                    values[valuesById[2] = "SEVERITY_NUMBER_TRACE2"] = 2;
+                    values[valuesById[3] = "SEVERITY_NUMBER_TRACE3"] = 3;
+                    values[valuesById[4] = "SEVERITY_NUMBER_TRACE4"] = 4;
+                    values[valuesById[5] = "SEVERITY_NUMBER_DEBUG"] = 5;
+                    values[valuesById[6] = "SEVERITY_NUMBER_DEBUG2"] = 6;
+                    values[valuesById[7] = "SEVERITY_NUMBER_DEBUG3"] = 7;
+                    values[valuesById[8] = "SEVERITY_NUMBER_DEBUG4"] = 8;
+                    values[valuesById[9] = "SEVERITY_NUMBER_INFO"] = 9;
+                    values[valuesById[10] = "SEVERITY_NUMBER_INFO2"] = 10;
+                    values[valuesById[11] = "SEVERITY_NUMBER_INFO3"] = 11;
+                    values[valuesById[12] = "SEVERITY_NUMBER_INFO4"] = 12;
+                    values[valuesById[13] = "SEVERITY_NUMBER_WARN"] = 13;
+                    values[valuesById[14] = "SEVERITY_NUMBER_WARN2"] = 14;
+                    values[valuesById[15] = "SEVERITY_NUMBER_WARN3"] = 15;
+                    values[valuesById[16] = "SEVERITY_NUMBER_WARN4"] = 16;
+                    values[valuesById[17] = "SEVERITY_NUMBER_ERROR"] = 17;
+                    values[valuesById[18] = "SEVERITY_NUMBER_ERROR2"] = 18;
+                    values[valuesById[19] = "SEVERITY_NUMBER_ERROR3"] = 19;
+                    values[valuesById[20] = "SEVERITY_NUMBER_ERROR4"] = 20;
+                    values[valuesById[21] = "SEVERITY_NUMBER_FATAL"] = 21;
+                    values[valuesById[22] = "SEVERITY_NUMBER_FATAL2"] = 22;
+                    values[valuesById[23] = "SEVERITY_NUMBER_FATAL3"] = 23;
+                    values[valuesById[24] = "SEVERITY_NUMBER_FATAL4"] = 24;
+                    return values;
+                })();
+
+                /**
+                 * LogRecordFlags enum.
+                 * @name opentelemetry.proto.logs.v1.LogRecordFlags
+                 * @enum {number}
+                 * @property {number} LOG_RECORD_FLAG_UNSPECIFIED=0 LOG_RECORD_FLAG_UNSPECIFIED value
+                 * @property {number} LOG_RECORD_FLAG_TRACE_FLAGS_MASK=255 LOG_RECORD_FLAG_TRACE_FLAGS_MASK value
+                 */
+                v1.LogRecordFlags = (function() {
+                    var valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "LOG_RECORD_FLAG_UNSPECIFIED"] = 0;
+                    values[valuesById[255] = "LOG_RECORD_FLAG_TRACE_FLAGS_MASK"] = 255;
+                    return values;
+                })();
+
+                v1.LogRecord = (function() {
+
+                    /**
+                     * Properties of a LogRecord.
+                     * @memberof opentelemetry.proto.logs.v1
+                     * @interface ILogRecord
+                     * @property {number|Long|null} [timeUnixNano] LogRecord timeUnixNano
+                     * @property {number|Long|null} [observedTimeUnixNano] LogRecord observedTimeUnixNano
+                     * @property {opentelemetry.proto.logs.v1.SeverityNumber|null} [severityNumber] LogRecord severityNumber
+                     * @property {string|null} [severityText] LogRecord severityText
+                     * @property {opentelemetry.proto.common.v1.IAnyValue|null} [body] LogRecord body
+                     * @property {Array.<opentelemetry.proto.common.v1.IKeyValue>|null} [attributes] LogRecord attributes
+                     * @property {number|null} [droppedAttributesCount] LogRecord droppedAttributesCount
+                     * @property {number|null} [flags] LogRecord flags
+                     * @property {Uint8Array|null} [traceId] LogRecord traceId
+                     * @property {Uint8Array|null} [spanId] LogRecord spanId
+                     */
+
+                    /**
+                     * Constructs a new LogRecord.
+                     * @memberof opentelemetry.proto.logs.v1
+                     * @classdesc Represents a LogRecord.
+                     * @implements ILogRecord
+                     * @constructor
+                     * @param {opentelemetry.proto.logs.v1.ILogRecord=} [properties] Properties to set
+                     */
+                    function LogRecord(properties) {
+                        this.attributes = [];
+                        if (properties)
+                            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null)
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * LogRecord timeUnixNano.
+                     * @member {number|Long} timeUnixNano
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     */
+                    LogRecord.prototype.timeUnixNano = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+                    /**
+                     * LogRecord observedTimeUnixNano.
+                     * @member {number|Long} observedTimeUnixNano
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     */
+                    LogRecord.prototype.observedTimeUnixNano = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+                    /**
+                     * LogRecord severityNumber.
+                     * @member {opentelemetry.proto.logs.v1.SeverityNumber} severityNumber
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     */
+                    LogRecord.prototype.severityNumber = 0;
+
+                    /**
+                     * LogRecord severityText.
+                     * @member {string} severityText
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     */
+                    LogRecord.prototype.severityText = "";
+
+                    /**
+                     * LogRecord body.
+                     * @member {opentelemetry.proto.common.v1.IAnyValue|null|undefined} body
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     */
+                    LogRecord.prototype.body = null;
+
+                    /**
+                     * LogRecord attributes.
+                     * @member {Array.<opentelemetry.proto.common.v1.IKeyValue>} attributes
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     */
+                    LogRecord.prototype.attributes = $util.emptyArray;
+
+                    /**
+                     * LogRecord droppedAttributesCount.
+                     * @member {number} droppedAttributesCount
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     */
+                    LogRecord.prototype.droppedAttributesCount = 0;
+
+                    /**
+                     * LogRecord flags.
+                     * @member {number} flags
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     */
+                    LogRecord.prototype.flags = 0;
+
+                    /**
+                     * LogRecord traceId.
+                     * @member {Uint8Array} traceId
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     */
+                    LogRecord.prototype.traceId = $util.newBuffer([]);
+
+                    /**
+                     * LogRecord spanId.
+                     * @member {Uint8Array} spanId
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     */
+                    LogRecord.prototype.spanId = $util.newBuffer([]);
+
+                    /**
+                     * Creates a new LogRecord instance using the specified properties.
+                     * @function create
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.ILogRecord=} [properties] Properties to set
+                     * @returns {opentelemetry.proto.logs.v1.LogRecord} LogRecord instance
+                     */
+                    LogRecord.create = function create(properties) {
+                        return new LogRecord(properties);
+                    };
+
+                    /**
+                     * Encodes the specified LogRecord message. Does not implicitly {@link opentelemetry.proto.logs.v1.LogRecord.verify|verify} messages.
+                     * @function encode
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.ILogRecord} message LogRecord message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    LogRecord.encode = function encode(message, writer) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (message.timeUnixNano != null && Object.hasOwnProperty.call(message, "timeUnixNano"))
+                            writer.uint32(/* id 1, wireType 1 =*/9).fixed64(message.timeUnixNano);
+                        if (message.severityNumber != null && Object.hasOwnProperty.call(message, "severityNumber"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.severityNumber);
+                        if (message.severityText != null && Object.hasOwnProperty.call(message, "severityText"))
+                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.severityText);
+                        if (message.body != null && Object.hasOwnProperty.call(message, "body"))
+                            $root.opentelemetry.proto.common.v1.AnyValue.encode(message.body, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+                        if (message.attributes != null && message.attributes.length)
+                            for (var i = 0; i < message.attributes.length; ++i)
+                                $root.opentelemetry.proto.common.v1.KeyValue.encode(message.attributes[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+                        if (message.droppedAttributesCount != null && Object.hasOwnProperty.call(message, "droppedAttributesCount"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.droppedAttributesCount);
+                        if (message.flags != null && Object.hasOwnProperty.call(message, "flags"))
+                            writer.uint32(/* id 8, wireType 5 =*/69).fixed32(message.flags);
+                        if (message.traceId != null && Object.hasOwnProperty.call(message, "traceId"))
+                            writer.uint32(/* id 9, wireType 2 =*/74).bytes(message.traceId);
+                        if (message.spanId != null && Object.hasOwnProperty.call(message, "spanId"))
+                            writer.uint32(/* id 10, wireType 2 =*/82).bytes(message.spanId);
+                        if (message.observedTimeUnixNano != null && Object.hasOwnProperty.call(message, "observedTimeUnixNano"))
+                            writer.uint32(/* id 11, wireType 1 =*/89).fixed64(message.observedTimeUnixNano);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified LogRecord message, length delimited. Does not implicitly {@link opentelemetry.proto.logs.v1.LogRecord.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.ILogRecord} message LogRecord message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    LogRecord.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a LogRecord message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {opentelemetry.proto.logs.v1.LogRecord} LogRecord
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    LogRecord.decode = function decode(reader, length) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.opentelemetry.proto.logs.v1.LogRecord();
+                        while (reader.pos < end) {
+                            var tag = reader.uint32();
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.timeUnixNano = reader.fixed64();
+                                    break;
+                                }
+                            case 11: {
+                                    message.observedTimeUnixNano = reader.fixed64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.severityNumber = reader.int32();
+                                    break;
+                                }
+                            case 3: {
+                                    message.severityText = reader.string();
+                                    break;
+                                }
+                            case 5: {
+                                    message.body = $root.opentelemetry.proto.common.v1.AnyValue.decode(reader, reader.uint32());
+                                    break;
+                                }
+                            case 6: {
+                                    if (!(message.attributes && message.attributes.length))
+                                        message.attributes = [];
+                                    message.attributes.push($root.opentelemetry.proto.common.v1.KeyValue.decode(reader, reader.uint32()));
+                                    break;
+                                }
+                            case 7: {
+                                    message.droppedAttributesCount = reader.uint32();
+                                    break;
+                                }
+                            case 8: {
+                                    message.flags = reader.fixed32();
+                                    break;
+                                }
+                            case 9: {
+                                    message.traceId = reader.bytes();
+                                    break;
+                                }
+                            case 10: {
+                                    message.spanId = reader.bytes();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a LogRecord message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {opentelemetry.proto.logs.v1.LogRecord} LogRecord
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    LogRecord.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a LogRecord message.
+                     * @function verify
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    LogRecord.verify = function verify(message) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (message.timeUnixNano != null && message.hasOwnProperty("timeUnixNano"))
+                            if (!$util.isInteger(message.timeUnixNano) && !(message.timeUnixNano && $util.isInteger(message.timeUnixNano.low) && $util.isInteger(message.timeUnixNano.high)))
+                                return "timeUnixNano: integer|Long expected";
+                        if (message.observedTimeUnixNano != null && message.hasOwnProperty("observedTimeUnixNano"))
+                            if (!$util.isInteger(message.observedTimeUnixNano) && !(message.observedTimeUnixNano && $util.isInteger(message.observedTimeUnixNano.low) && $util.isInteger(message.observedTimeUnixNano.high)))
+                                return "observedTimeUnixNano: integer|Long expected";
+                        if (message.severityNumber != null && message.hasOwnProperty("severityNumber"))
+                            switch (message.severityNumber) {
+                            default:
+                                return "severityNumber: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                            case 6:
+                            case 7:
+                            case 8:
+                            case 9:
+                            case 10:
+                            case 11:
+                            case 12:
+                            case 13:
+                            case 14:
+                            case 15:
+                            case 16:
+                            case 17:
+                            case 18:
+                            case 19:
+                            case 20:
+                            case 21:
+                            case 22:
+                            case 23:
+                            case 24:
+                                break;
+                            }
+                        if (message.severityText != null && message.hasOwnProperty("severityText"))
+                            if (!$util.isString(message.severityText))
+                                return "severityText: string expected";
+                        if (message.body != null && message.hasOwnProperty("body")) {
+                            var error = $root.opentelemetry.proto.common.v1.AnyValue.verify(message.body);
+                            if (error)
+                                return "body." + error;
+                        }
+                        if (message.attributes != null && message.hasOwnProperty("attributes")) {
+                            if (!Array.isArray(message.attributes))
+                                return "attributes: array expected";
+                            for (var i = 0; i < message.attributes.length; ++i) {
+                                var error = $root.opentelemetry.proto.common.v1.KeyValue.verify(message.attributes[i]);
+                                if (error)
+                                    return "attributes." + error;
+                            }
+                        }
+                        if (message.droppedAttributesCount != null && message.hasOwnProperty("droppedAttributesCount"))
+                            if (!$util.isInteger(message.droppedAttributesCount))
+                                return "droppedAttributesCount: integer expected";
+                        if (message.flags != null && message.hasOwnProperty("flags"))
+                            if (!$util.isInteger(message.flags))
+                                return "flags: integer expected";
+                        if (message.traceId != null && message.hasOwnProperty("traceId"))
+                            if (!(message.traceId && typeof message.traceId.length === "number" || $util.isString(message.traceId)))
+                                return "traceId: buffer expected";
+                        if (message.spanId != null && message.hasOwnProperty("spanId"))
+                            if (!(message.spanId && typeof message.spanId.length === "number" || $util.isString(message.spanId)))
+                                return "spanId: buffer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a LogRecord message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {opentelemetry.proto.logs.v1.LogRecord} LogRecord
+                     */
+                    LogRecord.fromObject = function fromObject(object) {
+                        if (object instanceof $root.opentelemetry.proto.logs.v1.LogRecord)
+                            return object;
+                        var message = new $root.opentelemetry.proto.logs.v1.LogRecord();
+                        if (object.timeUnixNano != null)
+                            if ($util.Long)
+                                (message.timeUnixNano = $util.Long.fromValue(object.timeUnixNano)).unsigned = false;
+                            else if (typeof object.timeUnixNano === "string")
+                                message.timeUnixNano = parseInt(object.timeUnixNano, 10);
+                            else if (typeof object.timeUnixNano === "number")
+                                message.timeUnixNano = object.timeUnixNano;
+                            else if (typeof object.timeUnixNano === "object")
+                                message.timeUnixNano = new $util.LongBits(object.timeUnixNano.low >>> 0, object.timeUnixNano.high >>> 0).toNumber();
+                        if (object.observedTimeUnixNano != null)
+                            if ($util.Long)
+                                (message.observedTimeUnixNano = $util.Long.fromValue(object.observedTimeUnixNano)).unsigned = false;
+                            else if (typeof object.observedTimeUnixNano === "string")
+                                message.observedTimeUnixNano = parseInt(object.observedTimeUnixNano, 10);
+                            else if (typeof object.observedTimeUnixNano === "number")
+                                message.observedTimeUnixNano = object.observedTimeUnixNano;
+                            else if (typeof object.observedTimeUnixNano === "object")
+                                message.observedTimeUnixNano = new $util.LongBits(object.observedTimeUnixNano.low >>> 0, object.observedTimeUnixNano.high >>> 0).toNumber();
+                        switch (object.severityNumber) {
+                        default:
+                            if (typeof object.severityNumber === "number") {
+                                message.severityNumber = object.severityNumber;
+                                break;
+                            }
+                            break;
+                        case "SEVERITY_NUMBER_UNSPECIFIED":
+                        case 0:
+                            message.severityNumber = 0;
+                            break;
+                        case "SEVERITY_NUMBER_TRACE":
+                        case 1:
+                            message.severityNumber = 1;
+                            break;
+                        case "SEVERITY_NUMBER_TRACE2":
+                        case 2:
+                            message.severityNumber = 2;
+                            break;
+                        case "SEVERITY_NUMBER_TRACE3":
+                        case 3:
+                            message.severityNumber = 3;
+                            break;
+                        case "SEVERITY_NUMBER_TRACE4":
+                        case 4:
+                            message.severityNumber = 4;
+                            break;
+                        case "SEVERITY_NUMBER_DEBUG":
+                        case 5:
+                            message.severityNumber = 5;
+                            break;
+                        case "SEVERITY_NUMBER_DEBUG2":
+                        case 6:
+                            message.severityNumber = 6;
+                            break;
+                        case "SEVERITY_NUMBER_DEBUG3":
+                        case 7:
+                            message.severityNumber = 7;
+                            break;
+                        case "SEVERITY_NUMBER_DEBUG4":
+                        case 8:
+                            message.severityNumber = 8;
+                            break;
+                        case "SEVERITY_NUMBER_INFO":
+                        case 9:
+                            message.severityNumber = 9;
+                            break;
+                        case "SEVERITY_NUMBER_INFO2":
+                        case 10:
+                            message.severityNumber = 10;
+                            break;
+                        case "SEVERITY_NUMBER_INFO3":
+                        case 11:
+                            message.severityNumber = 11;
+                            break;
+                        case "SEVERITY_NUMBER_INFO4":
+                        case 12:
+                            message.severityNumber = 12;
+                            break;
+                        case "SEVERITY_NUMBER_WARN":
+                        case 13:
+                            message.severityNumber = 13;
+                            break;
+                        case "SEVERITY_NUMBER_WARN2":
+                        case 14:
+                            message.severityNumber = 14;
+                            break;
+                        case "SEVERITY_NUMBER_WARN3":
+                        case 15:
+                            message.severityNumber = 15;
+                            break;
+                        case "SEVERITY_NUMBER_WARN4":
+                        case 16:
+                            message.severityNumber = 16;
+                            break;
+                        case "SEVERITY_NUMBER_ERROR":
+                        case 17:
+                            message.severityNumber = 17;
+                            break;
+                        case "SEVERITY_NUMBER_ERROR2":
+                        case 18:
+                            message.severityNumber = 18;
+                            break;
+                        case "SEVERITY_NUMBER_ERROR3":
+                        case 19:
+                            message.severityNumber = 19;
+                            break;
+                        case "SEVERITY_NUMBER_ERROR4":
+                        case 20:
+                            message.severityNumber = 20;
+                            break;
+                        case "SEVERITY_NUMBER_FATAL":
+                        case 21:
+                            message.severityNumber = 21;
+                            break;
+                        case "SEVERITY_NUMBER_FATAL2":
+                        case 22:
+                            message.severityNumber = 22;
+                            break;
+                        case "SEVERITY_NUMBER_FATAL3":
+                        case 23:
+                            message.severityNumber = 23;
+                            break;
+                        case "SEVERITY_NUMBER_FATAL4":
+                        case 24:
+                            message.severityNumber = 24;
+                            break;
+                        }
+                        if (object.severityText != null)
+                            message.severityText = String(object.severityText);
+                        if (object.body != null) {
+                            if (typeof object.body !== "object")
+                                throw TypeError(".opentelemetry.proto.logs.v1.LogRecord.body: object expected");
+                            message.body = $root.opentelemetry.proto.common.v1.AnyValue.fromObject(object.body);
+                        }
+                        if (object.attributes) {
+                            if (!Array.isArray(object.attributes))
+                                throw TypeError(".opentelemetry.proto.logs.v1.LogRecord.attributes: array expected");
+                            message.attributes = [];
+                            for (var i = 0; i < object.attributes.length; ++i) {
+                                if (typeof object.attributes[i] !== "object")
+                                    throw TypeError(".opentelemetry.proto.logs.v1.LogRecord.attributes: object expected");
+                                message.attributes[i] = $root.opentelemetry.proto.common.v1.KeyValue.fromObject(object.attributes[i]);
+                            }
+                        }
+                        if (object.droppedAttributesCount != null)
+                            message.droppedAttributesCount = object.droppedAttributesCount >>> 0;
+                        if (object.flags != null)
+                            message.flags = object.flags >>> 0;
+                        if (object.traceId != null)
+                            if (typeof object.traceId === "string")
+                                $util.base64.decode(object.traceId, message.traceId = $util.newBuffer($util.base64.length(object.traceId)), 0);
+                            else if (object.traceId.length >= 0)
+                                message.traceId = object.traceId;
+                        if (object.spanId != null)
+                            if (typeof object.spanId === "string")
+                                $util.base64.decode(object.spanId, message.spanId = $util.newBuffer($util.base64.length(object.spanId)), 0);
+                            else if (object.spanId.length >= 0)
+                                message.spanId = object.spanId;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a LogRecord message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @static
+                     * @param {opentelemetry.proto.logs.v1.LogRecord} message LogRecord
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    LogRecord.toObject = function toObject(message, options) {
+                        if (!options)
+                            options = {};
+                        var object = {};
+                        if (options.arrays || options.defaults)
+                            object.attributes = [];
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                var long = new $util.Long(0, 0, false);
+                                object.timeUnixNano = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                            } else
+                                object.timeUnixNano = options.longs === String ? "0" : 0;
+                            object.severityNumber = options.enums === String ? "SEVERITY_NUMBER_UNSPECIFIED" : 0;
+                            object.severityText = "";
+                            object.body = null;
+                            object.droppedAttributesCount = 0;
+                            object.flags = 0;
+                            if (options.bytes === String)
+                                object.traceId = "";
+                            else {
+                                object.traceId = [];
+                                if (options.bytes !== Array)
+                                    object.traceId = $util.newBuffer(object.traceId);
+                            }
+                            if (options.bytes === String)
+                                object.spanId = "";
+                            else {
+                                object.spanId = [];
+                                if (options.bytes !== Array)
+                                    object.spanId = $util.newBuffer(object.spanId);
+                            }
+                            if ($util.Long) {
+                                var long = new $util.Long(0, 0, false);
+                                object.observedTimeUnixNano = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                            } else
+                                object.observedTimeUnixNano = options.longs === String ? "0" : 0;
+                        }
+                        if (message.timeUnixNano != null && message.hasOwnProperty("timeUnixNano"))
+                            if (typeof message.timeUnixNano === "number")
+                                object.timeUnixNano = options.longs === String ? String(message.timeUnixNano) : message.timeUnixNano;
+                            else
+                                object.timeUnixNano = options.longs === String ? $util.Long.prototype.toString.call(message.timeUnixNano) : options.longs === Number ? new $util.LongBits(message.timeUnixNano.low >>> 0, message.timeUnixNano.high >>> 0).toNumber() : message.timeUnixNano;
+                        if (message.severityNumber != null && message.hasOwnProperty("severityNumber"))
+                            object.severityNumber = options.enums === String ? $root.opentelemetry.proto.logs.v1.SeverityNumber[message.severityNumber] === undefined ? message.severityNumber : $root.opentelemetry.proto.logs.v1.SeverityNumber[message.severityNumber] : message.severityNumber;
+                        if (message.severityText != null && message.hasOwnProperty("severityText"))
+                            object.severityText = message.severityText;
+                        if (message.body != null && message.hasOwnProperty("body"))
+                            object.body = $root.opentelemetry.proto.common.v1.AnyValue.toObject(message.body, options);
+                        if (message.attributes && message.attributes.length) {
+                            object.attributes = [];
+                            for (var j = 0; j < message.attributes.length; ++j)
+                                object.attributes[j] = $root.opentelemetry.proto.common.v1.KeyValue.toObject(message.attributes[j], options);
+                        }
+                        if (message.droppedAttributesCount != null && message.hasOwnProperty("droppedAttributesCount"))
+                            object.droppedAttributesCount = message.droppedAttributesCount;
+                        if (message.flags != null && message.hasOwnProperty("flags"))
+                            object.flags = message.flags;
+                        if (message.traceId != null && message.hasOwnProperty("traceId"))
+                            object.traceId = options.bytes === String ? $util.base64.encode(message.traceId, 0, message.traceId.length) : options.bytes === Array ? Array.prototype.slice.call(message.traceId) : message.traceId;
+                        if (message.spanId != null && message.hasOwnProperty("spanId"))
+                            object.spanId = options.bytes === String ? $util.base64.encode(message.spanId, 0, message.spanId.length) : options.bytes === Array ? Array.prototype.slice.call(message.spanId) : message.spanId;
+                        if (message.observedTimeUnixNano != null && message.hasOwnProperty("observedTimeUnixNano"))
+                            if (typeof message.observedTimeUnixNano === "number")
+                                object.observedTimeUnixNano = options.longs === String ? String(message.observedTimeUnixNano) : message.observedTimeUnixNano;
+                            else
+                                object.observedTimeUnixNano = options.longs === String ? $util.Long.prototype.toString.call(message.observedTimeUnixNano) : options.longs === Number ? new $util.LongBits(message.observedTimeUnixNano.low >>> 0, message.observedTimeUnixNano.high >>> 0).toNumber() : message.observedTimeUnixNano;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this LogRecord to JSON.
+                     * @function toJSON
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    LogRecord.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for LogRecord
+                     * @function getTypeUrl
+                     * @memberof opentelemetry.proto.logs.v1.LogRecord
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    LogRecord.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/opentelemetry.proto.logs.v1.LogRecord";
+                    };
+
+                    return LogRecord;
+                })();
+
+                return v1;
+            })();
+
+            return logs;
         })();
 
         return proto;

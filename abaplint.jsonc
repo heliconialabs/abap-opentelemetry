@@ -17,6 +17,9 @@
     "version": "v740sp02",
     "errorNamespace": "."
   },
+  "rename": {
+    "patterns": [{"type": "CLAS|INTF", "oldName": "z(cl|if)_otlp_(.*)", "newName": "y$1_foo_$2"}]
+  },
   "rules": {
     "7bit_ascii": true,
     "abapdoc": false,

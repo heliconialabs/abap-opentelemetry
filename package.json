@@ -12,7 +12,7 @@
     "unit": "rm -rf output && abap_transpile && echo RUNNING && node output/index.mjs",
     "test": "npm run lint && npm run downport && npm run unit",
     "downport": "rm -rf downport && cp -r src downport && abaplint --fix abaplint-downport.jsonc",
-    "proto": "pbjs -t static-module -w commonjs -o test/compiled.js proto/common.proto proto/resource.proto proto/trace.proto && pbts -o test/compiled.d.ts test/compiled.js"
+    "proto": "pbjs -t static-module -w commonjs -o test/compiled.js proto/common.proto proto/resource.proto proto/trace.proto proto/logs.proto&& pbts -o test/compiled.d.ts test/compiled.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "@abaplint/transpiler-cli": "^2.1.70",
     "dotenv": "^16.0.2",
     "node-fetch": "^3.2.10",
+    "protobufjs-cli": "^1.0.2",
     "protobufjs": "^7.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.3"

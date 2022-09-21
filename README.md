@@ -4,4 +4,4 @@
 
 - [X] Trace, [Protobuf Specification](https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/trace/v1/trace.proto)
 - [ ] Metrics, [Protobuf Specification](https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/metrics/v1/metrics.proto)
-- [ ] Logs, [Protobuf Specification](https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/logs/v1/logs.proto)
+- [X] Logs, [Protobuf Specification](https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/logs/v1/logs.proto)

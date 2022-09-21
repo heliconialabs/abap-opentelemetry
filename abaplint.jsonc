@@ -34,7 +34,7 @@
     "chain_mainly_declarations": true,
     "change_if_to_case": true,
     "check_abstract": true,
-    "check_comments": false,
+    "check_comments": true,
     "check_ddic": true,
     "check_include": true,
     "check_subrc": true,

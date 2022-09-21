@@ -100,10 +100,12 @@ CLASS ZCL_OTLP_ENCODE_LOGS IMPLEMENTATION.
       lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
-    lo_stream->encode_field_and_type( VALUE #(
-      field_number = 7
-      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
-    lo_stream->encode_varint( is_log_record-dropped_attributes ).
+    IF is_log_record-dropped_attributes IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 7
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_log_record-dropped_attributes ).
+    ENDIF.
 
     IF is_log_record-flags IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(

@@ -76,7 +76,7 @@ CLASS ltcl_test IMPLEMENTATION.
          status = VALUE #( code = zif_otlp_model_trace=>gc_status_code-ok ) ) ) ) ) ) ) ) ).
     cl_abap_unit_assert=>assert_equals(
       act = lv_hex
-      exp = '0A081206120472021801' ).
+      exp = '0A08120612047A021801' ).
   ENDMETHOD.
 
   METHOD ad_hoc.

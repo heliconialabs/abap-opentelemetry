@@ -313,7 +313,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
 
     IF is_span-status IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(
-        field_number = 14
+        field_number = 15
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
       lo_stream->encode_delimited( encode_status( is_span-status ) ).
     ENDIF.

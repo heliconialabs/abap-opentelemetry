@@ -85,7 +85,8 @@ CLASS ltcl_test IMPLEMENTATION.
     DATA lv_unix_end   TYPE int8.
 
     lv_unix_start = zcl_otlp_util=>get_unix_time_nano( ).
-    lv_unix_end = lv_unix_start + 123000000. " 123ms
+* 123ms
+    lv_unix_end = lv_unix_start + 123000000.
 
     DATA(lv_hex) = mo_cut->encode( VALUE #( (
       resource    = VALUE #( attributes = VALUE #(

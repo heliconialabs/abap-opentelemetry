@@ -12,9 +12,12 @@ INTERFACE zif_otlp_model_common
       string_value TYPE string,
       bool_value   TYPE abap_bool,
       int_value    TYPE i,
-      double_value TYPE string, " out of scope
-      array_value  TYPE string, " out of scope
-      kvlist_value TYPE string, " out of scope
+* out of scope
+      double_value TYPE string,
+* out of scope
+      array_value  TYPE string,
+* out of scope
+      kvlist_value TYPE string,
       bytes_value  TYPE xstring,
     END OF ty_any_value .
   TYPES:

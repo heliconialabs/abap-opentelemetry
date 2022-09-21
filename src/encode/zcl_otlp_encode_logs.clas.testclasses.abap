@@ -29,15 +29,13 @@ CLASS ltcl_test IMPLEMENTATION.
 
     DATA(lv_hex) = zcl_otlp_encode_logs=>encode( VALUE #(
       resource_logs = VALUE #( (
-        resource = VALUE #( attributes = VALUE #( ( key = 'event.dataset' value-string_value = 'sap.sap' ) ) )
-        schema_url = 'hello_world'
         scope_logs = VALUE #( (
           log_records = VALUE #( (
-            time_unix_nano = zcl_otlp_util=>get_unix_time_nano( )
+            time_unix_nano          = zcl_otlp_util=>get_unix_time_nano( )
             observed_time_unix_nano = zcl_otlp_util=>get_unix_time_nano( )
-            severity_number = zif_otlp_model_logs=>gc_severity_number-severity_number_warn
-            severity_text = 'severity text'
-            body-string_value = 'body text'
+            severity_number         = zif_otlp_model_logs=>gc_severity_number-severity_number_warn
+            severity_text           = 'severity text'
+            body-string_value       = 'body text'
        ) ) ) ) ) ) ) ).
 
     cl_abap_unit_assert=>assert_not_initial( lv_hex ).

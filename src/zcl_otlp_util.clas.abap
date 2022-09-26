@@ -15,6 +15,12 @@ CLASS zcl_otlp_util DEFINITION
         !iv_string        TYPE string
       RETURNING
         VALUE(rv_xstring) TYPE xstring .
+    CLASS-METHODS generate_trace_id
+      RETURNING
+        VALUE(rv_xstring) TYPE xstring.
+    CLASS-METHODS generate_span_id
+      RETURNING
+        VALUE(rv_xstring) TYPE xstring.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -22,6 +28,44 @@ ENDCLASS.
 
 
 CLASS ZCL_OTLP_UTIL IMPLEMENTATION.
+
+
+  METHOD generate_span_id.
+
+* todo, steampunk compatibility?
+
+    CALL FUNCTION 'GENERATE_SEC_RANDOM'
+      EXPORTING
+        length         = 8
+      IMPORTING
+        random         = rv_xstring
+      EXCEPTIONS
+        invalid_length = 1
+        no_memory      = 2
+        internal_error = 3
+        OTHERS         = 4.
+    ASSERT sy-subrc = 0.
+
+  ENDMETHOD.
+
+
+  METHOD generate_trace_id.
+
+* todo, steampunk compatibility?
+
+    CALL FUNCTION 'GENERATE_SEC_RANDOM'
+      EXPORTING
+        length         = 16
+      IMPORTING
+        random         = rv_xstring
+      EXCEPTIONS
+        invalid_length = 1
+        no_memory      = 2
+        internal_error = 3
+        OTHERS         = 4.
+    ASSERT sy-subrc = 0.
+
+  ENDMETHOD.
 
 
   METHOD get_unix_time_nano.

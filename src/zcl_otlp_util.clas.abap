@@ -44,6 +44,7 @@ CLASS ZCL_OTLP_UTIL IMPLEMENTATION.
         no_memory      = 2
         internal_error = 3
         OTHERS         = 4.
+    ASSERT sy-subrc = 0.
 
   ENDMETHOD.
 
@@ -62,6 +63,7 @@ CLASS ZCL_OTLP_UTIL IMPLEMENTATION.
         no_memory      = 2
         internal_error = 3
         OTHERS         = 4.
+    ASSERT sy-subrc = 0.
 
   ENDMETHOD.
 

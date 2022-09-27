@@ -150,8 +150,8 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
 
     LOOP AT is_data-filtered_attributes INTO DATA(ls_attribute).
       lo_stream->encode_field_and_type( VALUE #(
-      field_number = 7
-      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+        field_number = 7
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
       lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 

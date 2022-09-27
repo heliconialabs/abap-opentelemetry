@@ -114,9 +114,17 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD buckets.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           offset        TYPE i,
-*           bucket_counts TYPE STANDARD TABLE OF i WITH EMPTY KEY,
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 1
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+    lo_stream->encode_varint( is_data-offset ).
+
+    LOOP AT is_data-bucket_counts INTO DATA(lv_int).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( lv_int ).
+    ENDLOOP.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -125,8 +133,12 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD encode_metrics.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*            resource_metrics TYPE STANDARD TABLE OF ty_resource_metrics WITH EMPTY KEY,
+    LOOP AT is_metrics_data-resource_metrics INTO DATA(ls_resurce_metrics).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( resource_metrics( ls_resurce_metrics ) ).
+    ENDLOOP.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -135,13 +147,36 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD exemplar.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
+
+    LOOP AT is_data-filtered_attributes INTO DATA(ls_attribute).
+      lo_stream->encode_field_and_type( VALUE #(
+      field_number = 7
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+    ENDLOOP.
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 2
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_fixed64( is_data-time_unix_nano ).
+
 * todo
-*           filtered_attributes TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
-*           time_unix_nano      TYPE int8,
 *           as_double           TYPE f,
 *           as_int              TYPE i,
-*           span_id             TYPE xstring,
-*           trace_id            TYPE xstring,
+
+    IF is_data-span_id IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 4
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( is_data-span_id ).
+    ENDIF.
+
+    IF is_data-trace_id IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 5
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( is_data-trace_id ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.

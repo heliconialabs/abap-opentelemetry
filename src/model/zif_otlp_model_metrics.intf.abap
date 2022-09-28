@@ -131,7 +131,7 @@ INTERFACE zif_otlp_model_metrics
            unit                  TYPE string,
            gauge                 TYPE ty_gauge,
            sum                   TYPE ty_sum,
-           historgram            TYPE ty_histogram,
+           histogram             TYPE ty_histogram,
            exponential_histogram TYPE ty_exponential_histogram,
            summary               TYPE ty_summary,
          END OF ty_metric.

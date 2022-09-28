@@ -430,6 +430,11 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
         field_number = 7
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
       lo_stream->encode_delimited( sum( is_data-sum ) ).
+    ELSEIF is_data-histogram IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 9
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( histogram( is_data-histogram ) ).
     ELSEIF is_data-exponential_histogram IS NOT INITIAL.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 10

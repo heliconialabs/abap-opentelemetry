@@ -27,7 +27,7 @@ CLASS ltcl_test IMPLEMENTATION.
         ) )
         aggregation_temporality = zif_otlp_model_metrics=>gc_aggregation_temporality-cumulative
         is_monotonic            = abap_false
-      ) ) ) ) ) ) ) ) ) .
+      ) ) ) ) ) ) ) ) ).
 
     cl_abap_unit_assert=>assert_not_initial( lv_hex ).
 

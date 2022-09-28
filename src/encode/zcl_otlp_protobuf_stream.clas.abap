@@ -98,9 +98,12 @@ CLASS ZCL_OTLP_PROTOBUF_STREAM IMPLEMENTATION.
 
 
   METHOD encode_double.
+* IEEE as 64-bit, little endian
+    FIELD-SYMBOLS <lv_hex> TYPE x.
 
-    BREAK-POINT.
-    WRITE iv_double.
+    ASSIGN iv_double TO <lv_hex> CASTING TYPE x.
+    ASSERT <lv_hex> IS ASSIGNED.
+    append( <lv_hex> ).
 
     ro_ref = me.
 

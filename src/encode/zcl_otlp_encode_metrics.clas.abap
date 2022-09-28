@@ -461,10 +461,12 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
       lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
-    lo_stream->encode_field_and_type( VALUE #(
-      field_number = 2
-      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
-    lo_stream->encode_fixed64( is_data-start_time_unix_nano ).
+    IF is_data-start_time_unix_nano IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+      lo_stream->encode_fixed64( is_data-start_time_unix_nano ).
+    ENDIF.
 
     lo_stream->encode_field_and_type( VALUE #(
       field_number = 3
@@ -490,10 +492,12 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
       lo_stream->encode_delimited( exemplar( ls_exemplar ) ).
     ENDLOOP.
 
-    lo_stream->encode_field_and_type( VALUE #(
-      field_number = 8
-      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
-    lo_stream->encode_varint( is_data-flags ).
+    IF is_data-flags IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 8
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_data-flags ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -502,10 +506,12 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD resource_metrics.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-    lo_stream->encode_field_and_type( VALUE #(
-      field_number = 1
-      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-    lo_stream->encode_delimited( zcl_otlp_encode_resource=>encode_resource( is_data-resource ) ).
+    IF is_data-resource IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( zcl_otlp_encode_resource=>encode_resource( is_data-resource ) ).
+    ENDIF.
 
     LOOP AT is_data-scope_metrics INTO DATA(ls_scope_metrics).
       lo_stream->encode_field_and_type( VALUE #(
@@ -528,10 +534,12 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD scope_metrics.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-    lo_stream->encode_field_and_type( VALUE #(
-      field_number = 1
-      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-    lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_instrumentation_scope( is_data-scope ) ).
+    IF is_data-scope IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_instrumentation_scope( is_data-scope ) ).
+    ENDIF.
 
     LOOP AT is_data-metrics INTO DATA(ls_metric).
       lo_stream->encode_field_and_type( VALUE #(
@@ -566,10 +574,12 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
       wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
     lo_stream->encode_varint( is_data-aggregation_temporality ).
 
-    lo_stream->encode_field_and_type( VALUE #(
-      field_number = 3
-      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
-    lo_stream->encode_bool( is_data-is_monotonic ).
+    IF is_data-is_monotonic = abap_true.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 3
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_bool( is_data-is_monotonic ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.

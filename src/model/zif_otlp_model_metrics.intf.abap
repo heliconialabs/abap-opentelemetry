@@ -113,9 +113,9 @@ INTERFACE zif_otlp_model_metrics
 
 *enum AggregationTemporality {
   CONSTANTS: BEGIN OF gc_aggregation_temporality,
-               tempraily_unspecified  TYPE i VALUE 0,
-               temporality_delta      TYPE i VALUE 1,
-               temporality_cumulative TYPE i VALUE 2,
+               unspecified TYPE i VALUE 0,
+               delta       TYPE i VALUE 1,
+               cumulative  TYPE i VALUE 2,
              END OF gc_aggregation_temporality.
 
 *enum DataPointFlags {

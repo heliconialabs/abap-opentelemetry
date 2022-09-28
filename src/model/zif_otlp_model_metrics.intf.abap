@@ -88,10 +88,10 @@ INTERFACE zif_otlp_model_metrics
            attributes           TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
            start_time_unix_nano TYPE int8,
            time_unix_nano       TYPE int8,
-           count                TYPE i,
+           count                TYPE int8,
            sum                  TYPE f,
            scale                TYPE i,
-           zero_count           TYPE i,
+           zero_count           TYPE int8,
            positive             TYPE ty_buckets,
            negative             TYPE ty_buckets,
            flags                TYPE i,
@@ -102,7 +102,8 @@ INTERFACE zif_otlp_model_metrics
 
 *message ExponentialHistogram {
   TYPES: BEGIN OF ty_exponential_histogram,
-           data_points TYPE STANDARD TABLE OF ty_exponential_histogram_data WITH EMPTY KEY,
+           data_points             TYPE STANDARD TABLE OF ty_exponential_histogram_data WITH EMPTY KEY,
+           aggregation_temporality TYPE i,
          END OF ty_exponential_histogram.
 
 *message Summary {

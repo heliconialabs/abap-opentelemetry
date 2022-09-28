@@ -11,7 +11,7 @@ INTERFACE zif_otlp_model_metrics
            filtered_attributes TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
            time_unix_nano      TYPE int8,
            as_double           TYPE f,
-           as_int              TYPE i,
+           as_int              TYPE int8,
            span_id             TYPE xstring,
            trace_id            TYPE xstring,
          END OF ty_exemplar.
@@ -39,7 +39,7 @@ INTERFACE zif_otlp_model_metrics
            start_time_unix_nano TYPE int8,
            time_unix_nano       TYPE int8,
            as_double            TYPE f,
-           as_int               TYPE i,
+           as_int               TYPE int8,
            exemplars            TYPE STANDARD TABLE OF ty_exemplar WITH EMPTY KEY,
            flags                TYPE i,
          END OF ty_number_data_point.

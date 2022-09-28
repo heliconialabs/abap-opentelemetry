@@ -65,11 +65,6 @@ CLASS zcl_otlp_protobuf_stream DEFINITION
     METHODS append
       IMPORTING
         !iv_hex TYPE xsequence .
-    METHODS eat
-      IMPORTING
-        !iv_length    TYPE i
-      RETURNING
-        VALUE(rv_hex) TYPE xstring .
 ENDCLASS.
 
 
@@ -87,19 +82,13 @@ CLASS ZCL_OTLP_PROTOBUF_STREAM IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD eat.
-    ASSERT xstrlen( mv_hex ) >= iv_length.
-    rv_hex = mv_hex(iv_length).
-    mv_hex = mv_hex+iv_length.
-  ENDMETHOD.
-
-
   METHOD encode_bool.
     IF iv_bool = abap_true.
       encode_varint( 1 ).
     ELSE.
       encode_varint( 0 ).
     ENDIF.
+    ro_ref = me.
   ENDMETHOD.
 
 

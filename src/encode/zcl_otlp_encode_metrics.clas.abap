@@ -168,8 +168,8 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
     ELSE.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 6
-        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
-      lo_stream->encode_varint( is_data-as_int ).
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+      lo_stream->encode_fixed64( is_data-as_int ).
     ENDIF.
 
     IF is_data-span_id IS NOT INITIAL.
@@ -481,8 +481,8 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
     ELSE.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 6
-        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
-      lo_stream->encode_varint( is_data-as_int ).
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+      lo_stream->encode_fixed64( is_data-as_int ).
     ENDIF.
 
     LOOP AT is_data-exemplars INTO DATA(ls_exemplar).

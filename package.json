@@ -26,9 +26,9 @@
   "homepage": "https://github.com/heliconialabs/abap-opentelemetry#readme",
   "devDependencies": {
     "@abaplint/cli": "^2.93.31",
-    "@abaplint/runtime": "^2.1.77",
+    "@abaplint/runtime": "^2.1.78",
     "@abaplint/database-sqlite": "^2.1.74",
-    "@abaplint/transpiler-cli": "^2.1.77",
+    "@abaplint/transpiler-cli": "^2.1.78",
     "dotenv": "^16.0.2",
     "node-fetch": "^3.2.10",
     "protobufjs-cli": "^1.0.2",

@@ -49,6 +49,11 @@ CLASS zcl_otlp_protobuf_stream DEFINITION
         !iv_int       TYPE i
       RETURNING
         VALUE(ro_ref) TYPE REF TO zcl_otlp_protobuf_stream .
+    METHODS encode_bool
+      IMPORTING
+        !iv_bool      TYPE abap_bool
+      RETURNING
+        VALUE(ro_ref) TYPE REF TO zcl_otlp_protobuf_stream .
     METHODS get
       RETURNING
         VALUE(rv_hex) TYPE xstring .
@@ -86,6 +91,15 @@ CLASS ZCL_OTLP_PROTOBUF_STREAM IMPLEMENTATION.
     ASSERT xstrlen( mv_hex ) >= iv_length.
     rv_hex = mv_hex(iv_length).
     mv_hex = mv_hex+iv_length.
+  ENDMETHOD.
+
+
+  METHOD encode_bool.
+    IF iv_bool = abap_true.
+      encode_varint( 1 ).
+    ELSE.
+      encode_varint( 0 ).
+    ENDIF.
   ENDMETHOD.
 
 

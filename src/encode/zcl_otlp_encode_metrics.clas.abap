@@ -296,8 +296,12 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD gauge.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           data_points TYPE STANDARD TABLE OF ty_number_data_point WITH EMPTY KEY,
+    LOOP AT is_data-data_points INTO DATA(ls_number_data_point).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( number_data_point( ls_number_data_point ) ).
+    ENDLOOP.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -306,9 +310,17 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD histogram.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           data_points             TYPE STANDARD TABLE OF ty_histogram_data_point WITH EMPTY KEY,
-*           aggregation_temporality TYPE i,
+    LOOP AT is_data-data_points INTO DATA(ls_histogram_data_point).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( histogram_data_point( ls_histogram_data_point ) ).
+    ENDLOOP.
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 2
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+    lo_stream->encode_varint( is_data-aggregation_temporality ).
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -317,18 +329,74 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD histogram_data_point.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           attributes           TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
-*           start_time_unix_nano TYPE int8,
-*           time_unix_nano       TYPE int8,
-*           count                TYPE i,
-*           sum                  TYPE f,
-*           bucket_counts        TYPE STANDARD TABLE OF i WITH EMPTY KEY,
-*           explicit_bounds      TYPE STANDARD TABLE OF f WITH EMPTY KEY,
-*           exemplars            TYPE STANDARD TABLE OF ty_exemplar WITH EMPTY KEY,
-*           flags                TYPE i,
-*           min                  TYPE f,
-*           max                  TYPE f,
+    LOOP AT is_data-attributes INTO DATA(ls_attribute).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+    ENDLOOP.
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 2
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_fixed64( is_data-start_time_unix_nano ).
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 3
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_fixed64( is_data-time_unix_nano ).
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 4
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_fixed64( is_data-count ).
+
+    IF is_data-sum IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 5
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+      lo_stream->encode_double( is_data-sum ).
+    ENDIF.
+
+    LOOP AT is_data-bucket_counts INTO DATA(lv_bucket_count).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 6
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+      lo_stream->encode_fixed64( lv_bucket_count ).
+    ENDLOOP.
+
+    LOOP AT is_data-explicit_bounds INTO DATA(lv_explicit_bound).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 7
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+      lo_stream->encode_double( lv_explicit_bound ).
+    ENDLOOP.
+
+    LOOP AT is_data-exemplars INTO DATA(ls_exemplar).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 8
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( exemplar( ls_exemplar ) ).
+    ENDLOOP.
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 10
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+    lo_stream->encode_varint( is_data-flags ).
+
+    IF is_data-min IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 11
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+      lo_stream->encode_double( is_data-min ).
+    ENDIF.
+
+    IF is_data-max IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 12
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+      lo_stream->encode_double( is_data-max ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -337,15 +405,42 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD metric.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           name                  TYPE string,
-*           description           TYPE string,
-*           unit                  TYPE string,
-*           gauge                 TYPE ty_gauge,
-*           sum                   TYPE ty_sum,
-*           historgram            TYPE ty_histogram,
-*           exponential_histogram TYPE ty_exponential_histogram,
-*           summary               TYPE ty_summary,
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 1
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+    lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_data-name ) ).
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 2
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+    lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_data-description ) ).
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 3
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+    lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_data-unit ) ).
+
+    IF is_data-gauge IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 5
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( gauge( is_data-gauge ) ).
+    ELSEIF is_data-sum IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 7
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( sum( is_data-sum ) ).
+    ELSEIF is_data-exponential_histogram IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 10
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( exponential_histogram( is_data-exponential_histogram ) ).
+    ELSE.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 11
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( summary( is_data-summary ) ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -354,14 +449,46 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD number_data_point.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           attributes           TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
-*           start_time_unix_nano TYPE int8,
-*           time_unix_nano       TYPE int8,
-*           as_double            TYPE f,
-*           as_int               TYPE i,
-*           exemplars            TYPE STANDARD TABLE OF ty_exemplar WITH EMPTY KEY,
-*           flags                TYPE i,
+    LOOP AT is_data-attributes INTO DATA(ls_attribute).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 7
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+    ENDLOOP.
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 2
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_fixed64( is_data-start_time_unix_nano ).
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 3
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_fixed64( is_data-time_unix_nano ).
+
+    IF is_data-as_double IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 4
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+      lo_stream->encode_double( is_data-as_double ).
+    ELSE.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 6
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+      lo_stream->encode_varint( is_data-as_int ).
+    ENDIF.
+
+    LOOP AT is_data-exemplars INTO DATA(ls_exemplar).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 5
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( exemplar( ls_exemplar ) ).
+    ENDLOOP.
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 8
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+    lo_stream->encode_varint( is_data-flags ).
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -370,10 +497,24 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD resource_metrics.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           resource      TYPE zif_otlp_model_resource=>ty_resource,
-*           scope_metrics TYPE STANDARD TABLE OF ty_scope_metrics WITH EMPTY KEY,
-*           schema_url    TYPE string,
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 1
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+    lo_stream->encode_delimited( zcl_otlp_encode_resource=>encode_resource( is_data-resource ) ).
+
+    LOOP AT is_data-scope_metrics INTO DATA(ls_scope_metrics).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( scope_metrics( ls_scope_metrics ) ).
+    ENDLOOP.
+
+    IF is_data-schema_url IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 3
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_data-schema_url ) ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -382,10 +523,24 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD scope_metrics.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           scope      TYPE zif_otlp_model_common=>ty_instrumentation_scope,
-*           metrics    TYPE STANDARD TABLE OF ty_metric WITH EMPTY KEY,
-*           schema_url TYPE string,
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 1
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+    lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_instrumentation_scope( is_data-scope ) ).
+
+    LOOP AT is_data-metrics INTO DATA(ls_metric).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 2
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( metric( ls_metric ) ).
+    ENDLOOP.
+
+    IF is_data-schema_url IS NOT INITIAL.
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 3
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( zcl_otlp_util=>to_xstring( is_data-schema_url ) ).
+    ENDIF.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -394,10 +549,22 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD sum.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           data_points             TYPE STANDARD TABLE OF ty_number_data_point WITH EMPTY KEY,
-*           aggregation_temporality TYPE i,
-*           is_monotonic            TYPE abap_bool,
+    LOOP AT is_data-data_points INTO DATA(ls_data_point).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( number_data_point( ls_data_point ) ).
+    ENDLOOP.
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 2
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+    lo_stream->encode_varint( is_data-aggregation_temporality ).
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 3
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+    lo_stream->encode_bool( is_data-is_monotonic ).
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -406,8 +573,12 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD summary.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           data_points TYPE STANDARD TABLE OF ty_summary_data_point WITH EMPTY KEY,
+    LOOP AT is_data-data_points INTO DATA(ls_data).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 1
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( summary_data_point( ls_data ) ).
+    ENDLOOP.
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -416,14 +587,44 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD summary_data_point.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           attributes           TYPE STANDARD TABLE OF zif_otlp_model_common=>ty_key_value WITH EMPTY KEY,
-*           start_time_unix_nano TYPE int8,
-*           time_unix_nano       TYPE int8,
-*           count                TYPE i,
-*           sum                  TYPE f,
-*           quantile_values      TYPE STANDARD TABLE OF ty_value_at_quantile WITH EMPTY KEY,
-*           flags                TYPE i,
+    LOOP AT is_data-attributes INTO DATA(ls_attribute).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 7
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+    ENDLOOP.
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 2
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_fixed64( is_data-start_time_unix_nano ).
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 3
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_fixed64( is_data-time_unix_nano ).
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 4
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_fixed64( is_data-count ).
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 5
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_double( is_data-sum ).
+
+    LOOP AT is_data-quantile_values INTO DATA(ls_value).
+      lo_stream->encode_field_and_type( VALUE #(
+        field_number = 6
+        wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
+      lo_stream->encode_delimited( value_at_quantile( ls_value ) ).
+    ENDLOOP.
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 8
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-varint ) ).
+    lo_stream->encode_varint( is_data-flags ).
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.
@@ -432,9 +633,15 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
   METHOD value_at_quantile.
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( ).
 
-* todo
-*           quantile TYPE f,
-*           value    TYPE f,
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 1
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_double( is_data-quantile ).
+
+    lo_stream->encode_field_and_type( VALUE #(
+      field_number = 2
+      wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-bit64 ) ).
+    lo_stream->encode_double( is_data-quantile ).
 
     rv_hex = lo_stream->get( ).
   ENDMETHOD.

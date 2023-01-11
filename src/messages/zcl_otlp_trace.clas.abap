@@ -66,6 +66,11 @@ CLASS zcl_otlp_trace DEFINITION
         !is_status    TYPE zif_otlp_model_trace=>ty_status
       RETURNING
         VALUE(rv_hex) TYPE xstring .
+    CLASS-METHODS decode_status
+      IMPORTING
+        iv_hex TYPE xstring
+      RETURNING
+        VALUE(rs_status)    TYPE zif_otlp_model_trace=>ty_status.
   PRIVATE SECTION.
 ENDCLASS.
 
@@ -297,29 +302,24 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
         WHEN 7.
           rs_span-start_time_unix_nano = lo_stream->decode_fixed64( ).
         WHEN 8.
-* todo
-          CLEAR rs_span-end_time_unix_nano.
+          rs_span-end_time_unix_nano = lo_stream->decode_fixed64( ).
         WHEN 9.
 * todo
           CLEAR rs_span-attributes.
         WHEN 10.
-* todo
-          CLEAR rs_span-dropped_attributes_count.
+          rs_span-dropped_attributes_count = lo_stream->decode_varint( ).
         WHEN 11.
 * todo
           CLEAR rs_span-events.
         WHEN 12.
-* todo
-          CLEAR rs_span-dropped_events_count.
+          rs_span-dropped_events_count = lo_stream->decode_varint( ).
         WHEN 13.
 * todo
           CLEAR rs_span-links.
         WHEN 14.
-* todo
-          CLEAR rs_span-dropped_links_count.
+          rs_span-dropped_links_count = lo_stream->decode_varint( ).
         WHEN 15.
-* todo
-          CLEAR rs_span-status.
+          rs_span-status = decode_status( lo_stream->decode_delimited( ) ).
       ENDCASE.
     ENDWHILE.
 
@@ -438,6 +438,21 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD decode_status.
+    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
+
+    WHILE lo_stream->length( ) > 0.
+      DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
+      CASE ls_field_and_type-field_number.
+        WHEN 1.
+          rs_status-message = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
+        WHEN 3.
+          rs_status-code = lo_stream->decode_varint( ).
+      ENDCASE.
+    ENDWHILE.
+
+  ENDMETHOD.
 
   METHOD encode_status.
 

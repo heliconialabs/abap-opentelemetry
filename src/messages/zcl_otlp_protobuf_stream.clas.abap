@@ -34,11 +34,16 @@ CLASS zcl_otlp_protobuf_stream DEFINITION
         !iv_double    TYPE f
       RETURNING
         VALUE(ro_ref) TYPE REF TO zcl_otlp_protobuf_stream .
+
     METHODS encode_field_and_type
       IMPORTING
         !is_field_and_type TYPE ty_field_and_type
       RETURNING
         VALUE(ro_ref)      TYPE REF TO zcl_otlp_protobuf_stream .
+    METHODS decode_field_and_type
+      RETURNING
+        VALUE(rs_field_and_type) TYPE ty_field_and_type.
+
     METHODS encode_fixed64
       IMPORTING
         !iv_int       TYPE int8
@@ -65,6 +70,11 @@ CLASS zcl_otlp_protobuf_stream DEFINITION
     METHODS append
       IMPORTING
         !iv_hex TYPE xsequence .
+    METHODS take
+      IMPORTING
+        iv_bytes TYPE i
+      RETURNING
+        VALUE(rv_hex) TYPE xsequence .
 ENDCLASS.
 
 
@@ -76,6 +86,10 @@ CLASS zcl_otlp_protobuf_stream IMPLEMENTATION.
     CONCATENATE mv_hex iv_hex INTO mv_hex IN BYTE MODE.
   ENDMETHOD.
 
+  METHOD take.
+    rv_hex = mv_hex(iv_bytes).
+    mv_hex = mv_hex+iv_bytes.
+  ENDMETHOD.
 
   METHOD constructor.
     mv_hex = iv_hex.
@@ -112,6 +126,14 @@ CLASS zcl_otlp_protobuf_stream IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD decode_field_and_type.
+    DATA lv_hex TYPE x LENGTH 1.
+    lv_hex = take( 1 ).
+
+    rs_field_and_type-field_number = lv_hex DIV 8.
+    rs_field_and_type-wire_type = lv_hex MOD 8.
+  ENDMETHOD.
 
   METHOD encode_field_and_type.
     DATA lv_hex TYPE x LENGTH 1.

@@ -67,6 +67,9 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
 
 * todo
 
+    CLEAR ls_field_and_type.
+    CLEAR rt_resource_spans.
+
   ENDMETHOD.
 
   METHOD encode.

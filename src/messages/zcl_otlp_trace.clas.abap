@@ -36,6 +36,11 @@ CLASS zcl_otlp_trace DEFINITION
         !is_resource_spans TYPE zif_otlp_model_trace=>ty_resource_span
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
+    CLASS-METHODS decode_resource_spans
+      IMPORTING
+        iv_hex TYPE xstring
+      RETURNING
+        VALUE(rs_resource_spans) TYPE zif_otlp_model_trace=>ty_resource_span.
     CLASS-METHODS encode_scope_spans
       IMPORTING
         !is_scope_spans TYPE zif_otlp_model_trace=>ty_scope_spans
@@ -63,12 +68,11 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
 
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
 
-    DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
-
-* todo
-
-    CLEAR ls_field_and_type.
-    CLEAR rt_resource_spans.
+    WHILE lo_stream->length( ) > 0.
+      DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
+      ASSERT ls_field_and_type-field_number = 1.
+      APPEND decode_resource_spans( lo_stream->decode_delimited( ) ) TO rt_resource_spans.
+    ENDWHILE.
 
   ENDMETHOD.
 
@@ -167,6 +171,29 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD decode_resource_spans.
+
+    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
+
+    WHILE lo_stream->length( ) > 0.
+      DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
+      CASE ls_field_and_type-field_number.
+        WHEN 1.
+* todo
+          lo_stream->decode_delimited( ).
+          CLEAR rs_resource_spans-resource.
+        WHEN 2.
+* todo
+          lo_stream->decode_delimited( ).
+          CLEAR rs_resource_spans-scope_spans.
+        WHEN 3.
+* todo
+          lo_stream->decode_delimited( ).
+          CLEAR rs_resource_spans-schema_url.
+      ENDCASE.
+    ENDWHILE.
+
+  ENDMETHOD.
 
   METHOD encode_resource_spans.
 

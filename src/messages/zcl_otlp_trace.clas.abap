@@ -224,7 +224,7 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD decode_scope_spans.
-* todo
+
     DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
 
     WHILE lo_stream->length( ) > 0.

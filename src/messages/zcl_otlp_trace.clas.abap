@@ -26,6 +26,11 @@ CLASS zcl_otlp_trace DEFINITION
         !is_event     TYPE zif_otlp_model_trace=>ty_event
       RETURNING
         VALUE(rv_hex) TYPE xstring .
+    CLASS-METHODS decode_event
+      IMPORTING
+        iv_hex TYPE xstring
+      RETURNING
+        VALUE(rs_event)     TYPE zif_otlp_model_trace=>ty_event.
     CLASS-METHODS encode_link
       IMPORTING
         !is_link      TYPE zif_otlp_model_trace=>ty_link
@@ -107,6 +112,26 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD decode_event.
+
+    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
+
+    WHILE lo_stream->length( ) > 0.
+      DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
+      CASE ls_field_and_type-field_number.
+        WHEN 1.
+          rs_event-time_unix_nano = lo_stream->decode_fixed64( ).
+        WHEN 2.
+          rs_event-name = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
+        WHEN 3.
+          APPEND zcl_otlp_common=>decode_key_value( lo_stream->decode_delimited( ) ) TO rs_event-attributes.
+        WHEN 4.
+          rs_event-dropped_attributes_count = lo_stream->decode_varint( ).
+      ENDCASE.
+    ENDWHILE.
+
+  ENDMETHOD.
 
   METHOD encode_event.
 
@@ -304,13 +329,11 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
         WHEN 8.
           rs_span-end_time_unix_nano = lo_stream->decode_fixed64( ).
         WHEN 9.
-* todo
-          CLEAR rs_span-attributes.
+          APPEND zcl_otlp_common=>decode_key_value( lo_stream->decode_delimited( ) ) TO rs_span-attributes.
         WHEN 10.
           rs_span-dropped_attributes_count = lo_stream->decode_varint( ).
         WHEN 11.
-* todo
-          CLEAR rs_span-events.
+          APPEND decode_event( lo_stream->decode_delimited( ) ) TO rs_span-events.
         WHEN 12.
           rs_span-dropped_events_count = lo_stream->decode_varint( ).
         WHEN 13.

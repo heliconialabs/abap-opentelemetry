@@ -185,9 +185,7 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
           lo_stream->decode_delimited( ).
           CLEAR rs_resource_spans-scope_spans.
         WHEN 3.
-* todo
-          lo_stream->decode_delimited( ).
-          CLEAR rs_resource_spans-schema_url.
+          rs_resource_spans-schema_url = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
       ENDCASE.
     ENDWHILE.
 

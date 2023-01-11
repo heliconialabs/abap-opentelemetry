@@ -28,14 +28,19 @@ CLASS zcl_otlp_trace DEFINITION
         VALUE(rv_hex) TYPE xstring .
     CLASS-METHODS decode_event
       IMPORTING
-        iv_hex TYPE xstring
+        iv_hex          TYPE xstring
       RETURNING
-        VALUE(rs_event)     TYPE zif_otlp_model_trace=>ty_event.
+        VALUE(rs_event) TYPE zif_otlp_model_trace=>ty_event.
     CLASS-METHODS encode_link
       IMPORTING
         !is_link      TYPE zif_otlp_model_trace=>ty_link
       RETURNING
         VALUE(rv_hex) TYPE xstring .
+    CLASS-METHODS decode_link
+      IMPORTING
+        iv_hex         TYPE xstring
+      RETURNING
+        VALUE(rs_link) TYPE zif_otlp_model_trace=>ty_link.
     CLASS-METHODS encode_resource_spans
       IMPORTING
         !is_resource_spans TYPE zif_otlp_model_trace=>ty_resource_span
@@ -169,6 +174,28 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD decode_link.
+
+    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
+
+    WHILE lo_stream->length( ) > 0.
+      DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
+      CASE ls_field_and_type-field_number.
+        WHEN 1.
+          rs_link-trace_id = lo_stream->decode_delimited( ).
+        WHEN 2.
+          rs_link-span_id = lo_stream->decode_delimited( ).
+        WHEN 3.
+          rs_link-trace_state = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
+        WHEN 4.
+          APPEND zcl_otlp_common=>decode_key_value( lo_stream->decode_delimited( ) ) TO rs_link-attributes.
+        WHEN 5.
+          rs_link-dropped_attributes_count = lo_stream->decode_varint( ).
+      ENDCASE.
+    ENDWHILE.
+
+  ENDMETHOD.
 
   METHOD encode_link.
 
@@ -337,8 +364,7 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
         WHEN 12.
           rs_span-dropped_events_count = lo_stream->decode_varint( ).
         WHEN 13.
-* todo
-          CLEAR rs_span-links.
+          APPEND decode_link( lo_stream->decode_delimited( ) ) TO rs_span-links.
         WHEN 14.
           rs_span-dropped_links_count = lo_stream->decode_varint( ).
         WHEN 15.

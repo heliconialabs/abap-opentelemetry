@@ -82,11 +82,12 @@ CLASS zcl_otlp_protobuf_stream DEFINITION
     METHODS append
       IMPORTING
         !iv_hex TYPE xsequence .
+
     METHODS eat
       IMPORTING
         iv_bytes TYPE i
       RETURNING
-        VALUE(rv_hex) TYPE xsequence .
+        VALUE(rv_hex) TYPE xstring .
 ENDCLASS.
 
 

@@ -1,6 +1,6 @@
 CLASS ltcl_test DEFINITION FOR TESTING DURATION SHORT RISK LEVEL HARMLESS FINAL.
   PRIVATE SECTION.
-    DATA mo_cut TYPE REF TO zcl_otlp_encode_metrics.
+    DATA mo_cut TYPE REF TO zcl_otlp_metrics.
     METHODS setup.
     METHODS encode FOR TESTING RAISING cx_static_check.
 ENDCLASS.

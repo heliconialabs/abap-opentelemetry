@@ -3,14 +3,13 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCL_OTLP_ENCODE_TRACE</CLSNAME>
+    <CLSNAME>ZCL_OTLP_RESOURCE</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>abap-opentelemetry - Encode Trace</DESCRIPT>
+    <DESCRIPT>abap-opentelemetry - Encode Resource</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
-    <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
    </VSEOCLASS>
   </asx:values>
  </asx:abap>

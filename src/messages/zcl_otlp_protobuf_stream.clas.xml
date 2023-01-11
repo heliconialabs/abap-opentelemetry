@@ -3,9 +3,9 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCL_OTLP_ENCODE_COMMON</CLSNAME>
+    <CLSNAME>ZCL_OTLP_PROTOBUF_STREAM</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>abap-opentelemetry - Encode Common</DESCRIPT>
+    <DESCRIPT>abap-opentelemetry - Protobuf stream</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

@@ -1,7 +1,7 @@
 CLASS ltcl_test DEFINITION FOR TESTING DURATION SHORT RISK LEVEL HARMLESS.
 
   PRIVATE SECTION.
-    DATA mo_cut TYPE REF TO zcl_otlp_encode_trace.
+    DATA mo_cut TYPE REF TO zcl_otlp_trace.
     METHODS setup.
     METHODS encode01 FOR TESTING RAISING cx_static_check.
     METHODS encode02 FOR TESTING RAISING cx_static_check.
@@ -104,6 +104,8 @@ CLASS ltcl_test IMPLEMENTATION.
           end_time_unix_nano   = lv_unix_end ) ) ) ) ) ) ) ).
 
     cl_abap_unit_assert=>assert_not_initial( lv_hex ).
+
+    mo_cut->decode( lv_hex ).
   ENDMETHOD.
 
 ENDCLASS.

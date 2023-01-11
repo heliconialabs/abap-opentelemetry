@@ -15,6 +15,11 @@ CLASS zcl_otlp_util DEFINITION
         !iv_string        TYPE string
       RETURNING
         VALUE(rv_xstring) TYPE xstring .
+    CLASS-METHODS from_xstring
+      IMPORTING
+        iv_xstring TYPE xstring
+      RETURNING
+        VALUE(rv_string)        TYPE string.
     CLASS-METHODS generate_trace_id
       RETURNING
         VALUE(rv_xstring) TYPE xstring.
@@ -27,7 +32,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_UTIL IMPLEMENTATION.
+CLASS zcl_otlp_util IMPLEMENTATION.
 
 
   METHOD generate_span_id.
@@ -85,6 +90,36 @@ CLASS ZCL_OTLP_UTIL IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD from_xstring.
+
+    DATA lo_conv TYPE REF TO object.
+
+    TRY.
+        CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_in
+          RECEIVING
+            instance = lo_conv.
+
+        CALL METHOD lo_conv->('IF_ABAP_CONV_IN~CONVERT')
+          EXPORTING
+            source = iv_xstring
+          RECEIVING
+            result = rv_string.
+      CATCH cx_sy_dyn_call_illegal_class.
+        DATA(lv_conv_in_class) = 'CL_ABAP_CONV_IN_CE'.
+        CALL METHOD (lv_conv_in_class)=>create
+          EXPORTING
+            encoding = 'UTF-8'
+          RECEIVING
+            conv     = lo_conv.
+
+        CALL METHOD lo_conv->('CONVERT')
+          EXPORTING
+            input = iv_xstring
+          IMPORTING
+            data  = rv_string.
+    ENDTRY.
+
+  ENDMETHOD.
 
   METHOD to_xstring.
 

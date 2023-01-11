@@ -24,21 +24,35 @@ CLASS zcl_otlp_protobuf_stream DEFINITION
     METHODS constructor
       IMPORTING
         !iv_hex TYPE xstring OPTIONAL .
+
     METHODS encode_delimited
       IMPORTING
         !iv_hex       TYPE xstring
       RETURNING
         VALUE(ro_ref) TYPE REF TO zcl_otlp_protobuf_stream .
+    METHODS decode_delimited
+      RETURNING
+        VALUE(rv_hex) TYPE xstring .
+    METHODS decode_fixed64
+      RETURNING
+        VALUE(rv_int) TYPE int8 .
     METHODS encode_double
       IMPORTING
         !iv_double    TYPE f
       RETURNING
         VALUE(ro_ref) TYPE REF TO zcl_otlp_protobuf_stream .
+
     METHODS encode_field_and_type
       IMPORTING
         !is_field_and_type TYPE ty_field_and_type
       RETURNING
         VALUE(ro_ref)      TYPE REF TO zcl_otlp_protobuf_stream .
+    METHODS decode_field_and_type
+      RETURNING
+        VALUE(rs_field_and_type) TYPE ty_field_and_type.
+    METHODS decode_varint
+      RETURNING
+        VALUE(rv_int) TYPE i .
     METHODS encode_fixed64
       IMPORTING
         !iv_int       TYPE int8
@@ -54,6 +68,9 @@ CLASS zcl_otlp_protobuf_stream DEFINITION
         !iv_bool      TYPE abap_bool
       RETURNING
         VALUE(ro_ref) TYPE REF TO zcl_otlp_protobuf_stream .
+    METHODS length
+      RETURNING
+        VALUE(rv_length) TYPE i.
     METHODS get
       RETURNING
         VALUE(rv_hex) TYPE xstring .
@@ -65,17 +82,48 @@ CLASS zcl_otlp_protobuf_stream DEFINITION
     METHODS append
       IMPORTING
         !iv_hex TYPE xsequence .
+
+    METHODS eat
+      IMPORTING
+        iv_bytes TYPE i
+      RETURNING
+        VALUE(rv_hex) TYPE xstring .
 ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_PROTOBUF_STREAM IMPLEMENTATION.
+CLASS zcl_otlp_protobuf_stream IMPLEMENTATION.
 
+  METHOD length.
+    rv_length = xstrlen( mv_hex ).
+  ENDMETHOD.
+
+  METHOD decode_fixed64.
+* always 8 bytes
+
+    DATA lv_shift TYPE int8 VALUE 1.
+    DATA lv_top TYPE int8.
+
+    DO 8 TIMES.
+      lv_top = mv_hex(1).
+      lv_top = lv_top * lv_shift.
+      rv_int = rv_int + lv_top.
+      IF sy-index < 7.
+        lv_shift = lv_shift * 256.
+      ENDIF.
+      eat( 1 ).
+    ENDDO.
+
+  ENDMETHOD.
 
   METHOD append.
     CONCATENATE mv_hex iv_hex INTO mv_hex IN BYTE MODE.
   ENDMETHOD.
 
+  METHOD eat.
+    rv_hex = mv_hex(iv_bytes).
+    mv_hex = mv_hex+iv_bytes.
+  ENDMETHOD.
 
   METHOD constructor.
     mv_hex = iv_hex.
@@ -91,6 +139,32 @@ CLASS ZCL_OTLP_PROTOBUF_STREAM IMPLEMENTATION.
     ro_ref = me.
   ENDMETHOD.
 
+
+  METHOD decode_varint.
+
+    DATA lv_topbit TYPE i.
+    DATA lv_lower TYPE i.
+    DATA lv_shift TYPE i VALUE 1.
+
+    DO.
+      lv_topbit = mv_hex(1) DIV 128.
+      lv_lower = mv_hex(1) MOD 128.
+      lv_lower = lv_lower * lv_shift.
+      rv_int = rv_int + lv_lower.
+      lv_shift = lv_shift * 128.
+      eat( 1 ).
+      IF lv_topbit = 0.
+        EXIT.
+      ENDIF.
+    ENDDO.
+
+  ENDMETHOD.
+
+  METHOD decode_delimited.
+    DATA(lv_length) = decode_varint( ).
+    rv_hex = mv_hex(lv_length).
+    eat( lv_length ).
+  ENDMETHOD.
 
   METHOD encode_delimited.
     ASSERT xstrlen( iv_hex ) > 0.
@@ -112,6 +186,14 @@ CLASS ZCL_OTLP_PROTOBUF_STREAM IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD decode_field_and_type.
+    DATA lv_hex TYPE x LENGTH 1.
+    lv_hex = eat( 1 ).
+
+    rs_field_and_type-field_number = lv_hex DIV 8.
+    rs_field_and_type-wire_type = lv_hex MOD 8.
+  ENDMETHOD.
 
   METHOD encode_field_and_type.
     DATA lv_hex TYPE x LENGTH 1.

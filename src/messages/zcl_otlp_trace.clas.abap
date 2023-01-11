@@ -41,6 +41,11 @@ CLASS zcl_otlp_trace DEFINITION
         iv_hex TYPE xstring
       RETURNING
         VALUE(rs_resource_spans) TYPE zif_otlp_model_trace=>ty_resource_span.
+    CLASS-METHODS decode_scope_spans
+      IMPORTING
+        iv_hex   TYPE xstring
+      RETURNING
+        VALUE(rs_scope_spans) TYPE zif_otlp_model_trace=>ty_scope_spans.
     CLASS-METHODS encode_scope_spans
       IMPORTING
         !is_scope_spans TYPE zif_otlp_model_trace=>ty_scope_spans
@@ -181,9 +186,7 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
         WHEN 1.
           rs_resource_spans-resource = zcl_otlp_resource=>decode_resource( lo_stream->decode_delimited( ) ).
         WHEN 2.
-* todo
-          lo_stream->decode_delimited( ).
-          CLEAR rs_resource_spans-scope_spans.
+          APPEND decode_scope_spans( lo_stream->decode_delimited( ) ) TO rs_resource_spans-scope_spans.
         WHEN 3.
           rs_resource_spans-schema_url = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
       ENDCASE.
@@ -220,6 +223,9 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD decode_scope_spans.
+* todo
+  ENDMETHOD.
 
   METHOD encode_scope_spans.
 

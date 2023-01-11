@@ -225,6 +225,21 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
 
   METHOD decode_scope_spans.
 * todo
+    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
+
+    WHILE lo_stream->length( ) > 0.
+      DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
+      CASE ls_field_and_type-field_number.
+        WHEN 1.
+          rs_scope_spans-scope = zcl_otlp_common=>decode_instrumentation_scope( lo_stream->decode_delimited( ) ).
+        WHEN 2.
+* todo
+          CLEAR rs_scope_spans-spans.
+        WHEN 3.
+          rs_scope_spans-schema_url = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
+      ENDCASE.
+    ENDWHILE.
+
   ENDMETHOD.
 
   METHOD encode_scope_spans.

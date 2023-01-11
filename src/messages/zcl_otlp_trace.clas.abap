@@ -179,9 +179,7 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
       DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
       CASE ls_field_and_type-field_number.
         WHEN 1.
-* todo
-          lo_stream->decode_delimited( ).
-          CLEAR rs_resource_spans-resource.
+          rs_resource_spans-resource = zcl_otlp_resource=>decode_resource( lo_stream->decode_delimited( ) ).
         WHEN 2.
 * todo
           lo_stream->decode_delimited( ).

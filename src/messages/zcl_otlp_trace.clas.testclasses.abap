@@ -104,6 +104,8 @@ CLASS ltcl_test IMPLEMENTATION.
           end_time_unix_nano   = lv_unix_end ) ) ) ) ) ) ) ).
 
     cl_abap_unit_assert=>assert_not_initial( lv_hex ).
+
+    mo_cut->decode( lv_hex ).
   ENDMETHOD.
 
 ENDCLASS.

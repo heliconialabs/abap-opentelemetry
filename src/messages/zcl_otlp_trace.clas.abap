@@ -13,6 +13,12 @@ CLASS zcl_otlp_trace DEFINITION
         !it_resource_spans TYPE zif_otlp_model_trace=>ty_resource_spans
       RETURNING
         VALUE(rv_hex)      TYPE xstring .
+
+    CLASS-METHODS decode
+      IMPORTING
+        iv_hex      TYPE xstring
+      RETURNING
+        VALUE(rt_resource_spans) TYPE zif_otlp_model_trace=>ty_resource_spans.
   PROTECTED SECTION.
 
     CLASS-METHODS encode_event
@@ -52,6 +58,16 @@ ENDCLASS.
 
 CLASS zcl_otlp_trace IMPLEMENTATION.
 
+
+  METHOD decode.
+
+    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
+
+    DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
+
+* todo
+
+  ENDMETHOD.
 
   METHOD encode.
 

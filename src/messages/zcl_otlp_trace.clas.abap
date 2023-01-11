@@ -56,6 +56,11 @@ CLASS zcl_otlp_trace DEFINITION
         !is_span      TYPE zif_otlp_model_trace=>ty_span
       RETURNING
         VALUE(rv_hex) TYPE xstring .
+    CLASS-METHODS decode_span
+      IMPORTING
+        iv_hex         TYPE xstring
+      RETURNING
+        VALUE(rs_span) TYPE zif_otlp_model_trace=>ty_span.
     CLASS-METHODS encode_status
       IMPORTING
         !is_status    TYPE zif_otlp_model_trace=>ty_status
@@ -233,8 +238,7 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
         WHEN 1.
           rs_scope_spans-scope = zcl_otlp_common=>decode_instrumentation_scope( lo_stream->decode_delimited( ) ).
         WHEN 2.
-* todo
-          CLEAR rs_scope_spans-spans.
+          APPEND decode_span( lo_stream->decode_delimited( ) ) TO rs_scope_spans-spans.
         WHEN 3.
           rs_scope_spans-schema_url = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
       ENDCASE.
@@ -271,6 +275,55 @@ CLASS zcl_otlp_trace IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD decode_span.
+
+    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
+
+    WHILE lo_stream->length( ) > 0.
+      DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
+      CASE ls_field_and_type-field_number.
+        WHEN 1.
+          rs_span-trace_id = lo_stream->decode_delimited( ).
+        WHEN 2.
+          rs_span-span_id = lo_stream->decode_delimited( ).
+        WHEN 3.
+          rs_span-trace_state = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
+        WHEN 4.
+          rs_span-parent_span_id = lo_stream->decode_delimited( ).
+        WHEN 5.
+          rs_span-name = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
+        WHEN 6.
+          rs_span-kind = lo_stream->decode_varint( ).
+        WHEN 7.
+          rs_span-start_time_unix_nano = lo_stream->decode_fixed64( ).
+        WHEN 8.
+* todo
+          CLEAR rs_span-end_time_unix_nano.
+        WHEN 9.
+* todo
+          CLEAR rs_span-attributes.
+        WHEN 10.
+* todo
+          CLEAR rs_span-dropped_attributes_count.
+        WHEN 11.
+* todo
+          CLEAR rs_span-events.
+        WHEN 12.
+* todo
+          CLEAR rs_span-dropped_events_count.
+        WHEN 13.
+* todo
+          CLEAR rs_span-links.
+        WHEN 14.
+* todo
+          CLEAR rs_span-dropped_links_count.
+        WHEN 15.
+* todo
+          CLEAR rs_span-status.
+      ENDCASE.
+    ENDWHILE.
+
+  ENDMETHOD.
 
   METHOD encode_span.
 

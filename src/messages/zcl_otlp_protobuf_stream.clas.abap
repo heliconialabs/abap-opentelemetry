@@ -33,7 +33,9 @@ CLASS zcl_otlp_protobuf_stream DEFINITION
     METHODS decode_delimited
       RETURNING
         VALUE(rv_hex) TYPE xstring .
-
+    METHODS decode_fixed64
+      RETURNING
+        VALUE(rv_int) TYPE int8 .
     METHODS encode_double
       IMPORTING
         !iv_double    TYPE f
@@ -93,6 +95,24 @@ CLASS zcl_otlp_protobuf_stream IMPLEMENTATION.
 
   METHOD length.
     rv_length = xstrlen( mv_hex ).
+  ENDMETHOD.
+
+  METHOD decode_fixed64.
+* always 8 bytes
+
+    DATA lv_shift TYPE int8 VALUE 1.
+    DATA lv_top TYPE int8.
+
+    DO 8 TIMES.
+      lv_top = mv_hex(1).
+      lv_top = lv_top * lv_shift.
+      rv_int = rv_int + lv_top.
+      IF sy-index < 7.
+        lv_shift = lv_shift * 256.
+      ENDIF.
+      eat( 1 ).
+    ENDDO.
+
   ENDMETHOD.
 
   METHOD append.

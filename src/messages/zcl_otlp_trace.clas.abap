@@ -1,4 +1,4 @@
-CLASS zcl_otlp_encode_trace DEFINITION
+CLASS zcl_otlp_trace DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
@@ -50,7 +50,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
+CLASS zcl_otlp_trace IMPLEMENTATION.
 
 
   METHOD encode.
@@ -92,7 +92,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 3
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
     IF is_event-dropped_attributes_count IS NOT INITIAL.
@@ -134,7 +134,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 4
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
     IF is_link-dropped_attributes_count IS NOT INITIAL.
@@ -157,7 +157,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_resource=>encode_resource( is_resource_spans-resource ) ).
+      lo_stream->encode_delimited( zcl_otlp_resource=>encode_resource( is_resource_spans-resource ) ).
     ENDIF.
 
     LOOP AT is_resource_spans-scope_spans INTO DATA(ls_scope_spans).
@@ -187,7 +187,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_instrumentation_scope( is_scope_spans-scope ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_instrumentation_scope( is_scope_spans-scope ) ).
     ENDIF.
 
     LOOP AT is_scope_spans-spans INTO DATA(ls_span).
@@ -273,7 +273,7 @@ CLASS ZCL_OTLP_ENCODE_TRACE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 9
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
     IF is_span-dropped_attributes_count IS NOT INITIAL.

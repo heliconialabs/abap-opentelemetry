@@ -1,4 +1,4 @@
-CLASS zcl_otlp_encode_metrics DEFINITION
+CLASS zcl_otlp_metrics DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
@@ -108,7 +108,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
+CLASS zcl_otlp_metrics IMPLEMENTATION.
 
 
   METHOD buckets.
@@ -152,7 +152,7 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 7
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
     lo_stream->encode_field_and_type( VALUE #(
@@ -218,7 +218,7 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
     lo_stream->encode_field_and_type( VALUE #(
@@ -333,7 +333,7 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
     lo_stream->encode_field_and_type( VALUE #(
@@ -458,7 +458,7 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 7
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
     IF is_data-start_time_unix_nano IS NOT INITIAL.
@@ -510,7 +510,7 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_resource=>encode_resource( is_data-resource ) ).
+      lo_stream->encode_delimited( zcl_otlp_resource=>encode_resource( is_data-resource ) ).
     ENDIF.
 
     LOOP AT is_data-scope_metrics INTO DATA(ls_scope_metrics).
@@ -538,7 +538,7 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_instrumentation_scope( is_data-scope ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_instrumentation_scope( is_data-scope ) ).
     ENDIF.
 
     LOOP AT is_data-metrics INTO DATA(ls_metric).
@@ -606,7 +606,7 @@ CLASS ZCL_OTLP_ENCODE_METRICS IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 7
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
     lo_stream->encode_field_and_type( VALUE #(

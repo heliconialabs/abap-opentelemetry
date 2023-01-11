@@ -1,4 +1,4 @@
-CLASS zcl_otlp_encode_logs DEFINITION
+CLASS zcl_otlp_logs DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
@@ -37,7 +37,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_ENCODE_LOGS IMPLEMENTATION.
+CLASS zcl_otlp_logs IMPLEMENTATION.
 
 
   METHOD encode.
@@ -90,14 +90,14 @@ CLASS ZCL_OTLP_ENCODE_LOGS IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 5
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_any_value( is_log_record-body ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_any_value( is_log_record-body ) ).
     ENDIF.
 
     LOOP AT is_log_record-attributes INTO DATA(ls_attribute).
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 6
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
     IF is_log_record-dropped_attributes IS NOT INITIAL.
@@ -141,7 +141,7 @@ CLASS ZCL_OTLP_ENCODE_LOGS IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_resource=>encode_resource( is_resource_logs-resource ) ).
+      lo_stream->encode_delimited( zcl_otlp_resource=>encode_resource( is_resource_logs-resource ) ).
     ENDIF.
 
     LOOP AT is_resource_logs-scope_logs INTO DATA(ls_scope_logs).
@@ -171,7 +171,7 @@ CLASS ZCL_OTLP_ENCODE_LOGS IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_instrumentation_scope( is_scope_logs-scope ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_instrumentation_scope( is_scope_logs-scope ) ).
     ENDIF.
 
     LOOP AT is_scope_logs-log_records INTO DATA(ls_log_record).

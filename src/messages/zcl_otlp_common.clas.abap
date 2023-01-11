@@ -1,4 +1,4 @@
-CLASS zcl_otlp_encode_common DEFINITION
+CLASS zcl_otlp_common DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
@@ -29,7 +29,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_ENCODE_COMMON IMPLEMENTATION.
+CLASS zcl_otlp_common IMPLEMENTATION.
 
 
   METHOD encode_any_value.

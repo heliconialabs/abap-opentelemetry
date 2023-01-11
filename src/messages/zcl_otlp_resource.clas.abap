@@ -1,4 +1,4 @@
-CLASS zcl_otlp_encode_resource DEFINITION
+CLASS zcl_otlp_resource DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
@@ -19,7 +19,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_ENCODE_RESOURCE IMPLEMENTATION.
+CLASS zcl_otlp_resource IMPLEMENTATION.
 
 
   METHOD encode_resource.
@@ -30,7 +30,7 @@ CLASS ZCL_OTLP_ENCODE_RESOURCE IMPLEMENTATION.
       lo_stream->encode_field_and_type( VALUE #(
         field_number = 1
         wire_type    = zcl_otlp_protobuf_stream=>gc_wire_type-length_delimited ) ).
-      lo_stream->encode_delimited( zcl_otlp_encode_common=>encode_key_value( ls_attribute ) ).
+      lo_stream->encode_delimited( zcl_otlp_common=>encode_key_value( ls_attribute ) ).
     ENDLOOP.
 
     IF is_resource-dropped_attributes_count IS NOT INITIAL.

@@ -25,15 +25,15 @@
   },
   "homepage": "https://github.com/heliconialabs/abap-opentelemetry#readme",
   "devDependencies": {
-    "@abaplint/cli": "^2.95.6",
-    "@abaplint/runtime": "^2.3.124",
-    "@abaplint/database-sqlite": "^2.3.123",
-    "@abaplint/transpiler-cli": "^2.3.124",
+    "@abaplint/cli": "^2.95.48",
+    "@abaplint/runtime": "^2.5.51",
+    "@abaplint/database-sqlite": "^2.5.39",
+    "@abaplint/transpiler-cli": "^2.5.52",
     "dotenv": "^16.0.3",
-    "node-fetch": "^3.3.0",
-    "protobufjs-cli": "^1.1.0",
-    "protobufjs": "^7.2.0",
+    "node-fetch": "^3.3.1",
+    "protobufjs-cli": "^1.1.1",
+    "protobufjs": "^7.2.2",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "typescript": "^5.0.2"
   }
 }

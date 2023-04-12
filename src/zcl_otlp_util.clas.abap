@@ -56,7 +56,7 @@ CLASS zcl_otlp_util IMPLEMENTATION.
 
   METHOD generate_trace_id.
 
-* todo, steampunk compatibility?
+* todo, steampunk compatibility? IF_SYSTEM_UUID_STATIC=>CREATE_UUID_X16 ?
 
     CALL FUNCTION 'GENERATE_SEC_RANDOM'
       EXPORTING

@@ -19,13 +19,13 @@ CLASS zcl_otlp_tracer_provider DEFINITION
     METHODS add_span_processor
       IMPORTING ii_span_processor TYPE REF TO zif_otlp_span_processor.
   PROTECTED SECTION.
-    DATA mt_processors TYPE STANDARD TABLE OF REF TO zif_otlp_span_processor.
+    DATA mt_processors TYPE STANDARD TABLE OF REF TO zif_otlp_span_processor WITH EMPTY KEY.
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS ZCL_OTLP_TRACER_PROVIDER IMPLEMENTATION.
+CLASS zcl_otlp_tracer_provider IMPLEMENTATION.
 
 
   METHOD add_span_processor.

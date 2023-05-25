@@ -21,6 +21,14 @@
     "patterns": [{"type": "CLAS|INTF", "oldName": "z(cl|if)_otlp_(.*)", "newName": "y$1_foo_$2"}]
   },
   "rules": {
+    "easy_to_find_messages": true,
+    "expand_macros": true,
+    "fully_type_itabs": true,
+    "select_single_full_key": true,
+    "smim_consistency": true,
+    "sql_value_conversion": true,
+    "strict_sql": true,
+    "unnecessary_return": false,
     "7bit_ascii": true,
     "abapdoc": false,
     "align_parameters": true,

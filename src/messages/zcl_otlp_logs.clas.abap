@@ -165,6 +165,34 @@ CLASS zcl_otlp_logs IMPLEMENTATION.
 
   METHOD decode_log_record.
 
+    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
+
+    WHILE lo_stream->length( ) > 0.
+      DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
+      CASE ls_field_and_type-field_number.
+        WHEN 1.
+          rs_log_record-time_unix_nano = lo_stream->decode_fixed64( ).
+        WHEN 2.
+          rs_log_record-severity_number = lo_stream->decode_varint( ).
+        WHEN 3.
+          rs_log_record-severity_text = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
+        WHEN 5.
+          rs_log_record-body = zcl_otlp_common=>decode_any_value( lo_stream->decode_delimited( ) ).
+        WHEN 6.
+          APPEND zcl_otlp_common=>decode_key_value( lo_stream->decode_delimited( ) ) TO rs_log_record-attributes.
+        WHEN 7.
+          rs_log_record-dropped_attributes = lo_stream->decode_varint( ).
+        WHEN 8.
+          rs_log_record-flags = lo_stream->decode_varint( ).
+        WHEN 9.
+          rs_log_record-trace_id = lo_stream->decode_delimited( ).
+        WHEN 10.
+          rs_log_record-span_id = lo_stream->decode_delimited( ).
+        WHEN 11.
+          rs_log_record-observed_time_unix_nano = lo_stream->decode_fixed64( ).
+      ENDCASE.
+    ENDWHILE.
+
   ENDMETHOD.
 
   METHOD encode_resource_logs.

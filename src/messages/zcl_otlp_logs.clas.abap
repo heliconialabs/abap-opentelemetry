@@ -198,6 +198,20 @@ CLASS zcl_otlp_logs IMPLEMENTATION.
 
   METHOD decode_resource_logs.
 
+    DATA(lo_stream) = NEW zcl_otlp_protobuf_stream( iv_hex ).
+
+    WHILE lo_stream->length( ) > 0.
+      DATA(ls_field_and_type) = lo_stream->decode_field_and_type( ).
+      CASE ls_field_and_type-field_number.
+        WHEN 1.
+          rs_resource_logs-resource = zcl_otlp_resource=>decode_resource( lo_stream->decode_delimited( ) ).
+        WHEN 2.
+          APPEND decode_scope_logs( lo_stream->decode_delimited( ) ) TO rs_resource_logs-scope_logs.
+        WHEN 3.
+          rs_resource_logs-schema_url = zcl_otlp_util=>from_xstring( lo_stream->decode_delimited( ) ).
+      ENDCASE.
+    ENDWHILE.
+
   ENDMETHOD.
 
   METHOD encode_scope_logs.

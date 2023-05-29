@@ -37,9 +37,11 @@ CLASS zcl_otlp_util IMPLEMENTATION.
 
   METHOD generate_span_id.
 
-* todo, steampunk compatibility?
+    DATA lv_fmname TYPE c LENGTH 30.
 
-    CALL FUNCTION 'GENERATE_SEC_RANDOM'
+    lv_fmname = 'GENERATE_SEC_RANDOM'.
+* todo, this will give a dump on steampunk?
+    CALL FUNCTION lv_fmname
       EXPORTING
         length         = 8
       IMPORTING
@@ -56,9 +58,12 @@ CLASS zcl_otlp_util IMPLEMENTATION.
 
   METHOD generate_trace_id.
 
-* todo, steampunk compatibility? IF_SYSTEM_UUID_STATIC=>CREATE_UUID_X16 ?
+    DATA lv_fmname TYPE c LENGTH 30.
 
-    CALL FUNCTION 'GENERATE_SEC_RANDOM'
+    lv_fmname = 'GENERATE_SEC_RANDOM'.
+* todo, this will give a dump on steampunk?
+* IF_SYSTEM_UUID_STATIC=>CREATE_UUID_X16 ?
+    CALL FUNCTION lv_fmname
       EXPORTING
         length         = 16
       IMPORTING

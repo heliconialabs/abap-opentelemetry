@@ -14,6 +14,6 @@ The HTTP request format is described in [OTLP/HTTP Request](https://github.com/o
 
 * URL: https://apm-host/v1/traces / https://apm-host/v1/logs / https://apm-host/v1/metrics
 * Method: POST
-* Authorization: |ApiKey { iv_auth }|
+* Authorization: `|ApiKey { iv_auth }|`
 * content-type: application/x-protobuf
 * Body: raw protobuf encoded OTLP data

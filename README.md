@@ -17,3 +17,5 @@ The HTTP request format is described in [OTLP/HTTP Request](https://github.com/o
 * Authorization: `|ApiKey { iv_auth }|`
 * content-type: application/x-protobuf
 * Body: raw protobuf encoded OTLP data
+
+Create API key via https://kb-host/app/apm/settings/agent-keys

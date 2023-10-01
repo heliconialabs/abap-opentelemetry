@@ -22,6 +22,7 @@
   },
   "rules": {
     "easy_to_find_messages": true,
+    "prefer_pragmas": true,
     "expand_macros": true,
     "fully_type_itabs": true,
     "select_single_full_key": true,

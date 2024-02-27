@@ -83,6 +83,7 @@ CLASS zcl_otlp_util IMPLEMENTATION.
     DATA lv_epoch TYPE timestampl.
     DATA lv_start TYPE timestampl.
     DATA lv_result TYPE timestampl.
+    DATA sdfdsfsd TYPE i.
 
 * https://www.epochconverter.com
     GET TIME STAMP FIELD lv_start.
